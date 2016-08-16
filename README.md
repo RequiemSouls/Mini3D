@@ -5,7 +5,8 @@
 * 绘图API调用(support Linux/Mac/Windows/等 排名分先后)
 * `void drawPoint(x, y, color)`
 * `vector(x, y, z, w)`
-* `matrix(float[16])`
+* `color(r, g, b)`
+* `matrix(float[4][4])`
 
 ## Vertex
 * color
@@ -14,7 +15,7 @@
 ## Mesh
 * `indexArray` 索引数组
 * `vertexArray` 顶点数组
-* `static Mesh genTrangle()` 创建一个三角形
+* `static Mesh genTriangle()` 创建一个三角形
 * `static Mesh genByFile(fileName)` 读取文件创建mesh(i.e. *.obj)
 * `void draw(render, matrix)` 画mesh到屏幕
 
@@ -29,9 +30,10 @@
 ## Render
 * `renderbuffer` 渲染缓冲区
 * `camera` 摄像机
-* `meshArray` 准备渲染的mesh数组
+* `meshs` 准备渲染的mesh数组
+* `addMesh(mesh)` 添加mesh到渲染队列
 * `void render()` 遍历mesh数组, 一个个渲染
-* `void drawTrangle(p1, p2, p3)` 渲染一个三角形, 使用全局坐标
+* `void drawTriangle(p1, p2, p3)` 渲染一个三角形, 使用全局坐标
 * `void buffer2Screen()` 把渲染缓冲区使用平台的画图api画到屏幕上
 
 ## drawTrangle()
