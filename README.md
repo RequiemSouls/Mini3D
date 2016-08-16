@@ -14,8 +14,8 @@
 ## Mesh
 * `indexArray` 索引数组
 * `vertexArray` 顶点数组
-* `static Mesh createTrangle(p1, p2, p3)` 创建一个三角形
-* `static Mesh createByFile(fileName)` 读取文件创建mesh(i.e. *.obj)
+* `static Mesh genTrangle()` 创建一个三角形
+* `static Mesh genByFile(fileName)` 读取文件创建mesh(i.e. *.obj)
 * `void draw(render, matrix)` 画mesh到屏幕
 
 ## Camera
