@@ -1,9 +1,26 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include "Renderer.h"
 
 Renderer::Renderer(int w, int h) {
     this->w = w;
     this->h = h;
+    meshs = (Mesh**)malloc(sizeof(Mesh*) * 256);
+}
+
+Renderer::~Renderer() {
+    free(meshs);
+}
+
+void Renderer::addMesh(Mesh* mesh) {
+    meshs[meshCount] = mesh;
+    meshCount++;
+}
+
+void Renderer::render() {
+    for (int im = 0; im < meshCount; ++im) {
+        meshs[im]->draw(this, camera);
+    }
 }
 
 void Renderer::drawTriangle(Vertex* vt1, Vertex* vt2, Vertex* vt3) {

@@ -4,6 +4,7 @@
 #include "geometry.h"
 #include "Renderer.h"
 
+class Renderer;
 class Mesh {
 public:
     Mesh();
