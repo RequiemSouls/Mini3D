@@ -5,6 +5,8 @@ DrawableUtils& DrawableUtils::getInstance() {
     return instance;
 }
 
+
+#ifndef _WIN32
 DrawableUtils::DrawableUtils() {
     _drawable = new Drawable();
 }
@@ -24,3 +26,26 @@ void DrawableUtils::exitDraw() {
 void DrawableUtils::getMaxSize(int& w, int& h) {
     _drawable->getMaxSize(w, h);
 }
+
+#else
+
+DrawableUtils::DrawableUtils() {
+
+}
+
+void DrawableUtils::buffer2Screen(int w, int h, Color buffer[2048][2048]) {
+
+}
+
+void DrawableUtils::clearScreen() {
+
+}
+
+void DrawableUtils::exitDraw() {
+
+}
+
+void DrawableUtils::getMaxSize(int& w, int& h) {
+
+}
+#endif

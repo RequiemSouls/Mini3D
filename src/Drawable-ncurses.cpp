@@ -1,4 +1,6 @@
 #include "Drawable-ncurses.h"
+
+#ifndef _WIN32
 #include "assert.h"
 #include "ncurses.h"
 
@@ -79,3 +81,5 @@ void Drawable::getMaxSize(int& w, int& h) {
     w = max_x/2;
     h = max_y;
 }
+
+#endif

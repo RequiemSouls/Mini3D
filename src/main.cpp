@@ -1,3 +1,6 @@
+
+#ifndef _WIN32
+
 #include <thread>
 #include <chrono>
 #include <time.h>
@@ -8,20 +11,51 @@
 #define FRAME_TIME 200
 using namespace std;
 int main(int argc, char* args[]) {
-    int w, h;
-    DrawableUtils::getInstance().getMaxSize(w, h);
-    Renderer* r = new Renderer(w, h);
-    Mesh* mesh = Mesh::genTriangle();
-    r->addMesh(mesh);
-    while(true) {
-        clock_t ct = clock();
-        // render
-        DrawableUtils::getInstance().clearScreen();
-        r->render();
-        r->buffer2Screen();
-        int dt = (clock() - ct) * 1000 / CLOCKS_PER_SEC;
-        this_thread::sleep_for(chrono::milliseconds(FRAME_TIME - dt));
-    }
-    DrawableUtils::getInstance().exitDraw();
-    return 0;
+	int w, h;
+	DrawableUtils::getInstance().getMaxSize(w, h);
+	Renderer* r = new Renderer(w, h);
+	Mesh* mesh = Mesh::genTriangle();
+	r->addMesh(mesh);
+	while (true) {
+		clock_t ct = clock();
+		// render
+		DrawableUtils::getInstance().clearScreen();
+		r->render();
+		r->buffer2Screen();
+		int dt = (clock() - ct) * 1000 / CLOCKS_PER_SEC;
+		this_thread::sleep_for(chrono::milliseconds(FRAME_TIME - dt));
+	}
+	DrawableUtils::getInstance().exitDraw();
+	return 0;
 }
+
+#else 
+
+#include "Renderer.h"
+#include "Mesh.h"
+#include "DrawableUtils.h"
+#include "Device.h"
+
+using namespace std;
+int main(int argc, char* args[]) {
+	Renderer* r = new Renderer(960, 640);
+	Mesh* mesh = Mesh::genTriangle();
+	r->addMesh(mesh);
+
+	Device device;
+
+	device.setLoopEvent([&]() {
+		// render
+		r->render();
+
+		device.drawPixel(10, 10, Color(255, 0, 255));
+		device.drawLine(Vec2(20, 200), Vec2(500, 500), Color(255, 0, 0));
+
+		r->buffer2Screen();
+	});
+
+	int ret = device.loop();
+	return ret;
+}
+
+#endif

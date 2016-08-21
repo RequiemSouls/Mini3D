@@ -16,10 +16,11 @@ public:
     void buffer2Screen();
 
 private:
-    int w;
-    int h;
-    Matrix camera = Matrix::identity();
-    Mesh** meshs;
+    int w = 0;
+    int h = 0;
+
+    Matrix camera = Matrix::IDENTITY;
+    Mesh** meshs = nullptr;
     int meshCount = 0;
     Color renderBuffer[2048][2048]; // max screen 2048x2048
     DrawableUtils& drawable = DrawableUtils::getInstance();
