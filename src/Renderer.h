@@ -3,6 +3,7 @@
 
 #include "Mesh.h"
 #include "geometry.h"
+#include "DrawableUtils.h"
 
 class Mesh;
 class Renderer {
@@ -20,7 +21,8 @@ private:
     Matrix camera = Matrix::identity();
     Mesh** meshs;
     int meshCount = 0;
-    int renderBuffer[2048][2048]; // max screen 2048x2048
+    Color renderBuffer[2048][2048]; // max screen 2048x2048
+    DrawableUtils& drawable = DrawableUtils::getInstance();
 };
 
 #endif

@@ -6,12 +6,12 @@ Mesh* Mesh::genTriangle() {
     for (int i = 0; i < 3; i++) {
         mesh->indexArray[i] = i;
         Vertex* vt = new Vertex();
-        vt->p.x = rand() * 0.1 / RAND_MAX;
-        vt->p.y = rand() * 0.1 / RAND_MAX;
-        vt->p.z = rand() * 0.1 / RAND_MAX;
-        vt->c.r = 255;
-        vt->c.g = 255;
-        vt->c.b = 255;
+        vt->p.x = rand() * 1.0 / RAND_MAX;
+        vt->p.y = rand() * 1.0 / RAND_MAX;
+        vt->p.z = rand() * 1.0 / RAND_MAX;
+        vt->c.r = rand() * 1.0 / RAND_MAX * 255;
+        vt->c.g = rand() * 1.0 / RAND_MAX * 255;
+        vt->c.b = rand() * 1.0 / RAND_MAX * 255;
         mesh->vertexArray[i] = vt;
     }
     mesh->tCount = 1;

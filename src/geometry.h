@@ -24,9 +24,19 @@ struct Matrix {
 };
 
 struct Color {
-    char r;
-    char g;
-    char b;
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+
+    Color(unsigned char vr, unsigned char vg, unsigned char vb) {
+        r = vr;
+        g = vg;
+        b = vb;
+    }
+
+    Color() {
+        r = g = b = 0;
+    }
 };
 
 struct Vertex{

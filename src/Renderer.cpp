@@ -25,16 +25,15 @@ void Renderer::render() {
 
 void Renderer::drawTriangle(Vertex* vt1, Vertex* vt2, Vertex* vt3) {
     //draw to buff
-    printf("{{%f,%f,%f}{%f,%f,%f}{%f,%f,%f}}\n",
-           vt1->p.x, vt1->p.y, vt1->p.z,
-           vt2->p.x, vt2->p.y, vt2->p.z,
-           vt3->p.x, vt3->p.y, vt3->p.z);
+    // printf("{{%f,%f,%f}{%f,%f,%f}{%f,%f,%f}}\n",
+    //        vt1->p.x, vt1->p.y, vt1->p.z,
+    //        vt2->p.x, vt2->p.y, vt2->p.z,
+    //        vt3->p.x, vt3->p.y, vt3->p.z);
+    renderBuffer[int(vt1->p.x * w)][int(vt1->p.y * h)] = vt1->c;
+    renderBuffer[int(vt2->p.x * w)][int(vt2->p.y * h)] = vt2->c;
+    renderBuffer[int(vt3->p.x)][int(vt3->p.y)] = vt3->c;
 }
 
 void Renderer::buffer2Screen() {
-    for (int iw = 0; iw < w; ++iw) {
-        for (int ih = 0; ih < h; ++ih) {
-            //drawPoint(iw, ih, renderBuffer[iw][ih]);
-        }
-    }
+    drawable.buffer2Screen(w, h, renderBuffer);
 }
