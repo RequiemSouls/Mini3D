@@ -12,6 +12,8 @@
 using namespace std;
 int main(int argc, char* args[]) {
 	int w, h;
+
+	srand(time(0));
 	DrawableUtils::getInstance().getMaxSize(w, h);
 	Renderer* r = new Renderer(w, h);
 	Mesh* mesh = Mesh::genTriangle();
@@ -38,6 +40,8 @@ int main(int argc, char* args[]) {
 
 using namespace std;
 int main(int argc, char* args[]) {
+
+	srand(time(0));
 	Renderer* r = new Renderer(960, 640);
 	Mesh* mesh = Mesh::genTriangle();
 	r->addMesh(mesh);

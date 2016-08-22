@@ -1,4 +1,5 @@
 #include "Drawable-ncurses.h"
+#include "Types.h"
 
 #ifndef _WIN32
 #include "assert.h"
@@ -32,36 +33,35 @@ void Drawable::clearScreen() {
     clear();
 }
 
-unsigned char Drawable::get256Color(unsigned char rgb) {
-    static short colorLevel[6] = {0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff};
-    static short colorSegment[7] = {0x00, 0x02f, 0x73, 0x9b, 0xc3, 0xeb, 0xff};
-    static short segmentLen = 7;
+UI8 Drawable::get256ColorIndex(UI8 rgb) {
+    //static short colorLevel[6] = {0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff};
+    static UI8 colorSegment[] = {0x00, 0x02f, 0x73, 0x9b, 0xc3, 0xeb, 0xff};
 
-    for (int i = 0; i < segmentLen - 1; ++i) {
-        if (rgb >= colorSegment[i] && rgb <= colorSegment[i + 1]) {
-            return i;
+    for (UI8 i = 1; i < 7; ++i) {
+        if (rgb <= colorSegment[i]) {
+            return i-1;
         }
     }
     return 0;
 }
 
-unsigned char Drawable::get256ColorRGB(int rgb) {
-    short r = get256Color(rgb >> 16 & 0xff);
-    short g = get256Color(rgb >> 8 & 0xff);
-    short b = get256Color(rgb & 0xff);
+UI8 Drawable::get256ColorRGB(int rgb) {
+    UI8 r = get256ColorIndex(rgb >> 16 & 0xff);
+    UI8 g = get256ColorIndex(rgb >> 8 & 0xff);
+    UI8 b = get256ColorIndex(rgb & 0xff);
     return r * 36 + g * 6 + b + 16;
 }
 
-unsigned char Drawable::get256ColorRGB(Color rgb) {
-    short r = get256Color(rgb.r);
-    short g = get256Color(rgb.g);
-    short b = get256Color(rgb.b);
+UI8 Drawable::get256ColorRGB(Color rgb) {
+    UI8 r = get256ColorIndex(rgb.r);
+    UI8 g = get256ColorIndex(rgb.g);
+    UI8 b = get256ColorIndex(rgb.b);
     return r * 36 + g * 6 + b + 16;
 }
 
 void Drawable::drawPoint(int index, int x, int y, Color rgb) {
     // init_color(1, rgb.r, rgb.g, rgb.b);
-    unsigned char color = get256ColorRGB(rgb);
+    UI8 color = get256ColorRGB(rgb);
     attron(COLOR_PAIR(color));
     mvprintw(y, x * 2, "  ");
 }
