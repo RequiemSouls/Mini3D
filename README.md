@@ -1,8 +1,8 @@
 # 简介
 做一个简单的软件渲染器，用来学习简单(但不仅限于简单)的图形学知识，好歹也是个游戏开发，图形学都不会就有点尴尬了，不是么，朋友~~
 # 代码规范
-[Google C++命名约定](http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/naming/)
-[Google C++代码格式](http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/formatting/)
+* [Google C++命名约定](http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/naming/)
+* [Google C++代码格式](http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/formatting/)
 # 需求
 ## 基本
 * 绘图API调用(support Linux/Mac/Windows/等 排名分先后)
