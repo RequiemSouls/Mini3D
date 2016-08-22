@@ -1,12 +1,11 @@
 #pragma once
 
-#include "geometry.h"
 #include <functional>
 
-using namespace std;
+#include "geometry.h"
 
 struct Device {
-  typedef function<void()> LoopEvent;
+  typedef std::function<void()> LoopEvent;
 
   Device();
 
