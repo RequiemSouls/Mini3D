@@ -5,9 +5,22 @@
 #include "assert.h"
 #include "ncurses.h"
 
+static colorHash[256] = {0};
+void init256ColorTable(){
+    static UI8 colorSegment[] = {0x00, 0x02f, 0x73, 0x9b, 0xc3, 0xeb, 0xff};
+
+    UI8 idx = 1;
+    UI8 cs = colorSegment[idx];
+    for (UI8 px = 0; px < 256;) {
+        if (px <= cs) colorHash[px] = idx - 1, ++px;
+        else idx++, cs = colorSegment[idx];
+    }
+}
+
 Drawable::Drawable() {
     int succ = init();
     assert(succ == 0);
+    init256ColorTable();
 }
 
 int Drawable::init() {
@@ -46,16 +59,16 @@ UI8 Drawable::get256ColorIndex(UI8 rgb) {
 }
 
 UI8 Drawable::get256ColorRGB(int rgb) {
-    UI8 r = get256ColorIndex(rgb >> 16 & 0xff);
-    UI8 g = get256ColorIndex(rgb >> 8 & 0xff);
-    UI8 b = get256ColorIndex(rgb & 0xff);
+    UI8 r = colorHash[rgb >> 16 & 0xff];
+    UI8 g = colorHash[rgb >> 8 & 0xff];
+    UI8 b = colorHash[rgb & 0xff];
     return r * 36 + g * 6 + b + 16;
 }
 
 UI8 Drawable::get256ColorRGB(Color rgb) {
-    UI8 r = get256ColorIndex(rgb.r);
-    UI8 g = get256ColorIndex(rgb.g);
-    UI8 b = get256ColorIndex(rgb.b);
+    UI8 r = colorHash[rgb.r];
+    UI8 g = colorHash[rgb.g];
+    UI8 b = colorHash[rgb.b];
     return r * 36 + g * 6 + b + 16;
 }
 
