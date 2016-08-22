@@ -4,7 +4,7 @@
 #include "assert.h"
 #include "ncurses.h"
 
-#define GET_256_COLOR(r, g, b)                                                 \
+#define GET_256_COLOR(r, g, b) \
   (colorHash[r] * 36 + colorHash[g] * 6 + colorHash[b] + 16)
 
 static UI8 colorHash[256] = {0};

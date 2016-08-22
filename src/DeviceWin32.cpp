@@ -49,26 +49,17 @@ struct Windows {
   bool initWindow(I16 width, I16 height) {
     destroy();
 
-    WNDCLASS wc = {CS_BYTEALIGNCLIENT,
-                   (WNDPROC)WindowProc,
-                   0,
-                   0,
-                   0,
-                   nullptr,
-                   nullptr,
-                   nullptr,
-                   nullptr,
-                   "MINI3D"};
+    WNDCLASS wc = {CS_BYTEALIGNCLIENT, (WNDPROC)WindowProc, 0,       0,
+                   0,                  nullptr,             nullptr, nullptr,
+                   nullptr,            "MINI3D"};
 
     wc.hInstance = GetModuleHandle(NULL);
-    if (!RegisterClass(&wc))
-      return false;
+    if (!RegisterClass(&wc)) return false;
 
     hwnd = CreateWindowA("MINI3D", "MINI3D", WS_OVERLAPPED | WS_CAPTION |
                                                  WS_SYSMENU | WS_MINIMIZEBOX,
                          0, 0, 0, 0, nullptr, nullptr, wc.hInstance, nullptr);
-    if (hwnd == nullptr)
-      return false;
+    if (hwnd == nullptr) return false;
 
     HDC dc = GetDC(hwnd);
     hDC = CreateCompatibleDC(dc);
@@ -100,34 +91,34 @@ struct Windows {
 
   LRESULT windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
-    case WM_LBUTTONDOWN: {
-      break;
-    }
-    case WM_LBUTTONUP: {
-      break;
-    }
-    case WM_RBUTTONDOWN: {
-      break;
-    }
-    case WM_RBUTTONUP: {
-      break;
-    }
-    case WM_MOUSEMOVE: {
-      break;
-    }
-    // case WM_PAINT: {
-    //	break;
-    //}
-    case WM_DESTROY: {
-      PostQuitMessage(0);
-      break;
-    }
-    case WM_CLOSE: {
-      isQuit = true;
-      break;
-    }
-    default:
-      return DefWindowProc(hwnd, msg, wParam, lParam);
+      case WM_LBUTTONDOWN: {
+        break;
+      }
+      case WM_LBUTTONUP: {
+        break;
+      }
+      case WM_RBUTTONDOWN: {
+        break;
+      }
+      case WM_RBUTTONUP: {
+        break;
+      }
+      case WM_MOUSEMOVE: {
+        break;
+      }
+      // case WM_PAINT: {
+      //	break;
+      //}
+      case WM_DESTROY: {
+        PostQuitMessage(0);
+        break;
+      }
+      case WM_CLOSE: {
+        isQuit = true;
+        break;
+      }
+      default:
+        return DefWindowProc(hwnd, msg, wParam, lParam);
     }
     return 0;
   }
@@ -169,13 +160,11 @@ struct Windows {
     clock_t mpfDT = FRAME_TIME;
     I32 countFrame = 0;
     while (true) {
-      if (isQuit)
-        break;
+      if (isQuit) break;
       if (!PeekMessage(&curMSG, nullptr, 0, 0, PM_REMOVE)) {
         curDT = clock();
         F32 FPS = 1000.0f / (I32)mpfDT;
-        if (FPS > 60.0f)
-          FPS = 60.0f;
+        if (FPS > 60.0f) FPS = 60.0f;
 
         printf("FPS: %.1f/%.1f  F:%d\n", FPS, mpfDT / 1000.0, countFrame++);
 
@@ -205,8 +194,7 @@ struct Windows {
   void clearScreen() {
     for (I16 y = 0; y < height; y++) {
       UI32 *dst = frameBuff[y];
-      for (I16 x = width; x > 0; dst++, x--)
-        dst[0] = bgColor;
+      for (I16 x = width; x > 0; dst++, x--) dst[0] = bgColor;
     }
   }
 };

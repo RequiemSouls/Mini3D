@@ -43,9 +43,9 @@ Mesh::~Mesh() {
 void Mesh::draw(Renderer *r, Matrix m) {
   for (I32 i = 0; i < tCount; ++i) {
     // multiply Matrix
-    Vertex *vt1 = vertexArray[indexArray[i * 3]];     // * m
-    Vertex *vt2 = vertexArray[indexArray[i * 3 + 1]]; // * m
-    Vertex *vt3 = vertexArray[indexArray[i * 3 + 2]]; // * m
+    Vertex *vt1 = vertexArray[indexArray[i * 3]];      // * m
+    Vertex *vt2 = vertexArray[indexArray[i * 3 + 1]];  // * m
+    Vertex *vt3 = vertexArray[indexArray[i * 3 + 2]];  // * m
     r->drawTriangle(vt1, vt2, vt3);
   }
 }
