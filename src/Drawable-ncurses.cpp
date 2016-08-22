@@ -4,6 +4,8 @@
 #include "assert.h"
 #include "ncurses.h"
 
+#define GET_256_COLOR(r, g, b) (colorHash[r] * 36 + colorHash[g] * 6 + colorHash[b] + 16)
+
 static UI8 colorHash[256] = {0};
 
 void init256ColorTable() {
@@ -48,31 +50,12 @@ void Drawable::clearScreen() {
     clear();
 }
 
-UI8 Drawable::get256ColorRGB(I32 rgb) {
-    UI8 r = colorHash[rgb >> 16 & 0xff];
-    UI8 g = colorHash[rgb >> 8 & 0xff];
-    UI8 b = colorHash[rgb & 0xff];
-    return r * 36 + g * 6 + b + 16;
-}
-
-UI8 Drawable::get256ColorRGB(Color rgb) {
-    UI8 r = colorHash[rgb.r];
-    UI8 g = colorHash[rgb.g];
-    UI8 b = colorHash[rgb.b];
-    return r * 36 + g * 6 + b + 16;
-}
-
-void Drawable::drawPoint(I32 index, I16 x, I16 y, Color rgb) {
-    // init_color(1, rgb.r, rgb.g, rgb.b);
-    UI8 color = get256ColorRGB(rgb);
-    attron(COLOR_PAIR(color));
-    mvprintw(y, x * 2, "  ");
-}
-
 void Drawable::buffer2Screen(I16 w, I16 h, Color buffer[BUFFER_SIZE][BUFFER_SIZE]) {
-    for (I16 iw = 0; iw < w; ++iw) {
-        for (I16 ih = 0; ih < h; ++ih) {
-            drawPoint(iw * h + ih, iw, ih, buffer[iw][ih]);
+    for (I16 x = 0; x < w; ++x) {
+        for (I16 y = 0; y < h; ++y) {
+            Color& rgb = buffer[x][y];
+            attron(COLOR_PAIR(GET_256_COLOR(rgb.r, rgb.g ,rgb.b)));
+            mvprintw(y, x * 2, "  ");
         }
     }
     refresh();
