@@ -4,8 +4,7 @@
 #include "geometry.h"
 #define BUFFER_SIZE 2048
 
-class Drawable
-{
+class Drawable {
 public:
   Drawable();
   void drawPoint(I32 index, I16 x, I16 y, Color rgb);

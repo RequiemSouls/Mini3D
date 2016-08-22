@@ -7,26 +7,17 @@
 #include <time.h>
 #include <vector>
 
-Device::Device()
-{
-}
+Device::Device() {}
 
-void Device::drawPixel(I16 x, I16 y, Color color)
-{
+void Device::drawPixel(I16 x, I16 y, Color color) {
   printf("I'm drawing pixel at: %d,%d\n", x, y);
 }
 
-void Device::drawLine(Vec2 from, Vec2 to, Color color)
-{
-}
+void Device::drawLine(Vec2 from, Vec2 to, Color color) {}
 
-void Device::setLoopEvent(LoopEvent le)
-{
-  loopEvent = le;
-}
+void Device::setLoopEvent(LoopEvent le) { loopEvent = le; }
 
-I8 Device::loop()
-{
+I8 Device::loop() {
   const I8 FRAME_TIME = 16;
 
   clock_t curDT = 0;

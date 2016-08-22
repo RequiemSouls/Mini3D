@@ -4,13 +4,12 @@
 #include "assert.h"
 #include "ncurses.h"
 
-#define GET_256_COLOR(r, g, b) \
+#define GET_256_COLOR(r, g, b)                                                 \
   (colorHash[r] * 36 + colorHash[g] * 6 + colorHash[b] + 16)
 
 static UI8 colorHash[256] = {0};
 
-void init256ColorTable()
-{
+void init256ColorTable() {
   static UI8 colorSegment[] = {0x00, 0x02f, 0x73, 0x9b, 0xc3, 0xeb, 0xff};
 
   UI8 idx = 1;
@@ -23,15 +22,13 @@ void init256ColorTable()
   }
 }
 
-Drawable::Drawable()
-{
+Drawable::Drawable() {
   I8 succ = init();
   assert(succ == 0);
   init256ColorTable();
 }
 
-I8 Drawable::init()
-{
+I8 Drawable::init() {
   initscr();
   noecho();
   curs_set(FALSE);
@@ -46,19 +43,12 @@ I8 Drawable::init()
   return 0;
 }
 
-void Drawable::exitDraw()
-{
-  endwin();
-}
+void Drawable::exitDraw() { endwin(); }
 
-void Drawable::clearScreen()
-{
-  clear();
-}
+void Drawable::clearScreen() { clear(); }
 
-void Drawable::buffer2Screen(
-    I16 w, I16 h, Color buffer[BUFFER_SIZE][BUFFER_SIZE])
-{
+void Drawable::buffer2Screen(I16 w, I16 h,
+                             Color buffer[BUFFER_SIZE][BUFFER_SIZE]) {
   for (I16 x = 0; x < w; ++x) {
     for (I16 y = 0; y < h; ++y) {
       Color &rgb = buffer[x][y];
@@ -69,8 +59,7 @@ void Drawable::buffer2Screen(
   refresh();
 }
 
-void Drawable::getMaxSize(I16 &w, I16 &h)
-{
+void Drawable::getMaxSize(I16 &w, I16 &h) {
   I16 max_x, max_y;
   getmaxyx(stdscr, max_y, max_x);
   w = max_x / 2;

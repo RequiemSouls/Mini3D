@@ -1,8 +1,7 @@
 #include "Mesh.h"
 #include "stdlib.h"
 
-Mesh *Mesh::genTriangle()
-{
+Mesh *Mesh::genTriangle() {
   Mesh *mesh = new Mesh();
   for (I16 i = 0; i < 3; i++) {
     mesh->indexArray[i] = i;
@@ -20,21 +19,18 @@ Mesh *Mesh::genTriangle()
   return mesh;
 }
 
-Mesh *Mesh::genByFile(const char *fileName)
-{
+Mesh *Mesh::genByFile(const char *fileName) {
   // wait for good man
   return nullptr;
 }
 
-Mesh::Mesh()
-{
+Mesh::Mesh() {
   // init mesh
   tCount = 0;
   vertexArray = (Vertex **)malloc(sizeof(Vertex *) * 256);
 }
 
-Mesh::~Mesh()
-{
+Mesh::~Mesh() {
   // delete mesh
   for (I32 i = 0; i < tCount; ++i) {
     delete vertexArray[indexArray[i * 3]];
@@ -44,8 +40,7 @@ Mesh::~Mesh()
   free(vertexArray);
 }
 
-void Mesh::draw(Renderer *r, Matrix m)
-{
+void Mesh::draw(Renderer *r, Matrix m) {
   for (I32 i = 0; i < tCount; ++i) {
     // multiply Matrix
     Vertex *vt1 = vertexArray[indexArray[i * 3]];     // * m

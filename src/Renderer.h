@@ -6,8 +6,7 @@
 #include "geometry.h"
 
 class Mesh;
-class Renderer
-{
+class Renderer {
 public:
   Renderer(I16 w, I16 h);
   ~Renderer();

@@ -1,7 +1,7 @@
 #include "geometry.h"
 
-const F32 identity[] = {1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f,
-    0.f, 0.f, 0.f, 0.f, 1.f};
+const F32 identity[] = {1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f,
+                        0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f};
 
 const Vec2 Vec2::ZERO = Vec2();
 const Vector Vector::ZERO = Vector();

@@ -10,8 +10,7 @@
 #define FRAME_TIME 200
 using namespace std;
 
-int main(int argc, char *args[])
-{
+int main(int argc, char *args[]) {
   I16 w, h;
 
   srand(time(0));
@@ -40,8 +39,7 @@ int main(int argc, char *args[])
 #include "Renderer.h"
 
 using namespace std;
-int main(int argc, char *args[])
-{
+int main(int argc, char *args[]) {
 
   srand(time(0));
   Renderer *r = new Renderer(960, 640);

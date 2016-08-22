@@ -10,8 +10,7 @@
 #include <Windows.h>
 #include <WindowsX.h>
 
-namespace DeviceWin32
-{
+namespace DeviceWin32 {
 struct Windows *g_windowInstance = nullptr;
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -34,42 +33,39 @@ struct Windows {
 
   Device::LoopEvent loopEvent;
 
-  static Windows *getInstance()
-  {
+  static Windows *getInstance() {
     static Windows windows;
     g_windowInstance = &windows;
     return &windows;
   }
 
-  Windows()
-  {
-    initWindow(width, height);
-  }
+  Windows() { initWindow(width, height); }
 
-  Windows(I16 width, I16 height)
-  {
-    initWindow(width, height);
-  }
+  Windows(I16 width, I16 height) { initWindow(width, height); }
 
-  HWND getHWnd()
-  {
-    return hwnd;
-  }
+  HWND getHWnd() { return hwnd; }
 
-  bool initWindow(I16 width, I16 height)
-  {
+  bool initWindow(I16 width, I16 height) {
     destroy();
 
-    WNDCLASS wc = {CS_BYTEALIGNCLIENT, (WNDPROC)WindowProc, 0, 0, 0, nullptr,
-        nullptr, nullptr, nullptr, "MINI3D"};
+    WNDCLASS wc = {CS_BYTEALIGNCLIENT,
+                   (WNDPROC)WindowProc,
+                   0,
+                   0,
+                   0,
+                   nullptr,
+                   nullptr,
+                   nullptr,
+                   nullptr,
+                   "MINI3D"};
 
     wc.hInstance = GetModuleHandle(NULL);
     if (!RegisterClass(&wc))
       return false;
 
-    hwnd = CreateWindowA("MINI3D", "MINI3D",
-        WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 0, 0, 0, 0,
-        nullptr, nullptr, wc.hInstance, nullptr);
+    hwnd = CreateWindowA("MINI3D", "MINI3D", WS_OVERLAPPED | WS_CAPTION |
+                                                 WS_SYSMENU | WS_MINIMIZEBOX,
+                         0, 0, 0, 0, nullptr, nullptr, wc.hInstance, nullptr);
     if (hwnd == nullptr)
       return false;
 
@@ -79,7 +75,7 @@ struct Windows {
 
     LPVOID ptr;
     BITMAPINFO bi = {{sizeof(BITMAPINFOHEADER), width, -height, 1, 32, BI_RGB,
-        width * height * 4, 0, 0, 0, 0}};
+                      width * height * 4, 0, 0, 0, 0}};
     foreBM = CreateDIBSection(hDC, &bi, DIB_RGB_COLORS, &ptr, 0, 0);
     backBM = (HBITMAP)SelectObject(hDC, foreBM);
     UI8 *screenBuff = (UI8 *)ptr;
@@ -87,7 +83,7 @@ struct Windows {
     I16 cx = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
     I16 cy = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
     SetWindowPos(hwnd, nullptr, cx, cy, width, height,
-        (SWP_NOCOPYBITS | SWP_NOZORDER | SWP_SHOWWINDOW));
+                 (SWP_NOCOPYBITS | SWP_NOZORDER | SWP_SHOWWINDOW));
     SetForegroundWindow(hwnd);
     ShowWindow(hwnd, SW_NORMAL);
 
@@ -101,8 +97,7 @@ struct Windows {
     return true;
   }
 
-  LRESULT windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-  {
+  LRESULT windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
     case WM_LBUTTONDOWN: {
       break;
@@ -136,8 +131,7 @@ struct Windows {
     return 0;
   }
 
-  void destroy()
-  {
+  void destroy() {
     if (hDC) {
       if (backBM) {
         SelectObject(hDC, backBM);
@@ -161,20 +155,15 @@ struct Windows {
     }
   }
 
-  void beginDraw()
-  {
-    clearScreen();
-  }
+  void beginDraw() { clearScreen(); }
 
-  void endDraw()
-  {
+  void endDraw() {
     HDC dc = GetDC(hwnd);
     BitBlt(dc, 0, 0, width, height, hDC, 0, 0, SRCCOPY);
     ReleaseDC(hwnd, dc);
   }
 
-  I8 loop()
-  {
+  I8 loop() {
     clock_t curDT = 0;
     clock_t mpfDT = FRAME_TIME;
     I32 countFrame = 0;
@@ -208,13 +197,11 @@ struct Windows {
     return 0;
   }
 
-  void drawPixel(I16 x, I16 y, Color color)
-  {
+  void drawPixel(I16 x, I16 y, Color color) {
     frameBuff[y][x] = color.r << 16 | color.g << 8 | color.b;
   }
 
-  void clearScreen()
-  {
+  void clearScreen() {
     for (I16 y = 0; y < height; y++) {
       UI32 *dst = frameBuff[y];
       for (I16 x = width; x > 0; dst++, x--)
@@ -223,8 +210,7 @@ struct Windows {
   }
 };
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
   if (g_windowInstance && g_windowInstance->getHWnd() == hwnd) {
     g_windowInstance->windowProc(hwnd, msg, wParam, lParam);
   }
@@ -232,18 +218,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 }
 
-Device::Device()
-{
-  DeviceWin32::Windows::getInstance();
-}
+Device::Device() { DeviceWin32::Windows::getInstance(); }
 
-void Device::drawPixel(I16 x, I16 y, Color color)
-{
+void Device::drawPixel(I16 x, I16 y, Color color) {
   DeviceWin32::g_windowInstance->drawPixel(x, y, color);
 }
 
-void Device::drawLine(Vec2 from, Vec2 to, Color color)
-{
+void Device::drawLine(Vec2 from, Vec2 to, Color color) {
   Vec2 v = to - from;
   F32 len = v.length();
   v.normalized();
@@ -254,14 +235,12 @@ void Device::drawLine(Vec2 from, Vec2 to, Color color)
   }
 }
 
-void Device::setLoopEvent(LoopEvent le)
-{
+void Device::setLoopEvent(LoopEvent le) {
   loopEvent = le;
   DeviceWin32::g_windowInstance->loopEvent = le;
 }
 
-I8 Device::loop()
-{
+I8 Device::loop() {
   I8 ret = DeviceWin32::g_windowInstance->loop();
   return ret;
 }
