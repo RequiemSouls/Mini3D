@@ -55,8 +55,7 @@ struct Vector {
 
     Vector() {
     }
-
-
+    
 	static const Vector ZERO;
 };
 
@@ -68,7 +67,6 @@ struct Matrix {
 
 	static const Matrix ZERO;
 	static const Matrix IDENTITY;
-
 };
 
 struct Color {
@@ -82,7 +80,7 @@ struct Color {
 	static const Color ZERO;
 };
 
-struct Vertex{
+struct Vertex {
     Vector p;
     Color c;
 };

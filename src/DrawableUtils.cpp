@@ -5,7 +5,6 @@ DrawableUtils& DrawableUtils::getInstance() {
     return instance;
 }
 
-
 #ifndef _WIN32
 DrawableUtils::DrawableUtils() {
     _drawable = new Drawable();

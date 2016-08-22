@@ -1,4 +1,3 @@
-
 #ifndef _WIN32
 
 #include <thread>
@@ -10,6 +9,7 @@
 
 #define FRAME_TIME 200
 using namespace std;
+
 int main(int argc, char* args[]) {
 	I16 w, h;
 
