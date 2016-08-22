@@ -3,7 +3,7 @@
 
 Mesh* Mesh::genTriangle() {
     Mesh* mesh = new Mesh();
-    for (int i = 0; i < 3; i++) {
+    for (I16 i = 0; i < 3; i++) {
         mesh->indexArray[i] = i;
         Vertex* vt = new Vertex();
         vt->p.x = rand() * 1.0 / RAND_MAX;
@@ -32,7 +32,7 @@ Mesh::Mesh() {
 
 Mesh::~Mesh() {
     // delete mesh
-    for (int i = 0; i < tCount; ++i) {
+    for (I32 i = 0; i < tCount; ++i) {
         delete vertexArray[indexArray[i*3]];
         delete vertexArray[indexArray[i*3+1]];
         delete vertexArray[indexArray[i*3+2]];
@@ -41,7 +41,7 @@ Mesh::~Mesh() {
 }
 
 void Mesh::draw(Renderer* r, Matrix m) {
-    for (int i = 0; i < tCount; ++i) {
+    for (I32 i = 0; i < tCount; ++i) {
         // multiply Matrix
         Vertex* vt1 = vertexArray[indexArray[i*3]]; // * m
         Vertex* vt2 = vertexArray[indexArray[i*3+1]]; // * m

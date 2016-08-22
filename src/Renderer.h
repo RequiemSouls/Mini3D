@@ -8,7 +8,7 @@
 class Mesh;
 class Renderer {
 public:
-    Renderer(int w, int h);
+    Renderer(I16 w, I16 h);
     ~Renderer();
     void drawTriangle(Vertex* vt1, Vertex* vt2, Vertex* vt3);
     void addMesh(Mesh* mesh);
@@ -16,13 +16,13 @@ public:
     void buffer2Screen();
 
 private:
-    int w = 0;
-    int h = 0;
+    I16 w = 0;
+    I16 h = 0;
 
     Matrix camera = Matrix::IDENTITY;
     Mesh** meshs = nullptr;
-    int meshCount = 0;
-    Color renderBuffer[2048][2048]; // max screen 2048x2048
+    I32 meshCount = 0;
+    Color renderBuffer[BUFFER_SIZE][BUFFER_SIZE]; // max screen 2048x2048
     DrawableUtils& drawable = DrawableUtils::getInstance();
 };
 

@@ -10,7 +10,7 @@
 Device::Device() {
 }
 
-void Device::drawPixel(int x, int y, Color color) {
+void Device::drawPixel(I16 x, I16 y, Color color) {
 	printf("I'm drawing pixel at: %d,%d\n", x, y);
 }
 
@@ -23,8 +23,8 @@ void Device::setLoopEvent(LoopEvent le) {
 }
 
 
-int Device::loop() {
-	const int FRAME_TIME = 16;
+I8 Device::loop() {
+	const I8 FRAME_TIME = 16;
 
 	clock_t curDT = 0;
 	clock_t mpfDT = FRAME_TIME;

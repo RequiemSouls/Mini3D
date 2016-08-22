@@ -6,10 +6,10 @@
 class DrawableUtils {
 public:
     static DrawableUtils& getInstance();
-    void buffer2Screen(int w, int h, Color buffer[2048][2048]);
+    void buffer2Screen(I16 w, I16 h, Color buffer[BUFFER_SIZE][BUFFER_SIZE]);
     void clearScreen();
     void exitDraw();
-    void getMaxSize(int& w, int& h);
+    void getMaxSize(I16& w, I16& h);
 
 private:
     DrawableUtils();

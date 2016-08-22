@@ -14,9 +14,9 @@ public:
     void draw(Renderer* r, Matrix m);
 
 private:
-	int indexArray[256] = {0};
+	I32 indexArray[256] = {0};
     Vertex** vertexArray = nullptr;
-    int tCount = 0;
+    I32 tCount = 0;
 };
 
 #endif

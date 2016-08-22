@@ -11,7 +11,7 @@
 #define FRAME_TIME 200
 using namespace std;
 int main(int argc, char* args[]) {
-	int w, h;
+	I16 w, h;
 
 	srand(time(0));
 	DrawableUtils::getInstance().getMaxSize(w, h);
@@ -24,7 +24,7 @@ int main(int argc, char* args[]) {
 		DrawableUtils::getInstance().clearScreen();
 		r->render();
 		r->buffer2Screen();
-		int dt = (clock() - ct) * 1000 / CLOCKS_PER_SEC;
+		I32 dt = (clock() - ct) * 1000 / CLOCKS_PER_SEC;
 		this_thread::sleep_for(chrono::milliseconds(FRAME_TIME - dt));
 	}
 	DrawableUtils::getInstance().exitDraw();
@@ -58,7 +58,7 @@ int main(int argc, char* args[]) {
 		r->buffer2Screen();
 	});
 
-	int ret = device.loop();
+	I32 ret = device.loop();
 	return ret;
 }
 

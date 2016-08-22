@@ -15,12 +15,12 @@ namespace DeviceWin32 {
 	LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	struct Windows {
-		const int FRAME_TIME = 16;
+		const I8 FRAME_TIME = 16;
 
 		UI32 bgColor = 0x0;
 
-		int width = 960;
-		int height = 640;
+		I16 width = 960;
+		I16 height = 640;
 
 		bool isQuit = false;
 
@@ -43,7 +43,7 @@ namespace DeviceWin32 {
 			initWindow(width, height);
 		}
 
-		Windows(int width, int height) {
+		Windows(I16 width, I16 height) {
 			initWindow(width, height);
 		}
 
@@ -51,7 +51,7 @@ namespace DeviceWin32 {
 			return hwnd;
 		}
 
-		bool initWindow(int width, int height) {
+		bool initWindow(I16 width, I16 height) {
 			destroy();
 
 			WNDCLASS wc = {
@@ -81,8 +81,8 @@ namespace DeviceWin32 {
 			backBM = (HBITMAP)SelectObject(hDC, foreBM);
 			UI8* screenBuff = (UI8*)ptr;
 
-			int cx = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
-			int cy = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
+			I16 cx = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
+			I16 cy = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 			SetWindowPos(hwnd, nullptr, cx, cy, width, height, (SWP_NOCOPYBITS | SWP_NOZORDER | SWP_SHOWWINDOW));
 			SetForegroundWindow(hwnd);
 			ShowWindow(hwnd, SW_NORMAL);
@@ -90,7 +90,7 @@ namespace DeviceWin32 {
 			memset(screenBuff, 0, width * height * 4);
 
 			frameBuff = new UI32*[height];
-			for (int h = 0; h < height; h++) {
+			for (I16 h = 0; h < height; h++) {
 				frameBuff[h] = (UI32*)(screenBuff + width * 4 * h);
 			}
 
@@ -100,28 +100,18 @@ namespace DeviceWin32 {
 		LRESULT windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			switch (msg) {
 				case WM_LBUTTONDOWN: {
-					int x = GET_X_LPARAM(lParam);
-					int y = GET_Y_LPARAM(lParam);
 					break;
 				}
 				case WM_LBUTTONUP: {
-					int x = GET_X_LPARAM(lParam);
-					int y = GET_Y_LPARAM(lParam);
 					break;
 				}
 				case WM_RBUTTONDOWN: {
-					int x = GET_X_LPARAM(lParam);
-					int y = GET_Y_LPARAM(lParam);
 					break;
 				}
 				case WM_RBUTTONUP: {
-					int x = GET_X_LPARAM(lParam);
-					int y = GET_Y_LPARAM(lParam);
 					break;
 				}
 				case WM_MOUSEMOVE: {
-					int x = GET_X_LPARAM(lParam);
-					int y = GET_Y_LPARAM(lParam);
 					break;
 				}
 				//case WM_PAINT: {
@@ -175,16 +165,16 @@ namespace DeviceWin32 {
 			ReleaseDC(hwnd, dc);
 		}
 
-		int loop() {
+		I8 loop() {
 			clock_t curDT = 0;
 			clock_t mpfDT = FRAME_TIME;
-			int countFrame = 0;
+			I32 countFrame = 0;
 			while (true)
 			{
 				if (isQuit) break;
 				if (!PeekMessage(&curMSG, nullptr, 0, 0, PM_REMOVE)){
 					curDT = clock();
-					float FPS = 1000.0f / (int)mpfDT;
+					float FPS = 1000.0f / (I32)mpfDT;
 					if (FPS > 60.0f) FPS = 60.0f;
 
 					printf("FPS: %.1f/%.1f  F:%d\n", FPS, mpfDT / 1000.0, countFrame++);
@@ -208,14 +198,15 @@ namespace DeviceWin32 {
 			return 0;
 		}
 
-		void drawPixel(int x, int y, Color color) {
+		void drawPixel(I16 x, I16 y, Color color) {
 			frameBuff[y][x] = color.r << 16 | color.g << 8 | color.b;
 		}
 
 		void clearScreen() {
-			for (int y = 0; y < height; y++) {
+			for (I16 y = 0; y < height; y++) {
 				UI32 *dst = frameBuff[y];
-				for (int x = width; x > 0; dst++, x--) dst[0] = bgColor;
+				for (I16 x = width; x > 0; dst++, x--)
+					dst[0] = bgColor;
 			}
 		}
 	};
@@ -233,7 +224,7 @@ Device::Device() {
 	DeviceWin32::Windows::getInstance();
 }
 
-void Device::drawPixel(int x, int y, Color color)
+void Device::drawPixel(I16 x, I16 y, Color color)
 {
 	DeviceWin32::g_windowInstance->drawPixel(x, y, color);
 }
@@ -257,8 +248,8 @@ void Device::setLoopEvent(LoopEvent le)
 }
 
 
-int Device::loop() {
-	int ret = DeviceWin32::g_windowInstance->loop();
+I8 Device::loop() {
+	I8 ret = DeviceWin32::g_windowInstance->loop();
 	return ret;
 }
 

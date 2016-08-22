@@ -61,7 +61,7 @@ struct Vector {
 };
 
 struct Matrix {
-	float m[4][4] = {0};
+	float m[4][4] = {{0}, {0}, {0}, {0}};
 
 	Matrix() {}
 	Matrix(float* mat) { memcpy(m, mat, 16); }

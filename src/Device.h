@@ -10,11 +10,11 @@ struct Device {
 
 	Device();
 
-	void drawPixel(int x, int y, Color color);
+	void drawPixel(I16 x, I16 y, Color color);
 	void drawLine(Vec2 from, Vec2 to, Color color);
 
 	void setLoopEvent(LoopEvent le);
-	int loop();
+	I8 loop();
 
 	LoopEvent loopEvent = nullptr;
 };
