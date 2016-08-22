@@ -5,15 +5,18 @@
 #include "assert.h"
 #include "ncurses.h"
 
-static colorHash[256] = {0};
+static UI8 colorHash[256] = {0};
+
 void init256ColorTable(){
     static UI8 colorSegment[] = {0x00, 0x02f, 0x73, 0x9b, 0xc3, 0xeb, 0xff};
 
     UI8 idx = 1;
     UI8 cs = colorSegment[idx];
-    for (UI8 px = 0; px < 256;) {
-        if (px <= cs) colorHash[px] = idx - 1, ++px;
-        else idx++, cs = colorSegment[idx];
+    for (I16 px = 0; px < 256;) {
+        if (px <= cs)
+            colorHash[px++] = idx - 1;
+        else 
+            cs = colorSegment[++idx];
     }
 }
 
@@ -44,18 +47,6 @@ void Drawable::exitDraw() {
 
 void Drawable::clearScreen() {
     clear();
-}
-
-UI8 Drawable::get256ColorIndex(UI8 rgb) {
-    //static short colorLevel[6] = {0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff};
-    static UI8 colorSegment[] = {0x00, 0x02f, 0x73, 0x9b, 0xc3, 0xeb, 0xff};
-
-    for (UI8 i = 1; i < 7; ++i) {
-        if (rgb <= colorSegment[i]) {
-            return i-1;
-        }
-    }
-    return 0;
 }
 
 UI8 Drawable::get256ColorRGB(int rgb) {

@@ -9,9 +9,9 @@ Mesh* Mesh::genTriangle() {
         vt->p.x = rand() * 1.0 / RAND_MAX;
         vt->p.y = rand() * 1.0 / RAND_MAX;
         vt->p.z = rand() * 1.0 / RAND_MAX;
-        vt->c.r = rand() * 1.0 / RAND_MAX * 255;
-        vt->c.g = rand() * 1.0 / RAND_MAX * 255;
-        vt->c.b = rand() * 1.0 / RAND_MAX * 255;
+        vt->c.r = rand() * 255.0 / RAND_MAX;
+        vt->c.g = rand() * 255.0 / RAND_MAX;
+        vt->c.b = rand() * 255.0 / RAND_MAX;
         mesh->vertexArray[i] = vt;
     }
     mesh->tCount = 1;
