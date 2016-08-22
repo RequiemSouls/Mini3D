@@ -18,6 +18,7 @@ void Renderer::addMesh(Mesh* mesh) {
 }
 
 void Renderer::render() {
+    memset(renderBuffer, 0 ,sizeof(renderBuffer));
     for (I32 im = 0; im < meshCount; ++im) {
         meshs[im]->draw(this, camera);
     }
