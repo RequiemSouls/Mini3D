@@ -1,22 +1,23 @@
 #ifndef _MINI3D_MESH_H_
 #define _MINI3D_MESH_H_
 
-#include "geometry.h"
 #include "Renderer.h"
+#include "geometry.h"
 
 class Renderer;
-class Mesh {
+class Mesh
+{
 public:
-    Mesh();
-    ~Mesh();
-    static Mesh* genTriangle();
-    static Mesh* genByFile(const char* fileName);
-    void draw(Renderer* r, Matrix m);
+  Mesh();
+  ~Mesh();
+  static Mesh *genTriangle();
+  static Mesh *genByFile(const char *fileName);
+  void draw(Renderer *r, Matrix m);
 
 private:
-	I32 indexArray[256] = {0};
-    Vertex** vertexArray = nullptr;
-    I32 tCount = 0;
+  I32 indexArray[256] = {0};
+  Vertex **vertexArray = nullptr;
+  I32 tCount = 0;
 };
 
 #endif

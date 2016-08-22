@@ -6,15 +6,15 @@
 using namespace std;
 
 struct Device {
-	typedef function<void()> LoopEvent;
+  typedef function<void()> LoopEvent;
 
-	Device();
+  Device();
 
-	void drawPixel(I16 x, I16 y, Color color);
-	void drawLine(Vec2 from, Vec2 to, Color color);
+  void drawPixel(I16 x, I16 y, Color color);
+  void drawLine(Vec2 from, Vec2 to, Color color);
 
-	void setLoopEvent(LoopEvent le);
-	I8 loop();
+  void setLoopEvent(LoopEvent le);
+  I8 loop();
 
-	LoopEvent loopEvent = nullptr;
+  LoopEvent loopEvent = nullptr;
 };

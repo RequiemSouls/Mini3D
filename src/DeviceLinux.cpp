@@ -2,50 +2,54 @@
 
 #include "Device.h"
 
-#include <thread>
 #include <chrono>
+#include <thread>
 #include <time.h>
 #include <vector>
 
-Device::Device() {
+Device::Device()
+{
 }
 
-void Device::drawPixel(I16 x, I16 y, Color color) {
-	printf("I'm drawing pixel at: %d,%d\n", x, y);
+void Device::drawPixel(I16 x, I16 y, Color color)
+{
+  printf("I'm drawing pixel at: %d,%d\n", x, y);
 }
 
-void Device::drawLine(Vec2 from, Vec2 to, Color color) {
-
+void Device::drawLine(Vec2 from, Vec2 to, Color color)
+{
 }
 
-void Device::setLoopEvent(LoopEvent le) {
-	loopEvent = le;
+void Device::setLoopEvent(LoopEvent le)
+{
+  loopEvent = le;
 }
 
+I8 Device::loop()
+{
+  const I8 FRAME_TIME = 16;
 
-I8 Device::loop() {
-	const I8 FRAME_TIME = 16;
+  clock_t curDT = 0;
+  clock_t mpfDT = FRAME_TIME;
+  while (true) {
+    curDT = clock();
+    F32 FPS = 1000.0f / (int)mpfDT;
+    if (FPS > 60.0f)
+      FPS = 60.0f;
 
-	clock_t curDT = 0;
-	clock_t mpfDT = FRAME_TIME;
-	while (true) {
-		curDT = clock();
-		F32 FPS = 1000.0f / (int)mpfDT;
-		if (FPS > 60.0f) FPS = 60.0f;
+    printf("FPS: %.1f/%.1f\n", FPS, mpfDT / 1000.0);
 
-		printf("FPS: %.1f/%.1f\n", FPS, mpfDT / 1000.0);
+    if (loopEvent != nullptr) {
+      loopEvent();
+    }
 
-		if (loopEvent != nullptr) {
-			loopEvent();
-		}
+    mpfDT = clock() - curDT;
 
-		mpfDT = clock() - curDT;
-
-		if (mpfDT < FRAME_TIME) {
-			this_thread::sleep_for(chrono::milliseconds(FRAME_TIME - mpfDT));
-		}
-	}
-	return 0;
+    if (mpfDT < FRAME_TIME) {
+      this_thread::sleep_for(chrono::milliseconds(FRAME_TIME - mpfDT));
+    }
+  }
+  return 0;
 }
 
 #endif
