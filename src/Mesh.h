@@ -6,17 +6,17 @@
 
 class Renderer;
 class Mesh {
- public:
-  Mesh();
-  ~Mesh();
-  static Mesh *genTriangle();
-  static Mesh *genByFile(const char *fileName);
-  void draw(Renderer *r, Matrix m);
+   public:
+    Mesh();
+    ~Mesh();
+    static Mesh *genTriangle();
+    static Mesh *genByFile(const char *fileName);
+    void draw(Renderer *r, Matrix m);
 
- private:
-  I32 indexArray[256] = {0};
-  Vertex **vertexArray = nullptr;
-  I32 tCount = 0;
+   private:
+    I32 indexArray[256] = {0};
+    Vertex **vertexArray = nullptr;
+    I32 tCount = 0;
 };
 
 #endif
