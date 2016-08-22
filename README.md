@@ -6,7 +6,7 @@
 * `void drawPoint(x, y, color)`
 * `vector(x, y, z, w)`
 * `color(r, g, b)`
-* `matrix(float[4][4])`
+* `matrix(F32[4][4])`
 
 ## Vertex
 * color

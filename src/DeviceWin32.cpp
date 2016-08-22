@@ -174,7 +174,7 @@ namespace DeviceWin32 {
 				if (isQuit) break;
 				if (!PeekMessage(&curMSG, nullptr, 0, 0, PM_REMOVE)){
 					curDT = clock();
-					float FPS = 1000.0f / (I32)mpfDT;
+					F32 FPS = 1000.0f / (I32)mpfDT;
 					if (FPS > 60.0f) FPS = 60.0f;
 
 					printf("FPS: %.1f/%.1f  F:%d\n", FPS, mpfDT / 1000.0, countFrame++);
@@ -232,7 +232,7 @@ void Device::drawPixel(I16 x, I16 y, Color color)
 void Device::drawLine(Vec2 from, Vec2 to, Color color)
 {
 	Vec2 v = to - from;
-	float len = v.length();
+	F32 len = v.length();
 	v.normalized();
 	while (len > 0) {
 		DeviceWin32::g_windowInstance->drawPixel(from.x, from.y, color);

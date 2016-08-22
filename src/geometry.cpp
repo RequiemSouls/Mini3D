@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-const float identity[] = {
+const F32 identity[] = {
 	1.f, 0.f, 0.f, 0.f,
 	0.f, 1.f, 0.f, 0.f,
 	0.f, 0.f, 1.f, 0.f,
@@ -12,4 +12,4 @@ const Vector Vector::ZERO = Vector();
 const Color Color::ZERO = Color();
 
 const Matrix Matrix::ZERO = Matrix();
-const Matrix Matrix::IDENTITY((float*)(identity));
+const Matrix Matrix::IDENTITY((F32*)(identity));

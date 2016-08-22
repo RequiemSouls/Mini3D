@@ -8,11 +8,11 @@
 #include <math.h>
 
 struct Vec2 {
-	float x = 0;
-	float y = 0;
+	F32 x = 0;
+	F32 y = 0;
 
 	Vec2() { }
-	Vec2(float px, float py) : x(px), y(py) { }
+	Vec2(F32 px, F32 py) : x(px), y(py) { }
 
 	Vec2 operator - (const Vec2& other) {
 		return Vec2(x - other.x, y - other.y);
@@ -34,12 +34,12 @@ struct Vec2 {
 		return *this;
 	}
 
-	float length() {
+	F32 length() {
 		return sqrt(x*x + y*y);
 	}
 
 	void normalized() {
-		float len = sqrt(x*x + y*y);
+		F32 len = sqrt(x*x + y*y);
 		x /= len;
 		y /= len;
 	}
@@ -48,10 +48,10 @@ struct Vec2 {
 };
 
 struct Vector {
-    float x = 0.f;
-	float y = 0.f;
-	float z = 0.f;
-	float w = 1.f;
+    F32 x = 0.f;
+	F32 y = 0.f;
+	F32 z = 0.f;
+	F32 w = 1.f;
 
     Vector() {
     }
@@ -61,10 +61,10 @@ struct Vector {
 };
 
 struct Matrix {
-	float m[4][4] = {{0}, {0}, {0}, {0}};
+	F32 m[4][4] = {{0}, {0}, {0}, {0}};
 
 	Matrix() {}
-	Matrix(float* mat) { memcpy(m, mat, 16); }
+	Matrix(F32* mat) { memcpy(m, mat, 16); }
 
 	static const Matrix ZERO;
 	static const Matrix IDENTITY;
