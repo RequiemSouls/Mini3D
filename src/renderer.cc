@@ -8,28 +8,25 @@ namespace mini3d {
 Renderer::Renderer() {
     device_.GetMaxSize(width_, height_);
     meshs_ = (Mesh **)malloc(sizeof(Mesh *) * MAX_MESH_COUNT);
-    render_buffer_ =  (Color **)malloc(sizeof(Color *) * width_);
+    render_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
     for (int i = 0; i < width_; ++i) {
         render_buffer_[i] = (Color *)malloc(sizeof(Color) * height_);
     }
 }
 
 Renderer::~Renderer() {
-    for (int i = 0; i < MAX_MESH_COUNT; ++i)
-    {
+    for (int i = 0; i < MAX_MESH_COUNT; ++i) {
         free(meshs_[i]);
     }
     free(meshs_);
-    for (int i = 0; i < width_; ++i)
-    {
+    for (int i = 0; i < width_; ++i) {
         free(render_buffer_[i]);
     }
-    free(render_buffer_);    
+    free(render_buffer_);
 }
 
 void Renderer::AddMesh(Mesh *mesh) {
-    if (mesh_count_ >= MAX_MESH_COUNT)
-    {
+    if (mesh_count_ >= MAX_MESH_COUNT) {
         assert(0);
     }
     meshs_[mesh_count_] = mesh;
