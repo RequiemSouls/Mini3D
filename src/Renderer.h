@@ -7,7 +7,7 @@
 
 class Mesh;
 class Renderer {
-   public:
+public:
     Renderer(I16 w, I16 h);
     ~Renderer();
     void drawTriangle(Vertex *vt1, Vertex *vt2, Vertex *vt3);
@@ -15,7 +15,7 @@ class Renderer {
     void render();
     void buffer2Screen();
 
-   private:
+private:
     I16 w = 0;
     I16 h = 0;
 
