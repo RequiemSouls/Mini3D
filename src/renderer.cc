@@ -6,22 +6,28 @@
 Renderer::Renderer() {
     device_.GetMaxSize(width_, height_);
     meshs_ = (Mesh **)malloc(sizeof(Mesh *) * MAX_MESH_COUNT);
+    render_buffer_ =  (Color **)malloc(sizeof(Color *) * width_);
+    for (int i = 0; i < width_; ++i) {
+        render_buffer_[i] = (Color *)malloc(sizeof(Color) * height_);
+    }
 }
 
 Renderer::~Renderer() { free(meshs_); }
 
 void Renderer::AddMesh(Mesh *mesh) {
-    if (meshCount_ >= MAX_MESH_COUNT)
+    if (mesh_count_ >= MAX_MESH_COUNT)
     {
         assert(0);
     }
-    meshs_[meshCount_] = mesh;
-    meshCount_++;
+    meshs_[mesh_count_] = mesh;
+    mesh_count_++;
 }
 
 void Renderer::Render() {
-    memset(renderBuffer_, 0, sizeof(renderBuffer_));
-    for (I32 im = 0; im < meshCount_; ++im) {
+    for (int i = 0; i < width_; ++i) {
+        memset(render_buffer_[i], 0, sizeof(Color) * height_);
+    }
+    for (I32 im = 0; im < mesh_count_; ++im) {
         meshs_[im]->Draw(this, camera_);
     }
 }
@@ -32,9 +38,9 @@ void Renderer::DrawTriangle(Vertex *vt1, Vertex *vt2, Vertex *vt3) {
     //        vt1->p.x, vt1->p.y, vt1->p.z,
     //        vt2->p.x, vt2->p.y, vt2->p.z,
     //        vt3->p.x, vt3->p.y, vt3->p.z);
-    renderBuffer_[I16(vt1->p.x * width_)][I16(vt1->p.y * height_)] = vt1->c;
-    renderBuffer_[I16(vt2->p.x * width_)][I16(vt2->p.y * height_)] = vt2->c;
-    renderBuffer_[I16(vt3->p.x)][I16(vt3->p.y)] = vt3->c;
+    render_buffer_[I16(vt1->p.x * width_)][I16(vt1->p.y * height_)] = vt1->c;
+    render_buffer_[I16(vt2->p.x * width_)][I16(vt2->p.y * height_)] = vt2->c;
+    render_buffer_[I16(vt3->p.x)][I16(vt3->p.y)] = vt3->c;
 }
 
-void Renderer::Buffer2Screen() { device_.Buffer2Screen(renderBuffer_); }
+void Renderer::Buffer2Screen() { device_.Buffer2Screen(render_buffer_); }

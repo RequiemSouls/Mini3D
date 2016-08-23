@@ -19,8 +19,8 @@ private:
     I16 height_ = 0;
     Matrix camera_ = Matrix::IDENTITY;
     Mesh **meshs_ = nullptr;
-    I32 meshCount_ = 0;
-    Color renderBuffer_[BUFFER_SIZE][BUFFER_SIZE];  // max screen 2048x2048
+    I32 mesh_count_ = 0;
+    Color **render_buffer_;
     Device &device_ = Device::GetInstance();
 };
 

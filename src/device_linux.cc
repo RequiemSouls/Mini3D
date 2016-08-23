@@ -3,7 +3,6 @@
 #include "device.h"
 
 #include <time.h>
-
 #include <chrono>
 #include <thread>
 #include "assert.h"
@@ -11,7 +10,7 @@
 #define CURSOR_WIDTH 1
 
 #define GET_256_COLOR(r, g, b) \
-    (colorHash_[r] * 36 + colorHash_[g] * 6 + colorHash_[b] + 16)
+    (color_hash_[r] * 36 + color_hash_[g] * 6 + color_hash_[b] + 16)
 
 WINDOW *g_win = nullptr;
 
@@ -83,11 +82,10 @@ I8 Device::Loop() {
 
 void Device::ExitDraw() { endwin(); }
 
-void Device::Buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]) {
+void Device::Buffer2Screen(Color **buffer) {
     wclear(g_win);
     wattron(g_win, COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
-    //wborder(g_win, '|', '|', '-', '-', '-', '-', '-', '-');
-    wborder(g_win, '-', '-', '-', '-', '-', '-', '-', '-');
+    wborder(g_win, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     for (I16 x = 0; x < width_; ++x) {
         for (I16 y = 0; y < height_; ++y) {
             Color &rgb = buffer[x][y];
@@ -110,7 +108,7 @@ void Device::Init256ColorTable() {
     UI8 cs = colorSegment[idx];
     for (I16 px = 0; px < 256;) {
         if (px <= cs)
-            colorHash_[px++] = idx - 1;
+            color_hash_[px++] = idx - 1;
         else
             cs = colorSegment[++idx];
     }
