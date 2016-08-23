@@ -15,20 +15,18 @@ public:
 	static Device &GetInstance();
     Device();
 
-    void SetLoopEvent(LoopEvent &&le);
     I8 Loop();
+    void SetLoopEvent(LoopEvent &&le);
     void Buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]);
     void ExitDraw();
     void GetMaxSize(I16 &w, I16 &h);
-    
-    
+
 private:
     I8 Init();
     void Init256ColorTable();
 
-    LoopEvent loopEvent_;
+    LoopEvent loop_event_;
     UI8 colorHash_[256] = {0};
-    WINDOW *win_ = nullptr;
     I16 width_ = 0;
     I16 height_ = 0;
 };

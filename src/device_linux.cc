@@ -13,6 +13,8 @@
 #define GET_256_COLOR(r, g, b) \
     (colorHash_[r] * 36 + colorHash_[g] * 6 + colorHash_[b] + 16)
 
+WINDOW *g_win = nullptr;
+
 Device &Device::GetInstance() {
     static Device instance;
     return instance;
@@ -36,23 +38,19 @@ I8 Device::Init() {
     for (I32 i = 0; i < COLORS; ++i) {
         init_pair(i, i, i);
     }
-
     I16 offsetX = 4;
     I16 offsetY = 4;    
     height_ = LINES - offsetY * 2;
     width_ = COLS - offsetX * 2;
-    win_ = newwin(height_, width_, offsetX, offsetY);
-    
+    g_win = newwin(height_, width_, offsetX, offsetY);
     height_ -= 2;
     width_ -= 2;
-
     width_ /= CURSOR_WIDTH;
-
     return 0;
 }
 
 void Device::SetLoopEvent(LoopEvent &&le) {
-    loopEvent_ = std::move(le);
+    loop_event_ = std::move(le);
 }
 
 I8 Device::Loop() {
@@ -62,16 +60,15 @@ I8 Device::Loop() {
     clock_t curDT = 0;
     clock_t mpfDT = FRAME_TIME;
 
-    
     while (true) {
         curDT = clock();
         F32 FPS = CLOCKS_PER_SEC / (1.0*mpfDT);
         if (FPS > 60.0f) FPS = 60.0f;
 
-        printf("FPS: %.1f/%.1fms\n", FPS, mpfDT / (1.0*clocks_per_ms));
+        //printf("FPS: %.1f/%.1fms\n", FPS, mpfDT / (1.0*clocks_per_ms));
 
-        if (loopEvent_ != nullptr) {
-            loopEvent_();
+        if (loop_event_ != nullptr) {
+            loop_event_();
         }
 
         mpfDT = clock() - curDT;
@@ -87,18 +84,18 @@ I8 Device::Loop() {
 void Device::ExitDraw() { endwin(); }
 
 void Device::Buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]) {
-    wclear(win_);
-    wattron(win_, COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
-    //wborder(win_, '|', '|', '-', '-', '-', '-', '-', '-');
-    wborder(win_, '-', '-', '-', '-', '-', '-', '-', '-');
+    wclear(g_win);
+    wattron(g_win, COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
+    //wborder(g_win, '|', '|', '-', '-', '-', '-', '-', '-');
+    wborder(g_win, '-', '-', '-', '-', '-', '-', '-', '-');
     for (I16 x = 0; x < width_; ++x) {
         for (I16 y = 0; y < height_; ++y) {
             Color &rgb = buffer[x][y];
-            wattron(win_, COLOR_PAIR(GET_256_COLOR(rgb.r, rgb.g, rgb.b)));
-            mvwprintw(win_, 1 + y, 1 + x * CURSOR_WIDTH, " ");
+            wattron(g_win, COLOR_PAIR(GET_256_COLOR(rgb.r, rgb.g, rgb.b)));
+            mvwprintw(g_win, 1 + y, 1 + x * CURSOR_WIDTH, " ");
         }
     }
-    wrefresh(win_);
+    wrefresh(g_win);
 }
 
 void Device::GetMaxSize(I16 &w, I16 &h) {
