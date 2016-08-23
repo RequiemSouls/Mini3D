@@ -3,6 +3,7 @@
 
 #include "Renderer.h"
 #include "geometry.h"
+#include "Types.h"
 
 class Renderer;
 class Mesh {

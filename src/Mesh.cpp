@@ -1,5 +1,4 @@
 #include "Mesh.h"
-#include "stdlib.h"
 
 Mesh *Mesh::genTriangle() {
     Mesh *mesh = new Mesh();

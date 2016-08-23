@@ -2,7 +2,6 @@
 #define _MINI3D_GEOMETRY_H_
 
 #include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "Types.h"
