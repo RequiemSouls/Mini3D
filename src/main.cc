@@ -5,8 +5,7 @@ int main(int argc, char *args[]) {
     Device &device = Device::GetInstance();
     Renderer *r = new Renderer();
 
-    for (int i = 0; i < 250; ++i)
-    {
+    for (int i = 0; i < 250; ++i) {
         Mesh *mesh = Mesh::GenTriangle();
         r->AddMesh(mesh);
     }
