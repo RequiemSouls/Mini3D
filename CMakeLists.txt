@@ -5,7 +5,7 @@ add_definitions(-std=c++11 -Wall -O2)
 
 include_directories("./src/")
 
-file(GLOB MINI3D_DEPENDS "src/*.cpp")
+file(GLOB MINI3D_DEPENDS "src/*.cc")
 add_executable(mini3d ${MINI3D_DEPENDS})
 
 find_package(Curses REQUIRED)

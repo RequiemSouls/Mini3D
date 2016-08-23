@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Types.h"
+#include "types.h"
 
 struct Vec2 {
     F32 x = 0;
@@ -29,9 +29,9 @@ struct Vec2 {
         return *this;
     }
 
-    F32 length() { return sqrt(x * x + y * y); }
+    F32 Length() { return sqrt(x * x + y * y); }
 
-    void normalized() {
+    void Normalized() {
         F32 len = sqrt(x * x + y * y);
         x /= len;
         y /= len;

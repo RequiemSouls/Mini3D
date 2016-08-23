@@ -1,5 +1,5 @@
-#ifndef _DEVICE_H_
-#define _DEVICE_H_
+#ifndef _MINI3D_DEVICE_H_
+#define _MINI3D_DEVICE_H_
 
 #include <functional>
 
@@ -12,23 +12,19 @@ class Device {
 public:
     typedef std::function<void()> LoopEvent;
 
-	static Device &getInstance();
+	static Device &GetInstance();
     Device();
 
-    void drawPixel(I16 x, I16 y, Color color);
-    void drawLine(Vec2 from, Vec2 to, Color color);
-
-    void setLoopEvent(LoopEvent &&le);
-    I8 loop();
-
-    void buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]);
-    void exitDraw();
-    void getMaxSize(I16 &w, I16 &h);
+    void SetLoopEvent(LoopEvent &&le);
+    I8 Loop();
+    void Buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]);
+    void ExitDraw();
+    void GetMaxSize(I16 &w, I16 &h);
     
     
 private:
-    I8 init();
-    void init256ColorTable();
+    I8 Init();
+    void Init256ColorTable();
 
     LoopEvent loopEvent_;
     UI8 colorHash_[256] = {0};

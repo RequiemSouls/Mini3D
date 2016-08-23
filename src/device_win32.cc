@@ -1,6 +1,6 @@
 #ifdef _WIN32
 
-#include "Device.h"
+#include "device.h"
 
 #include <time.h>
 #include <chrono>
@@ -226,8 +226,8 @@ void Device::drawPixel(I16 x, I16 y, Color color) {
 
 void Device::drawLine(Vec2 from, Vec2 to, Color color) {
     Vec2 v = to - from;
-    F32 len = v.length();
-    v.normalized();
+    F32 len = v.Length();
+    v.Normalized();
     while (len > 0) {
         DeviceWin32::g_windowInstance->drawPixel(from.x, from.y, color);
         from += v;

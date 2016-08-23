@@ -1,6 +1,6 @@
 #ifndef _WIN32
 
-#include "Device.h"
+#include "device.h"
 
 #include <time.h>
 
@@ -13,18 +13,18 @@
 #define GET_256_COLOR(r, g, b) \
     (colorHash_[r] * 36 + colorHash_[g] * 6 + colorHash_[b] + 16)
 
-Device &Device::getInstance() {
+Device &Device::GetInstance() {
     static Device instance;
     return instance;
 }
 
 Device::Device() {
-    I8 succ = init();
+    I8 succ = Init();
     assert(succ == 0);    
-    init256ColorTable();
+    Init256ColorTable();
 }
 
-I8 Device::init() {
+I8 Device::Init() {
     initscr();
     noecho();
     curs_set(FALSE);
@@ -51,9 +51,11 @@ I8 Device::init() {
     return 0;
 }
 
-void Device::setLoopEvent(LoopEvent &&le) { loopEvent_ = std::move(le); }
+void Device::SetLoopEvent(LoopEvent &&le) {
+    loopEvent_ = std::move(le);
+}
 
-I8 Device::loop() {
+I8 Device::Loop() {
     I16 clocks_per_ms = CLOCKS_PER_SEC / 1000.0;
     const I32 FRAME_TIME = 40*clocks_per_ms; //40ms fps=25
 
@@ -82,9 +84,9 @@ I8 Device::loop() {
     return 0;
 }
 
-void Device::exitDraw() { endwin(); }
+void Device::ExitDraw() { endwin(); }
 
-void Device::buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]) {
+void Device::Buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]) {
     wclear(win_);
     wattron(win_, COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
     //wborder(win_, '|', '|', '-', '-', '-', '-', '-', '-');
@@ -99,12 +101,12 @@ void Device::buffer2Screen(Color buffer[BUFFER_SIZE][BUFFER_SIZE]) {
     wrefresh(win_);
 }
 
-void Device::getMaxSize(I16 &w, I16 &h) {
+void Device::GetMaxSize(I16 &w, I16 &h) {
     w = width_;
     h = height_;
 }
 
-void Device::init256ColorTable() {
+void Device::Init256ColorTable() {
     UI8 colorSegment[] = {0x00, 0x02f, 0x73, 0x9b, 0xc3, 0xeb, 0xff};
 
     UI8 idx = 1;
