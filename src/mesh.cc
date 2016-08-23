@@ -1,5 +1,7 @@
 #include "mesh.h"
 
+namespace mini3d {
+
 Mesh *Mesh::GenTriangle() {
     Mesh *mesh = new Mesh();
     for (I16 i = 0; i < 3; i++) {
@@ -46,3 +48,5 @@ void Mesh::Draw(Renderer *r, Matrix m) {
         r->DrawTriangle(vt1, vt2, vt3);
     }
 }
+
+}  // namespace mini3d

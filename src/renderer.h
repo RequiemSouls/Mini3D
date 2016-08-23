@@ -4,6 +4,8 @@
 #include "mesh.h"
 #include "device.h"
 
+namespace mini3d {
+
 class Mesh;
 class Renderer {
 public:
@@ -23,5 +25,7 @@ private:
     Color **render_buffer_;
     Device &device_ = Device::GetInstance();
 };
+
+}  // namespace mini3d
 
 #endif

@@ -1,12 +1,13 @@
 #include "renderer.h"
 
-int main(int argc, char *args[]) {
+int main(int /*argc*/, char ** /*args*/) {
     srand(time(0));
-    Device &device = Device::GetInstance();
-    Renderer *r = new Renderer();
+
+    mini3d::Device &device = mini3d::Device::GetInstance();
+    mini3d::Renderer *r = new mini3d::Renderer();
 
     for (int i = 0; i < 250; ++i) {
-        Mesh *mesh = Mesh::GenTriangle();
+        mini3d::Mesh *mesh = mini3d::Mesh::GenTriangle();
         r->AddMesh(mesh);
     }
     device.SetLoopEvent([&]() {
@@ -15,7 +16,7 @@ int main(int argc, char *args[]) {
         r->Buffer2Screen();
     });
 
-    I32 ret = device.Loop();
-    Device::GetInstance().ExitDraw();
+    mini3d::I32 ret = device.Loop();
+    mini3d::Device::GetInstance().ExitDraw();
     return ret;
 }

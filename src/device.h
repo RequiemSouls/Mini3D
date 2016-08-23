@@ -6,6 +6,8 @@
 #include "geometry.h"
 #include "ncurses.h"
 
+namespace mini3d {
+
 class Device {
 public:
     typedef std::function<void()> LoopEvent;
@@ -28,5 +30,7 @@ private:
     I16 width_ = 0;
     I16 height_ = 0;
 };
+
+}  // namespace mini3d
 
 #endif

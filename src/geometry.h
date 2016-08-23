@@ -6,6 +6,8 @@
 #include <string.h>
 #include "types.h"
 
+namespace mini3d {
+
 struct Vec2 {
     F32 x = 0;
     F32 y = 0;
@@ -80,4 +82,6 @@ struct Vertex {
     Vector p;
     Color c;
 };
+
+}  // namespace mini3d
 #endif
