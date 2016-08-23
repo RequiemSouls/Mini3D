@@ -5,6 +5,8 @@
 #include "geometry.h"
 #include "types.h"
 
+namespace mini3d {
+
 class Renderer;
 class Mesh {
 public:
@@ -19,5 +21,7 @@ private:
     Vertex **vertex_array_ = nullptr;
     I32 count_ = 0;
 };
+
+}  // namespace mini3d
 
 #endif

@@ -12,6 +12,8 @@
 #define GET_256_COLOR(r, g, b) \
     (color_hash_[r] * 36 + color_hash_[g] * 6 + color_hash_[b] + 16)
 
+namespace mini3d {
+
 WINDOW *g_win = nullptr;
 
 Device &Device::GetInstance() {
@@ -113,5 +115,7 @@ void Device::Init256ColorTable() {
             cs = colorSegment[++idx];
     }
 }
+
+}  // namespace mini3d
 
 #endif

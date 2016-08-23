@@ -10,6 +10,7 @@
 #include <Windows.h>
 #include <WindowsX.h>
 
+namespace mini3d {
 namespace DeviceWin32 {
 
 struct Windows *g_windowInstance = nullptr;
@@ -244,5 +245,7 @@ I8 Device::loop() {
     I8 ret = DeviceWin32::g_windowInstance->loop();
     return ret;
 }
+
+}  // namespace mini3d
 
 #endif

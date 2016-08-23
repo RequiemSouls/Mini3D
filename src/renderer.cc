@@ -3,6 +3,8 @@
 
 #define MAX_MESH_COUNT 256
 
+namespace mini3d {
+
 Renderer::Renderer() {
     device_.GetMaxSize(width_, height_);
     meshs_ = (Mesh **)malloc(sizeof(Mesh *) * MAX_MESH_COUNT);
@@ -55,3 +57,5 @@ void Renderer::DrawTriangle(Vertex *vt1, Vertex *vt2, Vertex *vt3) {
 }
 
 void Renderer::Buffer2Screen() { device_.Buffer2Screen(render_buffer_); }
+
+}  // namespace mini3d
