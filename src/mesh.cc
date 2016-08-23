@@ -30,9 +30,9 @@ Mesh::Mesh() {
 
 Mesh::~Mesh() {
     for (I32 i = 0; i < count_; ++i) {
-        delete vertex_array_[index_array_[i * 3]];
-        delete vertex_array_[index_array_[i * 3 + 1]];
-        delete vertex_array_[index_array_[i * 3 + 2]];
+        free(vertex_array_[index_array_[i * 3]]);
+        free(vertex_array_[index_array_[i * 3 + 1]]);
+        free(vertex_array_[index_array_[i * 3 + 2]]);
     }
     free(vertex_array_);
 }

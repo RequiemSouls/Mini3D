@@ -12,7 +12,18 @@ Renderer::Renderer() {
     }
 }
 
-Renderer::~Renderer() { free(meshs_); }
+Renderer::~Renderer() {
+    for (int i = 0; i < MAX_MESH_COUNT; ++i)
+    {
+        free(meshs_[i]);
+    }
+    free(meshs_);
+    for (int i = 0; i < width_; ++i)
+    {
+        free(render_buffer_[i]);
+    }
+    free(render_buffer_);    
+}
 
 void Renderer::AddMesh(Mesh *mesh) {
     if (mesh_count_ >= MAX_MESH_COUNT)
