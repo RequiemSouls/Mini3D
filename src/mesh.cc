@@ -16,7 +16,6 @@ Mesh *Mesh::GenTriangle() {
         mesh->vertex_array_[i] = vt;
     }
     mesh->count_ = 1;
-
     return mesh;
 }
 
@@ -32,9 +31,9 @@ Mesh::Mesh() {
 
 Mesh::~Mesh() {
     for (I32 i = 0; i < count_; ++i) {
-        free(vertex_array_[index_array_[i * 3]]);
-        free(vertex_array_[index_array_[i * 3 + 1]]);
-        free(vertex_array_[index_array_[i * 3 + 2]]);
+        delete vertex_array_[index_array_[i * 3]];
+        delete vertex_array_[index_array_[i * 3 + 1]];
+        delete vertex_array_[index_array_[i * 3 + 2]];
     }
     free(vertex_array_);
 }

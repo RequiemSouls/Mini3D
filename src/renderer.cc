@@ -16,7 +16,7 @@ Renderer::Renderer() {
 
 Renderer::~Renderer() {
     for (int i = 0; i < MAX_MESH_COUNT; ++i) {
-        free(meshs_[i]);
+        delete meshs_[i];
     }
     free(meshs_);
     for (int i = 0; i < width_; ++i) {
@@ -34,8 +34,9 @@ void Renderer::AddMesh(Mesh *mesh) {
 }
 
 void Renderer::Render() {
+    static I32 sizePerBuffer = sizeof(Color) * height_;
     for (int i = 0; i < width_; ++i) {
-        memset(render_buffer_[i], 0, sizeof(Color) * height_);
+        memset(render_buffer_[i], 0, sizePerBuffer);
     }
     for (I32 im = 0; im < mesh_count_; ++im) {
         meshs_[im]->Draw(this, camera_);
