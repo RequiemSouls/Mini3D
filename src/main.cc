@@ -10,8 +10,7 @@ int main(int /*argc*/, char ** /*args*/) {
         mini3d::Mesh *mesh = mini3d::Mesh::GenTriangle();
         r->AddMesh(mesh);
     }
-    device.SetLoopEvent([&]() {
-        // render
+    device.SetLoopEvent([&r]() {
         r->Render();
         r->Buffer2Screen();
     });

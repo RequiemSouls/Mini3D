@@ -39,14 +39,6 @@ void Renderer::Render() {
     static I32 sizePerBuffer = sizeof(Color) * height_;
     for (int i = 0; i < width_; ++i) {
         memset(render_buffer_[i], 0, sizePerBuffer);
-        for (int j = 0; j < height_; ++j)
-        {
-            if ((render_buffer_[i][j].r != 0) || (render_buffer_[i][j].g != 0) || (render_buffer_[i][j].b != 0))
-            {
-                assert(0);
-            } 
-        }
-
     }
     for (I32 im = 0; im < mesh_count_; ++im) {
         meshs_[im]->Draw(this, camera_);

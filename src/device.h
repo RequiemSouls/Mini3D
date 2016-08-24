@@ -22,18 +22,23 @@ public:
     void ExitDraw();
     void GetMaxSize(I16 &w, I16 &h);
     void set_mesh_count(I32 count) {mesh_count_ = count; }
-
+    void set_log(I8 *log) { strcpy(log_, log); }
+    void set_log(I32 num);
+    
 private:
     I8 Init();
     void Init256ColorTable();
 
-    LoopEvent loop_event_;
+    LoopEvent loop_event_ = nullptr;
     UI8 color_hash_[256] = {0};
     I16 width_ = 0;
     I16 height_ = 0;
-    I16 bottom_offset_ = 1;
     I32 mesh_count_ = 0;
-    Color **screen_buffer_;
+    F32 fps_ = 0.0;
+    F32 render_time_ = 0.0;
+    I32 frame_count_ = 0;
+    I8 log_[128] = {0};
+    Color **screen_buffer_ = nullptr;
 };
 
 }  // namespace mini3d

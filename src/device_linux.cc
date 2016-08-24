@@ -3,11 +3,15 @@
 #include "device.h"
 
 #include <time.h>
+#include <assert.h>
+
 #include <chrono>
 #include <thread>
-#include "assert.h"
 
-#define CURSOR_WIDTH 1
+#define CURSOR_WIDTH 2
+#define CURSOR_STRING "  "
+#define BOTTOM_OFFSET 1
+#define FRAME_TIME 16
 
 #define GET_256_COLOR(r, g, b) \
     (color_hash_[r] * 36 + color_hash_[g] * 6 + color_hash_[b] + 16)
@@ -44,7 +48,7 @@ I8 Device::Init() {
     for (I32 i = 0; i < COLORS; ++i) {
         init_pair(i, i, i);
     }   
-    height_ = LINES - bottom_offset_;
+    height_ = LINES - BOTTOM_OFFSET;
     width_ = COLS;
     width_ /= CURSOR_WIDTH;
 
@@ -62,26 +66,26 @@ void Device::SetLoopEvent(LoopEvent &&le) {
 
 I8 Device::Loop() {
     I16 clocks_per_ms = CLOCKS_PER_SEC / 1000.0;
-    const I32 FRAME_TIME = 16*clocks_per_ms; //16ms fps=60
+    const I32 frameTime = FRAME_TIME * clocks_per_ms;
 
     clock_t curDT = 0;
-    clock_t mpfDT = FRAME_TIME;
+    clock_t mpfDT = frameTime;
 
     while (true) {
+        frame_count_++;
         curDT = clock();
-        F32 FPS = CLOCKS_PER_SEC / (1.0*mpfDT);
-        if (FPS > 60.0f) FPS = 60.0f;        
-        attroff(COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
-        mvprintw(height_, 0, "MESH COUNT: %d FPS: %.1f/%.1fms\n", mesh_count_, FPS, mpfDT / (1.0*clocks_per_ms));
+        fps_ = CLOCKS_PER_SEC / (1.0*mpfDT);
+        if (fps_ > 60.0f) fps_ = 60.0f;
+        render_time_ = mpfDT / (1.0*clocks_per_ms);
         
         if (loop_event_ != nullptr) {
             loop_event_();
         }
         mpfDT = clock() - curDT;
 
-        if (mpfDT < FRAME_TIME) {
+        if (mpfDT < frameTime) {
             std::this_thread::sleep_for(
-                std::chrono::milliseconds((FRAME_TIME - mpfDT)/clocks_per_ms));
+                std::chrono::milliseconds((frameTime - mpfDT)/clocks_per_ms));
         }
     }
     return 0;
@@ -96,10 +100,13 @@ void Device::Buffer2Screen(Color **buffer) {
             if (screen_buffer_[x][y] != rgb) {
                 screen_buffer_[x][y] = rgb;
                 attron(COLOR_PAIR(GET_256_COLOR(rgb.r, rgb.g, rgb.b)));
-                mvprintw(y, x * CURSOR_WIDTH, " ");                
+                mvprintw(y, x * CURSOR_WIDTH, CURSOR_STRING);                
             }
         }
     }
+    attroff(COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
+    mvprintw(height_, 0, "Mesh Count: %d FPS: %.1f/%.1fms Frame Count:%d %s\n", mesh_count_, fps_,
+        render_time_, frame_count_, log_);
     refresh();
 }
 
@@ -119,6 +126,13 @@ void Device::Init256ColorTable() {
         else
             cs = colorSegment[++idx];
     }
+}
+
+void Device::set_log(I32 num) {
+    char str[16];
+
+    sprintf(str, "%d" , num);
+    set_log(str);
 }
 
 }  // namespace mini3d
