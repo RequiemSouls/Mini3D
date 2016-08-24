@@ -1,5 +1,7 @@
 #include "mesh.h"
 
+#include <stdlib.h>
+
 namespace mini3d {
 
 Mesh *Mesh::GenTriangle() {

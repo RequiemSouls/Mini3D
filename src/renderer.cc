@@ -1,5 +1,6 @@
 #include "renderer.h"
-#include "assert.h"
+
+#include <assert.h>
 
 #define MAX_MESH_COUNT 256
 

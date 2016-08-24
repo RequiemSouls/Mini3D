@@ -1,9 +1,8 @@
 #ifndef MINI3D_MESH_H_
 #define MINI3D_MESH_H_
 
-#include "renderer.h"
 #include "geometry.h"
-#include "types.h"
+#include "renderer.h"
 
 namespace mini3d {
 

@@ -4,6 +4,7 @@
 
 #include <time.h>
 #include <assert.h>
+#include <ncurses.h>
 
 #include <chrono>
 #include <thread>
@@ -25,7 +26,7 @@ Device &Device::GetInstance() {
 
 Device::Device() {
     I8 succ = Init();
-    assert(succ == 0);    
+    assert(succ == 0);
     Init256ColorTable();
 }
 
@@ -124,7 +125,7 @@ void Device::Init256ColorTable() {
 }
 
 void Device::set_log(I32 num) {
-    char str[16];
+    char str[16] = {0};
 
     sprintf(str, "%d" , num);
     set_log(str);

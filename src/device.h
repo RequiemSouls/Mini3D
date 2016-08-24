@@ -4,7 +4,6 @@
 #include <functional>
 
 #include "geometry.h"
-#include "ncurses.h"
 
 namespace mini3d {
 

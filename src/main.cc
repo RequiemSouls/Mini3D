@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+#include <stdlib.h>
+
 int main(int /*argc*/, char ** /*args*/) {
     srand(time(0));
 
