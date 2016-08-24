@@ -1,5 +1,5 @@
-#ifndef _MINI3D_GEOMETRY_H_
-#define _MINI3D_GEOMETRY_H_
+#ifndef MINI3D_GEOMETRY_H_
+#define MINI3D_GEOMETRY_H_
 
 #include <math.h>
 #include <stdlib.h>
@@ -92,4 +92,5 @@ struct Vertex {
 };
 
 }  // namespace mini3d
-#endif
+
+#endif  // MINI3D_GEOMETRY_H_

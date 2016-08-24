@@ -1,5 +1,5 @@
-#ifndef _MINI3D_DEVICE_H_
-#define _MINI3D_DEVICE_H_
+#ifndef MINI3D_DEVICE_H_
+#define MINI3D_DEVICE_H_
 
 #include <functional>
 
@@ -12,7 +12,7 @@ class Device {
 public:
     typedef std::function<void()> LoopEvent;
 
-	static Device &GetInstance();
+    static Device &GetInstance();
     Device();
     ~Device();
     
@@ -20,9 +20,9 @@ public:
     void SetLoopEvent(LoopEvent &&le);
     void Buffer2Screen(Color **buffer);
     void ExitDraw();
-    void GetMaxSize(I16 &w, I16 &h);
-    void set_mesh_count(I32 count) {mesh_count_ = count; }
-    void set_log(I8 *log) { strcpy(log_, log); }
+    void GetMaxSize(I16 *w, I16 *h) { *w = width_; *h = height_; }
+    void set_mesh_count(I32 count) { mesh_count_ = count; }
+    void set_log(I8 *log) { strncpy(log_, log, sizeof(log_)); }
     void set_log(I32 num);
     
 private:
@@ -43,4 +43,4 @@ private:
 
 }  // namespace mini3d
 
-#endif
+#endif  // MINI3D_DEVICE_H_

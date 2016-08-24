@@ -1,5 +1,5 @@
-#ifndef _MINI3D_TYPES_H_
-#define _MINI3D_TYPES_H_
+#ifndef MINI3D_TYPES_H_
+#define MINI3D_TYPES_H_
 
 namespace mini3d {
 
@@ -18,4 +18,4 @@ typedef double F64;
 
 }  // namespace mini3d
 
-#endif
+#endif  // MINI3D_TYPES_H_

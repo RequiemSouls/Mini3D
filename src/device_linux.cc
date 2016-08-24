@@ -105,14 +105,9 @@ void Device::Buffer2Screen(Color **buffer) {
         }
     }
     attroff(COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
-    mvprintw(height_, 0, "Mesh Count: %d FPS: %.1f/%.1fms Frame Count:%d %s\n", mesh_count_, fps_,
-        render_time_, frame_count_, log_);
+    mvprintw(height_, 0, "Mesh Count: %d FPS: %.1f/%.1fms Frame Count: %d %s\n",
+     mesh_count_, fps_, render_time_, frame_count_, log_);
     refresh();
-}
-
-void Device::GetMaxSize(I16 &w, I16 &h) {
-    w = width_;
-    h = height_;
 }
 
 void Device::Init256ColorTable() {

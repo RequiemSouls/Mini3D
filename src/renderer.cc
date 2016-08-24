@@ -6,7 +6,7 @@
 namespace mini3d {
 
 Renderer::Renderer() {
-    device_.GetMaxSize(width_, height_);
+    device_.GetMaxSize(&width_, &height_);
     meshs_ = (Mesh **)malloc(sizeof(Mesh *) * MAX_MESH_COUNT);
     render_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
     for (int i = 0; i < width_; ++i) {

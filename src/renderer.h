@@ -1,5 +1,5 @@
-#ifndef _MINI3D_RENDERER_H_
-#define _MINI3D_RENDERER_H_
+#ifndef MINI3D_RENDERER_H_
+#define MINI3D_RENDERER_H_
 
 #include "mesh.h"
 #include "device.h"
@@ -28,4 +28,4 @@ private:
 
 }  // namespace mini3d
 
-#endif
+#endif  // MINI3D_RENDERER_H_

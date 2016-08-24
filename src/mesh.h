@@ -1,5 +1,5 @@
-#ifndef _MINI3D_MESH_H_
-#define _MINI3D_MESH_H_
+#ifndef MINI3D_MESH_H_
+#define MINI3D_MESH_H_
 
 #include "renderer.h"
 #include "geometry.h"
@@ -24,4 +24,4 @@ private:
 
 }  // namespace mini3d
 
-#endif
+#endif  // MINI3D_MESH_H_
