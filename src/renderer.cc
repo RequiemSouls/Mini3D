@@ -32,6 +32,7 @@ void Renderer::AddMesh(Mesh *mesh) {
     }
     meshs_[mesh_count_] = mesh;
     mesh_count_++;
+    device_.set_mesh_count(mesh_count_);
 }
 
 void Renderer::Render() {

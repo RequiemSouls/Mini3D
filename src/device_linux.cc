@@ -44,7 +44,7 @@ I8 Device::Init() {
     for (I32 i = 0; i < COLORS; ++i) {
         init_pair(i, i, i);
     }   
-    height_ = LINES;
+    height_ = LINES - bottom_offset_;
     width_ = COLS;
     width_ /= CURSOR_WIDTH;
 
@@ -70,13 +70,13 @@ I8 Device::Loop() {
     while (true) {
         curDT = clock();
         F32 FPS = CLOCKS_PER_SEC / (1.0*mpfDT);
-        if (FPS > 60.0f) FPS = 60.0f;
-        //printf("FPS: %.1f/%.1fms\n", FPS, mpfDT / (1.0*clocks_per_ms));
-
+        if (FPS > 60.0f) FPS = 60.0f;        
+        attroff(COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
+        mvprintw(height_, 0, "MESH COUNT: %d FPS: %.1f/%.1fms\n", mesh_count_, FPS, mpfDT / (1.0*clocks_per_ms));
+        
         if (loop_event_ != nullptr) {
             loop_event_();
         }
-
         mpfDT = clock() - curDT;
 
         if (mpfDT < FRAME_TIME) {
