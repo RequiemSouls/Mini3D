@@ -14,7 +14,8 @@ public:
 
 	static Device &GetInstance();
     Device();
-
+    ~Device();
+    
     I8 Loop();
     void SetLoopEvent(LoopEvent &&le);
     void Buffer2Screen(Color **buffer);
@@ -29,6 +30,7 @@ private:
     UI8 color_hash_[256] = {0};
     I16 width_ = 0;
     I16 height_ = 0;
+    Color **screen_buffer_;
 };
 
 }  // namespace mini3d

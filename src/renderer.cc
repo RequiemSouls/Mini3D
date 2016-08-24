@@ -10,8 +10,9 @@ Renderer::Renderer() {
     meshs_ = (Mesh **)malloc(sizeof(Mesh *) * MAX_MESH_COUNT);
     render_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
     for (int i = 0; i < width_; ++i) {
-        render_buffer_[i] = (Color *)malloc(sizeof(Color) * height_);
+        render_buffer_[i] = (Color *)calloc(height_, sizeof(Color));
     }
+    Buffer2Screen();
 }
 
 Renderer::~Renderer() {
@@ -37,6 +38,14 @@ void Renderer::Render() {
     static I32 sizePerBuffer = sizeof(Color) * height_;
     for (int i = 0; i < width_; ++i) {
         memset(render_buffer_[i], 0, sizePerBuffer);
+        for (int j = 0; j < height_; ++j)
+        {
+            if ((render_buffer_[i][j].r != 0) || (render_buffer_[i][j].g != 0) || (render_buffer_[i][j].b != 0))
+            {
+                assert(0);
+            } 
+        }
+
     }
     for (I32 im = 0; im < mesh_count_; ++im) {
         meshs_[im]->Draw(this, camera_);
@@ -44,11 +53,6 @@ void Renderer::Render() {
 }
 
 void Renderer::DrawTriangle(Vertex *vt1, Vertex *vt2, Vertex *vt3) {
-    // draw to buff
-    // printf("{{%f,%f,%f}{%f,%f,%f}{%f,%f,%f}}\n",
-    //        vt1->p.x, vt1->p.y, vt1->p.z,
-    //        vt2->p.x, vt2->p.y, vt2->p.z,
-    //        vt3->p.x, vt3->p.y, vt3->p.z);
     render_buffer_[I16(vt1->p.x * width_)][I16(vt1->p.y * height_)] = vt1->c;
     render_buffer_[I16(vt2->p.x * width_)][I16(vt2->p.y * height_)] = vt2->c;
     render_buffer_[I16(vt3->p.x)][I16(vt3->p.y)] = vt3->c;

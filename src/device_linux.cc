@@ -14,8 +14,6 @@
 
 namespace mini3d {
 
-WINDOW *g_win = nullptr;
-
 Device &Device::GetInstance() {
     static Device instance;
     return instance;
@@ -25,6 +23,13 @@ Device::Device() {
     I8 succ = Init();
     assert(succ == 0);    
     Init256ColorTable();
+}
+
+Device::~Device() {
+    for (int i = 0; i < width_; ++i) {
+        free(screen_buffer_[i]);
+    }
+    free(screen_buffer_);
 }
 
 I8 Device::Init() {
@@ -38,15 +43,16 @@ I8 Device::Init() {
     start_color(); /* Start color */
     for (I32 i = 0; i < COLORS; ++i) {
         init_pair(i, i, i);
-    }
-    I16 offsetX = 4;
-    I16 offsetY = 4;    
-    height_ = LINES - offsetY * 2;
-    width_ = COLS - offsetX * 2;
-    g_win = newwin(height_, width_, offsetX, offsetY);
-    height_ -= 2;
-    width_ -= 2;
+    }   
+    height_ = LINES;
+    width_ = COLS;
     width_ /= CURSOR_WIDTH;
+
+    screen_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
+    for (int i = 0; i < width_; ++i) {
+        screen_buffer_[i] = (Color *)malloc(height_ * sizeof(Color));
+        memset(screen_buffer_[i], 0xff, height_ * sizeof(Color));
+    }
     return 0;
 }
 
@@ -56,7 +62,7 @@ void Device::SetLoopEvent(LoopEvent &&le) {
 
 I8 Device::Loop() {
     I16 clocks_per_ms = CLOCKS_PER_SEC / 1000.0;
-    const I32 FRAME_TIME = 40*clocks_per_ms; //40ms fps=25
+    const I32 FRAME_TIME = 16*clocks_per_ms; //16ms fps=60
 
     clock_t curDT = 0;
     clock_t mpfDT = FRAME_TIME;
@@ -65,7 +71,6 @@ I8 Device::Loop() {
         curDT = clock();
         F32 FPS = CLOCKS_PER_SEC / (1.0*mpfDT);
         if (FPS > 60.0f) FPS = 60.0f;
-
         //printf("FPS: %.1f/%.1fms\n", FPS, mpfDT / (1.0*clocks_per_ms));
 
         if (loop_event_ != nullptr) {
@@ -85,17 +90,17 @@ I8 Device::Loop() {
 void Device::ExitDraw() { endwin(); }
 
 void Device::Buffer2Screen(Color **buffer) {
-    wclear(g_win);
-    wattron(g_win, COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
-    wborder(g_win, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     for (I16 x = 0; x < width_; ++x) {
         for (I16 y = 0; y < height_; ++y) {
             Color &rgb = buffer[x][y];
-            wattron(g_win, COLOR_PAIR(GET_256_COLOR(rgb.r, rgb.g, rgb.b)));
-            mvwprintw(g_win, 1 + y, 1 + x * CURSOR_WIDTH, " ");
+            if (screen_buffer_[x][y] != rgb) {
+                screen_buffer_[x][y] = rgb;
+                attron(COLOR_PAIR(GET_256_COLOR(rgb.r, rgb.g, rgb.b)));
+                mvprintw(y, x * CURSOR_WIDTH, " ");                
+            }
         }
     }
-    wrefresh(g_win);
+    refresh();
 }
 
 void Device::GetMaxSize(I16 &w, I16 &h) {

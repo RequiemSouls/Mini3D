@@ -7,12 +7,6 @@ Mesh *Mesh::GenTriangle() {
     for (I16 i = 0; i < 3; i++) {
         mesh->index_array_[i] = i;
         Vertex *vt = new Vertex();
-        vt->p.x = rand() * 1.0 / RAND_MAX;
-        vt->p.y = rand() * 1.0 / RAND_MAX;
-        vt->p.z = rand() * 1.0 / RAND_MAX;
-        vt->c.r = rand() * 255.0 / RAND_MAX;
-        vt->c.g = rand() * 255.0 / RAND_MAX;
-        vt->c.b = rand() * 255.0 / RAND_MAX;
         mesh->vertex_array_[i] = vt;
     }
     mesh->count_ = 1;
@@ -39,6 +33,16 @@ Mesh::~Mesh() {
 }
 
 void Mesh::Draw(Renderer *r, Matrix m) {
+    for (I32 i = 0; i < 3; ++i)
+    {
+        Vertex *vt = vertex_array_[i];
+        vt->p.x = rand() * 1.0 / RAND_MAX;
+        vt->p.y = rand() * 1.0 / RAND_MAX;
+        vt->p.z = rand() * 1.0 / RAND_MAX;
+        vt->c.r = rand() * 255.0 / RAND_MAX;
+        vt->c.g = rand() * 255.0 / RAND_MAX;
+        vt->c.b = rand() * 255.0 / RAND_MAX;        
+    }
     for (I32 i = 0; i < count_; ++i) {
         // multiply Matrix
         Vertex *vt1 = vertex_array_[index_array_[i * 3]];      // * m

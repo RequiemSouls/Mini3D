@@ -75,6 +75,14 @@ struct Color {
         b = cb;
     }
 
+    bool operator==(const Color &other) const {
+        return (r == other.r) && (g == other.g) && (b == other.b);
+    }
+
+    bool operator!=(const Color &other) const {
+        return (r != other.r) || (g != other.g) || (b != other.b);
+    }
+
     static const Color ZERO;
 };
 
