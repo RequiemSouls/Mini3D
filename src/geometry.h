@@ -11,12 +11,12 @@ struct Vec2 {
     F32 x = 0;
     F32 y = 0;
 
-    Vec2() {}
+    Vec2() = default;
     Vec2(F32 px, F32 py) : x(px), y(py) {}
 
-    Vec2 operator-(const Vec2 &other) { return Vec2(x - other.x, y - other.y); }
+    Vec2 operator-(const Vec2 &other) const { return Vec2(x - other.x, y - other.y); }
 
-    Vec2 operator+(const Vec2 &other) { return Vec2(x + other.x, y + other.y); }
+    Vec2 operator+(const Vec2 &other) const { return Vec2(x + other.x, y + other.y); }
 
     Vec2 &operator+=(const Vec2 &other) {
         x += other.x;
@@ -30,7 +30,7 @@ struct Vec2 {
         return *this;
     }
 
-    F32 Length() { return sqrt(x * x + y * y); }
+    F32 Length() const { return sqrt(x * x + y * y); }
 
     void Normalized() {
         F32 len = sqrt(x * x + y * y);
@@ -47,7 +47,7 @@ struct Vector {
     F32 z = 0.f;
     F32 w = 1.f;
 
-    Vector() {}
+    Vector() = default;
     Vector(F32 vx, F32 vy, F32 vz, F32 vw) {
         x = vx;
         y = vy;
@@ -74,9 +74,9 @@ struct Vector {
 struct Matrix {
     F32 m[4][4] = {{0}, {0}, {0}, {0}};
 
-    Matrix() {}
-    Matrix(F32 *mat) { memcpy(m, mat, sizeof(m)); }
-    Matrix operator*(const Matrix &m1) {
+    Matrix() = default;
+    explicit Matrix(const F32 *mat) { memcpy(m, mat, sizeof(m)); }
+    Matrix operator*(const Matrix &m1) const {
         Matrix r;
         for (I32 i = 0; i < 4; i++) {
             for (I32 j = 0; j < 4; j++) {
@@ -85,7 +85,7 @@ struct Matrix {
         }
         return r;
     }
-    void Transfer(Vector &offset);
+    void Transfer(const Vector &offset);
 
     static const Matrix ZERO;
     static const Matrix IDENTITY;
@@ -96,7 +96,7 @@ struct Color {
     UI8 g = 0;
     UI8 b = 0;
 
-    Color() {}
+    Color() = default;
     Color(UI8 cr, UI8 cg, UI8 cb) {
         r = cr;
         g = cg;

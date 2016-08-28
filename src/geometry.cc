@@ -13,7 +13,7 @@ const Color Color::WHITE = Color(255, 255, 255);
 const Matrix Matrix::ZERO = Matrix();
 const Matrix Matrix::IDENTITY((F32 *)(identity));
 
-void Matrix::Transfer(Vector &offset) {
+void Matrix::Transfer(const Vector &offset) {
     m[0][3] = offset.x;
     m[1][3] = offset.y;
     m[2][3] = offset.z;
