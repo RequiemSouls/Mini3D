@@ -3,3 +3,5 @@
 *.swp
 build/
 Makefile
+proj.win32
+bin
