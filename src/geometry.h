@@ -14,9 +14,13 @@ struct Vec2 {
     Vec2() = default;
     Vec2(F32 px, F32 py) : x(px), y(py) {}
 
-    Vec2 operator-(const Vec2 &other) const { return Vec2(x - other.x, y - other.y); }
+    Vec2 operator-(const Vec2 &other) const {
+        return Vec2(x - other.x, y - other.y);
+    }
 
-    Vec2 operator+(const Vec2 &other) const { return Vec2(x + other.x, y + other.y); }
+    Vec2 operator+(const Vec2 &other) const {
+        return Vec2(x + other.x, y + other.y);
+    }
 
     Vec2 &operator+=(const Vec2 &other) {
         x += other.x;
@@ -80,7 +84,8 @@ struct Matrix {
         Matrix r;
         for (I32 i = 0; i < 4; i++) {
             for (I32 j = 0; j < 4; j++) {
-                r.m[i][j] = m[i][0] * m1.m[0][j] + m[i][1] * m1.m[1][j] + m[i][2] * m1.m[2][j] + m[i][3] * m1.m[3][j];
+                r.m[i][j] = m[i][0] * m1.m[0][j] + m[i][1] * m1.m[1][j] +
+                            m[i][2] * m1.m[2][j] + m[i][3] * m1.m[3][j];
             }
         }
         return r;
