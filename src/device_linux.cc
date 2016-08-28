@@ -48,7 +48,7 @@ I8 Device::Init() {
     start_color(); /* Start color */
     for (I32 i = 0; i < COLORS; ++i) {
         init_pair(i, i, i);
-    }   
+    }
     height_ = LINES - BOTTOM_OFFSET;
     width_ = COLS;
     width_ /= CURSOR_WIDTH;
@@ -78,7 +78,7 @@ I8 Device::Loop() {
         fps_ = CLOCKS_PER_SEC / (1.0*mpfDT);
         if (fps_ > 60.0f) fps_ = 60.0f;
         render_time_ = mpfDT / (1.0*clocks_per_ms);
-        
+
         if (loop_event_ != nullptr) {
             loop_event_();
         }
@@ -95,19 +95,23 @@ I8 Device::Loop() {
 void Device::ExitDraw() { endwin(); }
 
 void Device::Buffer2Screen(Color **buffer) {
+    int count = 0;
     for (I16 x = 0; x < width_; ++x) {
         for (I16 y = 0; y < height_; ++y) {
             Color &rgb = buffer[x][y];
+            if (rgb.r != 0) {
+                count++;
+            }
             if (screen_buffer_[x][y] != rgb) {
                 screen_buffer_[x][y] = rgb;
                 attron(COLOR_PAIR(GET_256_COLOR(rgb.r, rgb.g, rgb.b)));
-                mvprintw(y, x * CURSOR_WIDTH, CURSOR_STRING);                
+                mvprintw(y, x * CURSOR_WIDTH, CURSOR_STRING);
             }
         }
     }
     attroff(COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
-    mvprintw(height_, 0, "Mesh Count: %d FPS: %.1f/%.1fms Frame Count: %d %s\n",
-     mesh_count_, fps_, render_time_, frame_count_, log_);
+    mvprintw(height_, 0, "Mesh Count: %d FPS: %.1f/%.1fms Frame Count: %d point : %d %s\n",
+             mesh_count_, fps_, render_time_, frame_count_, count, log_);
     refresh();
 }
 

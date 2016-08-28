@@ -1,27 +1,23 @@
 #ifndef MINI3D_RENDERER_H_
 #define MINI3D_RENDERER_H_
 
-#include "mesh.h"
 #include "device.h"
+#include "camera.h"
 
 namespace mini3d {
 
-class Mesh;
 class Renderer {
 public:
     Renderer();
     ~Renderer();
-    void DrawTriangle(Vertex *vt1, Vertex *vt2, Vertex *vt3);
-    void AddMesh(Mesh *mesh);
+    void DrawTriangle(Vertex &vt1, Vertex &vt2, Vertex &vt3, Matrix &m);
     void Render();
     void Buffer2Screen();
 
 private:
     I16 width_ = 0;
     I16 height_ = 0;
-    Matrix camera_ = Matrix::IDENTITY;
-    Mesh **meshs_ = nullptr;
-    I32 mesh_count_ = 0;
+    Camera* camera_;
     Color **render_buffer_;
     Device &device_ = Device::GetInstance();
 };

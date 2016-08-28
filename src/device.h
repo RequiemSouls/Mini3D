@@ -14,7 +14,7 @@ public:
     static Device &GetInstance();
     Device();
     ~Device();
-    
+
     I8 Loop();
     void SetLoopEvent(LoopEvent &&le);
     void Buffer2Screen(Color **buffer);
@@ -23,7 +23,7 @@ public:
     void set_mesh_count(I32 count) { mesh_count_ = count; }
     void set_log(I8 *log) { strncpy(log_, log, sizeof(log_)); }
     void set_log(I32 num);
-    
+
 private:
     I8 Init();
     void Init256ColorTable();

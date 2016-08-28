@@ -7,50 +7,70 @@ namespace mini3d {
 Mesh *Mesh::GenTriangle() {
     Mesh *mesh = new Mesh();
     for (I16 i = 0; i < 3; i++) {
-        mesh->index_array_[i] = i;
-        Vertex *vt = new Vertex();
-        mesh->vertex_array_[i] = vt;
+        mesh->indices_.push_back(i);
+        Vertex vt;
+        vt.p.x = 900.0f;//rand() % 500 * 1.0f;
+        vt.p.y = 900.0f;//rand() % 500 * 1.0f;
+        vt.p.z = 1000.0f;//rand() % 400 * 1.0f + 550.0f;
+        vt.c.r = (I32)rand() * 1.0 / RAND_MAX * 255;
+        vt.c.g = (I32)rand() * 1.0 / RAND_MAX * 255;
+        vt.c.b = (I32)rand() * 1.0 / RAND_MAX * 255;
+        mesh->vertices_.push_back(vt);
     }
-    mesh->count_ = 1;
     return mesh;
 }
 
 Mesh *Mesh::GenByFile(const char *fileName) {
-    // wait for good man
-    return nullptr;
+    Mesh *mesh = new Mesh();
+    FILE *file = fopen(fileName, "r");
+    if (file == NULL) {
+        printf("file not found %s\n", fileName);
+        return nullptr;
+    }
+
+    while (true) {
+        char line_buffer[128];
+        int line = fscanf(file, "%s", line_buffer);
+        if (line == EOF) {
+            break;
+        }
+
+        if (strcmp(line_buffer, "v") == 0) { // vertex
+            Vertex v;
+            v.c = Color::WHITE;
+            fscanf(file, "%f %f %f\n", &v.p.x, &v.p.y, &v.p.z);
+            mesh->vertices_.push_back(v);
+        } else if (strcmp(line_buffer, "vt") == 0) { // uv
+            // wait for a good man
+        } else if (strcmp(line_buffer, "vn") == 0) { // vertex normal
+            // wait for a good man
+        } else if (strcmp(line_buffer, "f") == 0) { // vertex normal
+            int vi1, vi2, vi3;
+            int uvi1, uvi2, uvi3;
+            int vni1, vni2, vni3;
+            fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n",
+                   &vi1, &uvi1, &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
+            mesh->indices_.push_back(vi1);
+            mesh->indices_.push_back(vi2);
+            mesh->indices_.push_back(vi3);
+        }
+    }
+    return mesh;
 }
 
 Mesh::Mesh() {
-    count_ = 0;
-    vertex_array_ = (Vertex **)malloc(sizeof(Vertex *) * 256);
 }
 
 Mesh::~Mesh() {
-    for (I32 i = 0; i < count_; ++i) {
-        delete vertex_array_[index_array_[i * 3]];
-        delete vertex_array_[index_array_[i * 3 + 1]];
-        delete vertex_array_[index_array_[i * 3 + 2]];
-    }
-    free(vertex_array_);
 }
 
-void Mesh::Draw(Renderer *r, Matrix m) {
-    for (I32 i = 0; i < 3; ++i)
-    {
-        Vertex *vt = vertex_array_[i];
-        vt->p.x = rand() * 1.0 / RAND_MAX;
-        vt->p.y = rand() * 1.0 / RAND_MAX;
-        vt->p.z = rand() * 1.0 / RAND_MAX;
-        vt->c.r = rand() * 255.0 / RAND_MAX;
-        vt->c.g = rand() * 255.0 / RAND_MAX;
-        vt->c.b = rand() * 255.0 / RAND_MAX;        
-    }
-    for (I32 i = 0; i < count_; ++i) {
-        // multiply Matrix
-        Vertex *vt1 = vertex_array_[index_array_[i * 3]];      // * m
-        Vertex *vt2 = vertex_array_[index_array_[i * 3 + 1]];  // * m
-        Vertex *vt3 = vertex_array_[index_array_[i * 3 + 2]];  // * m
-        r->DrawTriangle(vt1, vt2, vt3);
+void Mesh::Draw(Renderer *r, Matrix &m) {
+    for (UI32 i = 0; i < indices_.size(); i += 3) {
+        // printf("%d %d %d %d\n", vertices_.size(), indices_.at(i), indices_.at(i + 1), indices_.at(i + 2));
+        Vertex vt1 = vertices_.at(indices_.at(i) - 1);
+        Vertex vt2 = vertices_.at(indices_.at(i + 1) - 1);
+        Vertex vt3 = vertices_.at(indices_.at(i + 2) - 1);
+        r->DrawTriangle(vt1, vt2, vt3, m);
     }
 }
 

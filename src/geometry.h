@@ -48,6 +48,25 @@ struct Vector {
     F32 w = 1.f;
 
     Vector() {}
+    Vector(F32 vx, F32 vy, F32 vz, F32 vw) {
+        x = vx;
+        y = vy;
+        z = vz;
+        w = vw;
+    }
+    Vector(const Vector &value) {
+        x = value.x;
+        y = value.y;
+        z = value.z;
+        w = value.w;
+    }
+
+    void Homogenize() {
+        x /= w;
+        y /= w;
+        z /= w;
+        w = 1.0f;
+    }
 
     static const Vector ZERO;
 };
@@ -56,7 +75,17 @@ struct Matrix {
     F32 m[4][4] = {{0}, {0}, {0}, {0}};
 
     Matrix() {}
-    Matrix(F32 *mat) { memcpy(m, mat, 16); }
+    Matrix(F32 *mat) { memcpy(m, mat, sizeof(m)); }
+    Matrix operator*(const Matrix &m1) {
+        Matrix r;
+        for (I32 i = 0; i < 4; i++) {
+            for (I32 j = 0; j < 4; j++) {
+                r.m[i][j] = m[i][0] * m1.m[0][j] + m[i][1] * m1.m[1][j] + m[i][2] * m1.m[2][j] + m[i][3] * m1.m[3][j];
+            }
+        }
+        return r;
+    }
+    void Transfer(Vector &offset);
 
     static const Matrix ZERO;
     static const Matrix IDENTITY;
@@ -83,12 +112,15 @@ struct Color {
     }
 
     static const Color ZERO;
+    static const Color WHITE;
 };
 
 struct Vertex {
     Vector p;
     Color c;
 };
+
+Vector operator*(const Matrix &m, const Vector &v);
 
 }  // namespace mini3d
 

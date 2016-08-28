@@ -1,0 +1,17 @@
+digraph mini3d {
+    node [shape = record,width=.1];
+    rankdir=RL
+    root_display[label="<root> root_display |<ch> children | <mesh> mesh"]
+    render[label="<render> render|<bf>renderbuffer"]
+
+    {rank=same; render; root_display; device;}
+
+    mesh -> root_display:mesh
+    display_children -> root_display:ch
+    camera -> render:render
+    root_display:root -> main
+    render:render -> main
+    device -> main
+    root_display:mesh -> render:bf[style=dotted]
+    render:bf -> device[style=dotted]
+}

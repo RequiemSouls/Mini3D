@@ -1,3 +1,4 @@
+#include "display.h"
 #include "renderer.h"
 
 #include <stdlib.h>
@@ -7,13 +8,14 @@ int main(int /*argc*/, char ** /*args*/) {
 
     mini3d::Device &device = mini3d::Device::GetInstance();
     mini3d::Renderer *r = new mini3d::Renderer();
+    mini3d::Display* root = new mini3d::Display("../asset/avg_captainamerica_0.obj");
+    mini3d::Vector pos = mini3d::Vector(0, 0, 200, 1);
 
-    for (int i = 0; i < 250; ++i) {
-        mini3d::Mesh *mesh = mini3d::Mesh::GenTriangle();
-        r->AddMesh(mesh);
-    }
-    device.SetLoopEvent([&r]() {
+    device.SetLoopEvent([&pos, &r, &root]() {
+        pos.z++;
+        root->set_pos(pos);
         r->Render();
+        root->Draw(r);
         r->Buffer2Screen();
     });
 

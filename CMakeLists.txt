@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(mini3d VERSION 0.0.0)
 
-add_definitions(-std=c++11 -Wall -O2)
+add_definitions(-std=c++11 -Wall -O2 -DDEBUG -g)
 
 include_directories("./src/")
 
