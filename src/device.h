@@ -8,23 +8,38 @@
 namespace mini3d {
 
 class Device {
-public:
+   public:
     typedef std::function<void()> LoopEvent;
 
+    // No copy.
+    Device(const Device &) = delete;
+    Device &operator=(const Device &) = delete;
+
+    // Moveable.
+    Device(Device &&) = default;
+    Device &operator=(Device &&) = default;
+
     static Device &GetInstance();
-    Device();
     ~Device();
 
     I8 Loop();
     void SetLoopEvent(LoopEvent &&le);
     void Buffer2Screen(Color **buffer);
     void ExitDraw();
-    void GetMaxSize(I16 *w, I16 *h) { *w = width_; *h = height_; }
+    void GetMaxSize(I16 *w, I16 *h) {
+        *w = width_;
+        *h = height_;
+    }
+
     void set_mesh_count(I32 count) { mesh_count_ = count; }
     void set_log(I8 *log) { strncpy(log_, log, sizeof(log_)); }
     void set_log(I32 num);
 
-private:
+   private:
+    // Private constructor ensures this object will not be able to create
+    // directly, only create it by using static function GetInstance().
+    Device();
+
     I8 Init();
     void Init256ColorTable();
 

@@ -8,7 +8,8 @@ int main(int /*argc*/, char ** /*args*/) {
 
     mini3d::Device &device = mini3d::Device::GetInstance();
     mini3d::Renderer *r = new mini3d::Renderer();
-    mini3d::Display* root = new mini3d::Display("../asset/avg_captainamerica_0.obj");
+    mini3d::Display *root =
+        new mini3d::Display("../asset/avg_captainamerica_0.obj");
     mini3d::Vector pos = mini3d::Vector(0, 0, 200, 1);
 
     device.SetLoopEvent([&pos, &r, &root]() {

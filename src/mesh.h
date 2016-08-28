@@ -1,21 +1,21 @@
 #ifndef MINI3D_MESH_H_
 #define MINI3D_MESH_H_
 
+#include <vector>
+
 #include "geometry.h"
 #include "renderer.h"
-#include <vector>
 
 namespace mini3d {
 
 class Mesh {
-public:
-    Mesh();
-    ~Mesh();
-    static Mesh *GenTriangle();
-    static Mesh *GenByFile(const char *fileName);
-    void Draw(Renderer *r, Matrix &m);
+   public:
+    static Mesh GenTriangle();
+    static Mesh GenByFile(const char *fileName);
 
-private:
+    void Draw(Renderer *r, const Matrix &m);
+
+   private:
     std::vector<I32> indices_;
     std::vector<Vertex> vertices_;
 };

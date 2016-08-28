@@ -2,9 +2,9 @@
 
 #include "device.h"
 
-#include <time.h>
 #include <assert.h>
 #include <ncurses.h>
+#include <time.h>
 
 #include <chrono>
 #include <thread>
@@ -61,9 +61,7 @@ I8 Device::Init() {
     return 0;
 }
 
-void Device::SetLoopEvent(LoopEvent &&le) {
-    loop_event_ = std::move(le);
-}
+void Device::SetLoopEvent(LoopEvent &&le) { loop_event_ = std::move(le); }
 
 I8 Device::Loop() {
     I16 clocks_per_ms = CLOCKS_PER_SEC / 1000.0;
@@ -75,9 +73,9 @@ I8 Device::Loop() {
     while (true) {
         frame_count_++;
         curDT = clock();
-        fps_ = CLOCKS_PER_SEC / (1.0*mpfDT);
+        fps_ = CLOCKS_PER_SEC / (1.0 * mpfDT);
         if (fps_ > 60.0f) fps_ = 60.0f;
-        render_time_ = mpfDT / (1.0*clocks_per_ms);
+        render_time_ = mpfDT / (1.0 * clocks_per_ms);
 
         if (loop_event_ != nullptr) {
             loop_event_();
@@ -86,7 +84,7 @@ I8 Device::Loop() {
 
         if (mpfDT < frameTime) {
             std::this_thread::sleep_for(
-                std::chrono::milliseconds((frameTime - mpfDT)/clocks_per_ms));
+                std::chrono::milliseconds((frameTime - mpfDT) / clocks_per_ms));
         }
     }
     return 0;
@@ -110,7 +108,8 @@ void Device::Buffer2Screen(Color **buffer) {
         }
     }
     attroff(COLOR_PAIR(GET_256_COLOR(0xff, 0xff, 0xff)));
-    mvprintw(height_, 0, "Mesh Count: %d FPS: %.1f/%.1fms Frame Count: %d point : %d %s\n",
+    mvprintw(height_, 0,
+             "Mesh Count: %d FPS: %.1f/%.1fms Frame Count: %d point : %d %s\n",
              mesh_count_, fps_, render_time_, frame_count_, count, log_);
     refresh();
 }
@@ -131,7 +130,7 @@ void Device::Init256ColorTable() {
 void Device::set_log(I32 num) {
     char str[16] = {0};
 
-    sprintf(str, "%d" , num);
+    sprintf(str, "%d", num);
     set_log(str);
 }
 

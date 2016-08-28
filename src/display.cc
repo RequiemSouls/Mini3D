@@ -2,43 +2,27 @@
 
 namespace mini3d {
 
-Display::Display() {
-    mesh_ = Mesh::GenTriangle();
-}
+Display::Display() : mesh_(Mesh::GenTriangle()) {}
 
-Display::Display(const char* file_name) {
-    mesh_ = Mesh::GenByFile(file_name);
-}
+Display::Display(const char* mesh_file) : mesh_(Mesh::GenByFile(mesh_file)) {}
 
-Display::~Display() {
-    delete mesh_;
-}
+void Display::Draw(Renderer* render) { Draw(render, Matrix::IDENTITY); }
 
-void Display::Draw(Renderer* r) {
-    Draw(r, (Matrix&)Matrix::IDENTITY);
-}
-
-void Display::Draw(Renderer* r, Matrix& m) {
+void Display::Draw(Renderer* render, const Matrix& m) {
     Matrix dm = Matrix::IDENTITY;
     dm.Transfer(pos_);
     dm = dm * m;
 
-    mesh_->Draw(r, dm);
-    for(Display* display : children_) {
-        display->Draw(r, dm);
+    mesh_.Draw(render, dm);
+    for (Display* display : children_) {
+        display->Draw(render, dm);
     }
 }
 
-void Display::AddChild(Display* display) {
-    children_.push_back(display);
-}
+void Display::AddChild(Display* display) { children_.push_back(display); }
 
-void Display::set_pos(Vector &pos) {
-    pos_ = Vector(pos);
-}
+void Display::set_pos(const Vector& pos) { pos_ = Vector(pos); }
 
-Vector &Display::pos() {
-    return pos_;
-}
+const Vector& Display::pos() const { return pos_; }
 
-}
+}  // namespace mini3d
