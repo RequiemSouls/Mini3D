@@ -1,7 +1,9 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(mini3d VERSION 0.0.0)
+cmake_minimum_required(VERSION 2.8.4)
+project(mini3d)
 
-add_definitions(-std=c++11 -Wall -O2 -DDEBUG -g)
+add_definitions(-std=c++11 -Wall -g)
+set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
+set(CMAKE_CXX_FLAGS "-O2")
 
 include_directories("./src/")
 
