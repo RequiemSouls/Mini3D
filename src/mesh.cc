@@ -38,7 +38,10 @@ Mesh *Mesh::GenByFile(const char *fileName) {
         if (strcmp(line_buffer, "v") == 0) { // vertex
             Vertex v;
             v.c = Color::WHITE;
-            fscanf(file, "%f %f %f\n", &v.p.x, &v.p.y, &v.p.z);
+            int ret = fscanf(file, "%f %f %f\n", &v.p.x, &v.p.y, &v.p.z);
+            if (ret == EOF || ret != 3) {
+                break;
+            }
             mesh->vertices_.push_back(v);
         } else if (strcmp(line_buffer, "vt") == 0) { // uv
             // wait for a good man
@@ -48,8 +51,11 @@ Mesh *Mesh::GenByFile(const char *fileName) {
             int vi1, vi2, vi3;
             int uvi1, uvi2, uvi3;
             int vni1, vni2, vni3;
-            fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n",
+            int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n",
                    &vi1, &uvi1, &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
+            if (ret == EOF || ret != 3) {
+                break;
+            }
             mesh->indices_.push_back(vi1);
             mesh->indices_.push_back(vi2);
             mesh->indices_.push_back(vi3);
