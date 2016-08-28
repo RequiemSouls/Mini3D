@@ -16,7 +16,7 @@ class Renderer {
     Renderer(Renderer &&) = delete;
     Renderer &operator=(Renderer &&) = delete;
 
-    Renderer();
+    explicit Renderer(Device &device);
     ~Renderer();
 
     void DrawTriangle(const Vertex &vt1, const Vertex &vt2, const Vertex &vt3,
@@ -29,7 +29,7 @@ class Renderer {
     I16 height_ = 0;
     Camera camera_;
     Color **render_buffer_ = nullptr;
-    Device &device_ = Device::GetInstance();
+    Device &device_;
 };
 
 }  // namespace mini3d

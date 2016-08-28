@@ -5,7 +5,7 @@
 
 namespace mini3d {
 
-Renderer::Renderer() {
+Renderer::Renderer(Device &device) : device_(device) {
     device_.GetMaxSize(&width_, &height_);
     render_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
     for (int i = 0; i < width_; ++i) {
