@@ -8,10 +8,10 @@ namespace mini3d {
 
 //面向z轴的摄像机
 class Camera {
-   public:
+public:
     Matrix GetMatrix() const;
 
-   private:
+private:
     F32 near_ = 500.0f;
     F32 far_ = 1000.0f;
     Vector lookup_{0.0f, 0.0f, 1.0f, 0.0f};

@@ -9,13 +9,13 @@
 namespace mini3d {
 
 class Mesh {
-   public:
+public:
     static Mesh GenTriangle();
     static Mesh GenByFile(const char *fileName);
 
     void Draw(Renderer *r, const Matrix &m);
 
-   private:
+private:
     std::vector<I32> indices_;
     std::vector<Vertex> vertices_;
 };

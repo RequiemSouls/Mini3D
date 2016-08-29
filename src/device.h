@@ -8,7 +8,7 @@
 namespace mini3d {
 
 class Device {
-   public:
+public:
     typedef std::function<void()> LoopEvent;
 
     // No copy.
@@ -35,7 +35,7 @@ class Device {
     void set_log(I8 *log) { strncpy(log_, log, sizeof(log_)); }
     void set_log(I32 num);
 
-   private:
+private:
     // Private constructor ensures this object will not be able to create
     // directly, only create it by using static function GetInstance().
     Device();

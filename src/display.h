@@ -9,7 +9,7 @@
 namespace mini3d {
 
 class Display {
-   public:
+public:
     // No copy.
     Display(const Display&) = delete;
     Display& operator=(const Display&) = delete;
@@ -30,7 +30,7 @@ class Display {
     void set_pos(const Vector& pos);
     const Vector& pos() const;
 
-   private:
+private:
     Mesh mesh_;
     std::vector<Display*> children_;
     Vector pos_;

@@ -7,7 +7,7 @@
 namespace mini3d {
 
 class Renderer {
-   public:
+public:
     // No copy.
     Renderer(const Renderer &) = delete;
     Renderer &operator=(const Renderer &) = delete;
@@ -24,7 +24,7 @@ class Renderer {
     void Render();
     void Buffer2Screen() const;
 
-   private:
+private:
     I16 width_ = 0;
     I16 height_ = 0;
     Camera camera_;
