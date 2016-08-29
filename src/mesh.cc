@@ -53,7 +53,7 @@ Mesh Mesh::GenByFile(const char *fileName) {
             int vni1, vni2, vni3;
             int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vi1, &uvi1,
                              &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
-            if (ret == EOF || ret != 3) {
+            if (ret == EOF || ret != 9) {
                 break;
             }
             mesh.indices_.push_back(vi1);
