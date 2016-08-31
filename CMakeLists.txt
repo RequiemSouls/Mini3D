@@ -13,6 +13,7 @@ file(GLOB MINI3D_MAIN_DEPENDS "mini3d/main.cc")
 add_executable(mini3d ${MINI3D_DEPENDS} ${MINI3D_MAIN_DEPENDS}) 
 
 find_package(Curses REQUIRED)
+find_library(pthread pthread)
 
 target_link_libraries(mini3d ${CURSES_LIBRARIES})
 
@@ -32,4 +33,9 @@ add_executable(mini3d_test
   ${GTEST_DEPENDS}
   )
 
-target_link_libraries(mini3d_test ${CURSES_LIBRARIES})
+target_link_libraries(mini3d_test ${CURSES_LIBRARIES} ${pthread})
+
+add_custom_command(TARGET mini3d_test
+  POST_BUILD COMMAND mini3d_test
+  )
+
