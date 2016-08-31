@@ -10,8 +10,6 @@
 
 namespace mini3d {
 
-namespace math {
-
 template <typename T, std::size_t NUM_OF_DIM>
 class BaseVector {
 public:
@@ -63,7 +61,7 @@ template <typename T, std::size_t NUM_OF_DIM>
 class VectorImpl : public BaseVector<T, NUM_OF_DIM> {
 public:
     VectorImpl(const std::initializer_list<T> &values)
-        : BaseVector<T, NUM_OF_DIM>(std::move(values)) {}
+        : BaseVector<T, NUM_OF_DIM>(values) {}
 };
 
 template <typename T>
@@ -81,8 +79,7 @@ public:
 
     T CalcLength() const {
         T sum = 0;
-        auto &values = this->get_values();
-        for (const T &val : values) {
+        for (const T &val : this->values_) {
             T val2 = val * val;
             sum += val2;
         }
@@ -91,8 +88,7 @@ public:
 
     void Normalize() {
         T length = CalcLength();
-        auto &values = this->get_values();
-        for (T &val : values) {
+        for (T &val : this->values_) {
             val /= length;
         }
     }
@@ -133,7 +129,7 @@ public:
     }
 };
 
-template <typename T, int NUM_OF_DIM>
+template <typename T, std::size_t NUM_OF_DIM>
 VectorImpl<T, NUM_OF_DIM> operator+(const VectorImpl<T, NUM_OF_DIM> &lhs,
                                     const VectorImpl<T, NUM_OF_DIM> &rhs) {
     VectorImpl<T, NUM_OF_DIM> result;
@@ -143,7 +139,7 @@ VectorImpl<T, NUM_OF_DIM> operator+(const VectorImpl<T, NUM_OF_DIM> &lhs,
     return result;
 }
 
-template <typename T, int NUM_OF_DIM>
+template <typename T, std::size_t NUM_OF_DIM>
 VectorImpl<T, NUM_OF_DIM> operator-(const VectorImpl<T, NUM_OF_DIM> &lhs,
                                     const VectorImpl<T, NUM_OF_DIM> &rhs) {
     VectorImpl<T, NUM_OF_DIM> result;
@@ -153,13 +149,25 @@ VectorImpl<T, NUM_OF_DIM> operator-(const VectorImpl<T, NUM_OF_DIM> &lhs,
     return result;
 }
 
+template <typename T, std::size_t NUM_OF_DIM>
+bool operator==(const VectorImpl<T, NUM_OF_DIM> &lhs,
+                const VectorImpl<T, NUM_OF_DIM> &rhs) {
+    return lhs.IsEqualTo(rhs);
+}
+
+template <typename T, std::size_t NUM_OF_DIM>
+bool operator!=(const VectorImpl<T, NUM_OF_DIM> &lhs,
+                const VectorImpl<T, NUM_OF_DIM> &rhs) {
+    return !lhs.IsEqualTo(rhs);
+}
+
 template <typename T, std::size_t NUM_OF_ROWS, std::size_t NUM_OF_COLS>
 class BaseMatrix {
 public:
     BaseMatrix() { memset(values_, 0, sizeof(values_)); }
 
     BaseMatrix(const std::initializer_list<T> &values) {
-        T *p = values_;
+        T *p = reinterpret_cast<T *>(values_);
         std::copy(values.begin(), values.end(), p);
     }
 
@@ -209,7 +217,7 @@ public:
         return result;
     }
 
-    void Transfer(const math::VectorImpl<T, N> &offset) {
+    void Transfer(const VectorImpl<T, N> &offset) {
         for (std::size_t i = 0; i < N - 1; ++i) {
             this->set_value(i, N - 1, offset.get_value(i));
         }
@@ -254,11 +262,21 @@ auto operator*(const MatrixImpl<T, ROW, COL> &lhs,
     return result;
 }
 
-}  // namespace math
+template <typename T, std::size_t ROW, std::size_t COL>
+bool operator==(const MatrixImpl<T, ROW, COL> &lhs,
+                const MatrixImpl<T, ROW, COL> &rhs) {
+    return lhs.IsEqualTo(rhs);
+}
 
-typedef math::VectorImpl<F32, 2> Vec2;
-typedef math::VectorImpl<F32, 4> Vector;
-typedef math::MatrixImpl<F32, 4, 4> Matrix;
+template <typename T, std::size_t ROW, std::size_t COL>
+bool operator!=(const MatrixImpl<T, ROW, COL> &lhs,
+                const MatrixImpl<T, ROW, COL> &rhs) {
+    return !lhs.IsEqualTo(rhs);
+}
+
+typedef VectorImpl<F32, 2> Vec2;
+typedef VectorImpl<F32, 4> Vector;
+typedef MatrixImpl<F32, 4, 4> Matrix;
 
 struct Color {
     UI8 r = 0;
