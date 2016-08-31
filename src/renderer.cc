@@ -41,17 +41,17 @@ void Renderer::DrawTriangle(const Vertex &vt1, const Vertex &vt2,
     p2.Homogenize();
     p3.Homogenize();
     // printf("%f %f %f\n", p1.x, p1.y, p1.z);
-    if (p1.z <= 1.0 && p1.z >= -1.0 && p1.x >= -1.0 && p1.x <= 1.0 &&
-        p1.y <= 1.0 && p1.y >= -1.0) {
-        render_buffer_[(I32)(p1.x * w + w)][(I32)(-p1.y * h + h)] = vt1.c;
+    if (p1.get_z() <= 1.0 && p1.get_z() >= -1.0 && p1.get_x() >= -1.0 && p1.get_x() <= 1.0 &&
+        p1.get_y() <= 1.0 && p1.get_y() >= -1.0) {
+        render_buffer_[(I32)(p1.get_x() * w + w)][(I32)(-p1.get_y() * h + h)] = vt1.c;
     }
-    if (p2.z <= 1.0 && p2.z >= -1.0 && p2.x >= -1.0 && p2.x <= 1.0 &&
-        p2.y <= 1.0 && p2.y >= -1.0) {
-        render_buffer_[(I32)(p2.x * w + w)][(I32)(-p2.y * h + h)] = vt2.c;
+    if (p2.get_z() <= 1.0 && p2.get_z() >= -1.0 && p2.get_x() >= -1.0 && p2.get_x() <= 1.0 &&
+        p2.get_y() <= 1.0 && p2.get_y() >= -1.0) {
+        render_buffer_[(I32)(p2.get_x() * w + w)][(I32)(-p2.get_y() * h + h)] = vt2.c;
     }
-    if (p3.z <= 1.0 && p3.z >= -1.0 && p3.x >= -1.0 && p3.x <= 1.0 &&
-        p3.y <= 1.0 && p3.y >= -1.0) {
-        render_buffer_[(I32)(p3.x * w + w)][(I32)(-p3.y * h + h)] = vt3.c;
+    if (p3.get_z() <= 1.0 && p3.get_z() >= -1.0 && p3.get_x() >= -1.0 && p3.get_x() <= 1.0 &&
+        p3.get_y() <= 1.0 && p3.get_y() >= -1.0) {
+        render_buffer_[(I32)(p3.get_x() * w + w)][(I32)(-p3.get_y() * h + h)] = vt3.c;
     }
 }
 

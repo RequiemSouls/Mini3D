@@ -9,9 +9,9 @@ Mesh Mesh::GenTriangle() {
     for (I16 i = 0; i < 3; i++) {
         mesh.indices_.push_back(i);
         Vertex vt;
-        vt.p.x = 900.0f;   // rand() % 500 * 1.0f;
-        vt.p.y = 900.0f;   // rand() % 500 * 1.0f;
-        vt.p.z = 1000.0f;  // rand() % 400 * 1.0f + 550.0f;
+        vt.p.set_x(900.0f);   // rand() % 500 * 1.0f;
+        vt.p.set_y(900.0f);   // rand() % 500 * 1.0f;
+        vt.p.set_z(1000.0f);  // rand() % 400 * 1.0f + 550.0f;
         vt.c.r = (I32)rand() * 1.0 / RAND_MAX * 255;
         vt.c.g = (I32)rand() * 1.0 / RAND_MAX * 255;
         vt.c.b = (I32)rand() * 1.0 / RAND_MAX * 255;
@@ -38,7 +38,9 @@ Mesh Mesh::GenByFile(const char *fileName) {
         if (strcmp(line_buffer, "v") == 0) {  // vertex
             Vertex v;
             v.c = Color::WHITE;
-            int ret = fscanf(file, "%f %f %f\n", &v.p.x, &v.p.y, &v.p.z);
+            F32 x, y, z;
+            int ret = fscanf(file, "%f %f %f\n", &x, &y, &z);
+            v.p = {x, y, z};
             if (ret == EOF || ret != 3) {
                 break;
             }

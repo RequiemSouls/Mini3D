@@ -6,10 +6,10 @@ Display::Display() : mesh_(Mesh::GenTriangle()) {}
 
 Display::Display(const char* mesh_file) : mesh_(Mesh::GenByFile(mesh_file)) {}
 
-void Display::Draw(Renderer* render) { Draw(render, Matrix::IDENTITY); }
+void Display::Draw(Renderer* render) { Draw(render, Matrix::IDENTITY()); }
 
 void Display::Draw(Renderer* render, const Matrix& m) {
-    Matrix dm = Matrix::IDENTITY;
+    Matrix dm = Matrix::IDENTITY();
     dm.Transfer(pos_);
     dm = dm * m;
 
