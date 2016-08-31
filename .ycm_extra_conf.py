@@ -55,7 +55,9 @@ flags = [
 '-isystem', '/System/Library/Frameworks/Python.framework/Headers',
 '-isystem', '../llvm/include',
 '-isystem', '../llvm/tools/clang/include',
-'-I', './src',
+'-I', './include',
+'-I', './deps/googletest/googletest',
+'-I', './deps/googletest/googletest/include',
 ]
 
 

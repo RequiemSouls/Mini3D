@@ -10,10 +10,10 @@ int main(int /*argc*/, char ** /*args*/) {
     mini3d::Renderer *r = new mini3d::Renderer(device);
     mini3d::Display *root =
         new mini3d::Display("../asset/avg_captainamerica_0.obj");
-    mini3d::Vector pos = mini3d::Vector(0, 0, 200, 1);
+    mini3d::Vector pos {0, 0, 200, 1};
 
     device.SetLoopEvent([&pos, &r, &root]() {
-        pos.z++;
+        pos.IncZ();
         root->set_pos(pos);
         r->Render();
         root->Draw(r);
