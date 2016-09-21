@@ -10,14 +10,20 @@ int main(int /*argc*/, char ** /*args*/) {
     mini3d::Renderer *r = new mini3d::Renderer(device);
     mini3d::Display *root =
         new mini3d::Display("../asset/avg_captainamerica_0.obj");
-    mini3d::Vector pos {0, 0, 500, 1};
+    mini3d::Vector pos {0, 0, 700, 1};
+    root->set_pos(pos);
+    mini3d::Vector rotate {1, 1, 1, 1};
+    mini3d::F32 delta = 0;
+    root->set_rotate_v(rotate);
+    root->set_rotate_d(0);
 
-    device.SetLoopEvent([&pos, &r, &root]() {
-        pos.IncZ();
-        if (pos.get_z() > 1000) {
-            pos.set_z(500.0f);
-        }
+    device.SetLoopEvent([&rotate, &delta, &pos, &r, &root]() {
+        // transfer test
+        pos.set_x(((int)pos.get_x() + 1) % 500);
         root->set_pos(pos);
+        // rotate test
+        delta += 0.03;
+        root->set_rotate_d(delta);
         r->Render();
         root->Draw(r);
         r->Buffer2Screen();

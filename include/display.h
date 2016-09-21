@@ -30,10 +30,18 @@ public:
     void set_pos(const Vector& pos);
     const Vector& pos() const;
 
+    void set_rotate_v(const Vector& vec);
+    const Vector& rotate_v() const;
+
+    void set_rotate_d(const F32& delta);
+    const F32& rotate_d() const;
+
 private:
     Mesh mesh_;
     std::vector<Display*> children_;
     Vector pos_;
+    Vector rotate_v_;
+    F32 rotate_d_;
 };
 
 }  // namespace mini3d

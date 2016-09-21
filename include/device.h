@@ -3,6 +3,7 @@
 
 #include <functional>
 
+#include <string.h>
 #include "geometry.h"
 
 namespace mini3d {

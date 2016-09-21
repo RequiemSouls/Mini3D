@@ -7,6 +7,8 @@ namespace mini3d {
 
 Renderer::Renderer(Device &device) : device_(device) {
     device_.GetMaxSize(&width_, &height_);
+    camera_.set_ratio(height_ * 1.0f / width_);
+    printf("%d, %d, %f", width_, height_, height_ * 1.0f / width_);
     render_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
     for (int i = 0; i < width_; ++i) {
         render_buffer_[i] = (Color *)calloc(height_, sizeof(Color));

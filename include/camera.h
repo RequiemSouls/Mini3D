@@ -10,10 +10,16 @@ class Camera {
 public:
     Matrix GetMatrix() const;
 
+    void set_ratio(const F32& ratio);
+    const F32& ratio() const;
+
+private:
+    Matrix GetPerspective() const;
+    Matrix GetView() const;
 private:
     F32 near_ = 500.0f;
     F32 far_ = 1000.0f;
-    Vector lookup_{0.0f, 0.0f, 1.0f, 0.0f};
+    Vector lookat_{0.0f, 0.0f, 1.0f, 0.0f};
     Vector pos_{0.0f, 0.0f, 0.0f, 1.0f};
     /*!< 水平方向上的张角 弧度制 90°*/
     F32 angle_ = PI * 0.5;
