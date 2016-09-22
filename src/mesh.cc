@@ -53,12 +53,15 @@ Mesh Mesh::GenByFile(const char *fileName) {
             int vi1, vi2, vi3;
             int uvi1, uvi2, uvi3;
             int vni1, vni2, vni3;
-            // int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vi1, &uvi1,
-            //                  &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
-            int ret = fscanf(file, "%d//%d %d//%d %d//%d\n", &vi1, &vni1, &vi2, &vni2, &vi3, &vni3);
-            if (ret == EOF || ret != 6) {
+            int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vi1, &uvi1,
+                             &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
+            if (ret == EOF || ret != 9) {
                 break;
             }
+            // int ret = fscanf(file, "%d//%d %d//%d %d//%d\n", &vi1, &vni1, &vi2, &vni2, &vi3, &vni3);
+            // if (ret == EOF || ret != 6) {
+            //     break;
+            // }
             mesh.indices_.push_back(vi1);
             mesh.indices_.push_back(vi2);
             mesh.indices_.push_back(vi3);

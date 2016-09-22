@@ -8,18 +8,18 @@ int main(int /*argc*/, char ** /*args*/) {
 
     mini3d::Device &device = mini3d::Device::GetInstance();
     mini3d::Renderer *r = new mini3d::Renderer(device);
-    // mini3d::Display *root =
-    //     new mini3d::Display("../asset/avg_captainamerica_0.obj");
-    mini3d::Display *root = new mini3d::Display("../asset/cube.obj");
-    mini3d::Vector pos {0, 0, 700, 1};
-    mini3d::Vector scale {1, 1, 1, 0};
+    mini3d::Display *root =
+        new mini3d::Display("../asset/avg_captainamerica_0.obj");
+    // mini3d::Display *root = new mini3d::Display("../asset/cube.obj");
+    mini3d::Vector pos {0, -200, 700, 1};
+    mini3d::Vector scale {2, 2, 2, 0};
     mini3d::Vector rotate {0, 1, 0, 0};
     mini3d::F32 delta = 0;
     mini3d::Camera &camera = r->camera();
 
-    device.SetLoopEvent([&a, &rotate, &delta, &scale, &camera, &pos, &r, &root]() {
+    device.SetLoopEvent([&rotate, &delta, &scale, &camera, &pos, &r, &root]() {
         // transfer test
-        // pos.set_x(((int)pos.get_x() + 1) % 500);
+        pos.set_z(((int)pos.get_z() + 1) % 500 + 500);
         root->set_pos(pos);
         // camera lookat test
         // camera.set_lookat(pos);

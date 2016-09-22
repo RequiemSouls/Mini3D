@@ -40,13 +40,17 @@ void Renderer::DrawTriangle(const Vertex &vt1, const Vertex &vt2,
     p2.Homogenize();
     p3.Homogenize();
     Rasterize(p1, p2, p3);
-    // render_buffer_[(I32)(w)][(I32)(h)] = vt3.c;
 }
 
 void Renderer::Rasterize(Vector& p1, Vector& p2, Vector& p3) {
-    DrawLine(p1, p2);
-    DrawLine(p2, p3);
-    DrawLine(p3, p1);
+    if (p1.get_x() > -1 && p1.get_x() < 1 && p1.get_y() > -1 && p1.get_y() < 1 &&
+    p2.get_x() > -1 && p2.get_x() < 1 && p2.get_y() > -1 && p2.get_y() < 1 &&
+        p3.get_x() > -1 && p3.get_x() < 1 && p3.get_y() > -1 && p3.get_y() < 1 )
+    {
+        DrawLine(p1, p2);
+        DrawLine(p2, p3);
+        DrawLine(p3, p1);
+    }
 }
 
 void Renderer::DrawLine(Vector& p1, Vector& p2) {
@@ -68,12 +72,14 @@ void Renderer::DrawLine(Vector& p1, Vector& p2) {
         for (I32 i = 0; i < abs(dx); ++i) {
             DrawPixel(x1 - kx * i, y1 - ky * i, rc);
         }
-    } else {
+    } else if (abs(dy) > abs(dx)) {
         kx = dx * 1.0f / abs(dy);
         ky = dy / abs(dy);
         for (I32 i = 0; i < abs(dy); ++i) {
             DrawPixel(x1 - kx * i, y1 - ky * i, rc);
         }
+    } else {
+        // do nothing
     }
 }
 
