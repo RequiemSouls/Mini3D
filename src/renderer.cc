@@ -32,29 +32,53 @@ void Renderer::Render() {
 
 void Renderer::DrawTriangle(const Vertex &vt1, const Vertex &vt2,
                             const Vertex &vt3, const Matrix &m) {
-    F32 w = width_ / 2;
-    F32 h = height_ / 2;
     Matrix mp = camera_.GetMatrix();
-    // printf("%f %f %f\n", vt1.p.x, vt1.p.y, vt1.p.z);
     Vector p1 = mp * m * vt1.p;
     Vector p2 = mp * m * vt2.p;
     Vector p3 = mp * m * vt3.p;
     p1.Homogenize();
     p2.Homogenize();
     p3.Homogenize();
-    // printf("%f %f %f\n", p1.x, p1.y, p1.z);
-    if (p1.get_z() <= 1.0 && p1.get_z() >= -1.0 && p1.get_x() >= -1.0 && p1.get_x() <= 1.0 &&
-        p1.get_y() <= 1.0 && p1.get_y() >= -1.0) {
-        render_buffer_[(I32)(p1.get_x() * w + w)][(I32)(-p1.get_y() * h + h)] = vt1.c;
+    Rasterize(p1, p2, p3);
+    // render_buffer_[(I32)(w)][(I32)(h)] = vt3.c;
+}
+
+void Renderer::Rasterize(Vector& p1, Vector& p2, Vector& p3) {
+    DrawLine(p1, p2);
+    DrawLine(p2, p3);
+    DrawLine(p3, p1);
+}
+
+void Renderer::DrawLine(Vector& p1, Vector& p2) {
+    Color rc = Color::WHITE;
+    F32 w = width_ / 2;
+    F32 h = height_ / 2;
+    I32 x1, y1, x2, y2;
+    x1 = p1.get_x() * w + w;
+    y1 = p1.get_y() * h + h;
+    x2 = p2.get_x() * w + w;
+    y2 = p2.get_y() * h + h;
+    I32 dx, dy;
+    F32 kx, ky;
+    dx = x1 - x2;
+    dy = y1 - y2;
+    if (abs(dx) > abs(dy)) {
+        kx = dx / abs(dx);
+        ky = dy * 1.0f / abs(dx);
+        for (I32 i = 0; i < abs(dx); ++i) {
+            DrawPixel(x1 - kx * i, y1 - ky * i, rc);
+        }
+    } else {
+        kx = dx * 1.0f / abs(dy);
+        ky = dy / abs(dy);
+        for (I32 i = 0; i < abs(dy); ++i) {
+            DrawPixel(x1 - kx * i, y1 - ky * i, rc);
+        }
     }
-    if (p2.get_z() <= 1.0 && p2.get_z() >= -1.0 && p2.get_x() >= -1.0 && p2.get_x() <= 1.0 &&
-        p2.get_y() <= 1.0 && p2.get_y() >= -1.0) {
-        render_buffer_[(I32)(p2.get_x() * w + w)][(I32)(-p2.get_y() * h + h)] = vt2.c;
-    }
-    if (p3.get_z() <= 1.0 && p3.get_z() >= -1.0 && p3.get_x() >= -1.0 && p3.get_x() <= 1.0 &&
-        p3.get_y() <= 1.0 && p3.get_y() >= -1.0) {
-        render_buffer_[(I32)(p3.get_x() * w + w)][(I32)(-p3.get_y() * h + h)] = vt3.c;
-    }
+}
+
+void Renderer::DrawPixel(int x, int y, Color c) {
+    render_buffer_[x][y] = c;
 }
 
 void Renderer::Buffer2Screen() const { device_.Buffer2Screen(render_buffer_); }
