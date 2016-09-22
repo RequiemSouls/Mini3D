@@ -13,14 +13,19 @@ public:
     void set_ratio(const F32& ratio);
     const F32& ratio() const;
 
+    void set_lookat(const Vector& lookat);
+    const Vector& lookat() const;
+
 private:
     Matrix GetPerspective() const;
     Matrix GetView() const;
 private:
     F32 near_ = 500.0f;
     F32 far_ = 1000.0f;
-    Vector lookat_{0.0f, 0.0f, 1.0f, 0.0f};
+    Vector lookat_{0.0f, 0.0f, 1.0f, 1.0f};
     Vector pos_{0.0f, 0.0f, 0.0f, 1.0f};
+    /*!< 看向一个物体时 摄像机的up向量与看向的物体和世界up向量的夹角 */
+    F32 rotate_;
     /*!< 水平方向上的张角 弧度制 90°*/
     F32 angle_ = PI * 0.5;
     /*!< h/w */

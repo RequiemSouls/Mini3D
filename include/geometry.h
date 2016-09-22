@@ -13,6 +13,7 @@ typedef VectorImpl<F32, 2> Vec2;
 typedef VectorImpl<F32, 4> Vector;
 typedef MatrixImpl<F32, 4, 4> Matrix;
 
+
 struct Vertex {
     Vector p;
     Color c;

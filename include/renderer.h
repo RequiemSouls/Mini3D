@@ -24,6 +24,8 @@ public:
     void Render();
     void Buffer2Screen() const;
 
+    Camera& camera();
+
 private:
     I16 width_ = 0;
     I16 height_ = 0;

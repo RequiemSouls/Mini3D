@@ -49,6 +49,22 @@ public:
         return true;
     }
 
+    T CalcLength() const {
+        T sum = 0;
+        for (const T &val : this->values_) {
+            T val2 = val * val;
+            sum += val2;
+        }
+        return sqrt(sum);
+    }
+
+    void Normalize() {
+        T length = CalcLength();
+        for (T &val : this->values_) {
+            val /= length;
+        }
+    }
+
 protected:
     T values_[NUM_OF_DIM];
 };
@@ -73,21 +89,6 @@ VectorImpl() : VectorImpl({0.0f, 0.0f}) {}
     void set_x(T val) { this->set_value(0, val); }
     void set_y(T val) { this->set_value(1, val); }
 
-    T CalcLength() const {
-        T sum = 0;
-        for (const T &val : this->values_) {
-            T val2 = val * val;
-            sum += val2;
-        }
-        return sqrt(sum);
-    }
-
-    void Normalize() {
-        T length = CalcLength();
-        for (T &val : this->values_) {
-            val /= length;
-        }
-    }
 };
 
 template <typename T>
@@ -124,6 +125,23 @@ VectorImpl() : VectorImpl({0.0f, 0.0f, 0.0f, 1.0f}) {}
         set_w(1.0f);
     }
 };
+
+template <typename T>
+    VectorImpl<T, 4> CrossProduct(const VectorImpl<T, 4> &lhs,
+                                  const VectorImpl<T, 4> &rhs) {
+    VectorImpl<T, 4> result;
+    result.set_value(0, lhs.get_y() * rhs.get_z() - lhs.get_z() * rhs.get_y());
+    result.set_value(1, lhs.get_z() * rhs.get_x() - lhs.get_x() * rhs.get_z());
+    result.set_value(2, lhs.get_x() * rhs.get_y() - lhs.get_y() * rhs.get_x());
+    result.set_value(3, 0);
+    return result;
+}
+
+template <typename T>
+    T DotProduct(const VectorImpl<T, 4> &lhs, const VectorImpl<T, 4> &rhs) {
+    return lhs.get_x() * rhs.get_x() + lhs.get_y() * rhs.get_y()
+        + lhs.get_z() * rhs.get_z();
+}
 
 template <typename T, std::size_t NUM_OF_DIM>
     VectorImpl<T, NUM_OF_DIM> operator+(const VectorImpl<T, NUM_OF_DIM> &lhs,

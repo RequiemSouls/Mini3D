@@ -59,4 +59,6 @@ void Renderer::DrawTriangle(const Vertex &vt1, const Vertex &vt2,
 
 void Renderer::Buffer2Screen() const { device_.Buffer2Screen(render_buffer_); }
 
+Camera& Renderer::camera() { return camera_; }
+
 }  // namespace mini3d

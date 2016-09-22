@@ -87,21 +87,20 @@ MatrixImpl(const std::initializer_list<T> &values)
         this->set_value(0, 0, x2 + (1 - x2) * c);
         this->set_value(0, 1, x * y * (1 - c) - z * s);
         this->set_value(0, 2, x * z * (1 - c) + y * s);
-        this->set_value(0, 3, 0);
 
         this->set_value(1, 0, x * y * (1 - c) + z * s);
         this->set_value(1, 1, y2 + (1 - y2) * c);
         this->set_value(1, 2, y * z * (1 - c) - x * s);
-        this->set_value(1, 3, 0);
 
         this->set_value(2, 0, x * z * (1 - c) - y * s);
         this->set_value(2, 1, y * z * (1 - c) + x * s);
         this->set_value(2, 2, z2 + (1 - z2) * c);
-        this->set_value(2, 3, 0);
+    }
 
-        this->set_value(3, 0, 0);
-        this->set_value(3, 1, 0);
-        this->set_value(3, 2, 0);
+    void Scale(const VectorImpl<T, N> &scale) {
+        for (std::size_t i = 0; i < N - 1; ++i) {
+            this->set_value(i, i, scale.get_value(i));
+        }
     }
 };
 

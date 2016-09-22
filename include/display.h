@@ -36,12 +36,16 @@ public:
     void set_rotate_d(const F32& delta);
     const F32& rotate_d() const;
 
+    void set_scale(const Vector& scale);
+    const Vector& scale() const;
+
 private:
     Mesh mesh_;
     std::vector<Display*> children_;
     Vector pos_;
     Vector rotate_v_;
     F32 rotate_d_;
+    Vector scale_;
 };
 
 }  // namespace mini3d
