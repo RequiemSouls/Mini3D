@@ -28,10 +28,11 @@ public:
 
 private:
     void Rasterize(Vector& p1, Vector& p2, Vector& p3);
-    void DrawLine(Vector& p1, Vector& p2);
-    void DrawPixel(int x, int y, Color c);
+    void DrawLineDDA(Vector& p1, Vector& p2);
+    void DrawLineMidPoint(Vector& p1, Vector& p2);
+    void DrawPixel(I32 x, I32 y, Color c);
 private:
-    int first_draw_ = 0;
+    I32 first_draw_ = 0;
     I16 width_ = 0;
     I16 height_ = 0;
     Camera camera_;
