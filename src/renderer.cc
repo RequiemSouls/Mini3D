@@ -62,21 +62,30 @@ void Renderer::DrawLine(Vector& p1, Vector& p2) {
     y1 = p1.get_y() * h + h;
     x2 = p2.get_x() * w + w;
     y2 = p2.get_y() * h + h;
-    I32 dx, dy;
+    I32 dx, dy, absdx, absdy;
     F32 kx, ky;
+    F32 x, y;
     dx = x1 - x2;
     dy = y1 - y2;
-    if (abs(dx) > abs(dy)) {
-        kx = dx / abs(dx);
-        ky = dy * 1.0f / abs(dx);
-        for (I32 i = 0; i < abs(dx); ++i) {
-            DrawPixel(x1 - kx * i, y1 - ky * i, rc);
+    absdx = abs(dx);
+    absdy = abs(dy);
+    x = x1;
+    y = y1;
+    if (absdx > absdy) {
+        kx = dx / absdx;
+        ky = dy * 1.0f / absdx;
+        for (I32 i = 0; i < absdx; ++i) {
+            x -= kx;
+            y -= ky;
+            DrawPixel(x, y, rc);
         }
     } else if (abs(dy) > abs(dx)) {
         kx = dx * 1.0f / abs(dy);
         ky = dy / abs(dy);
         for (I32 i = 0; i < abs(dy); ++i) {
-            DrawPixel(x1 - kx * i, y1 - ky * i, rc);
+            x -= kx;
+            y -= ky;
+            DrawPixel(x, y, rc);
         }
     } else {
         // do nothing

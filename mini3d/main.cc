@@ -11,8 +11,8 @@ int main(int /*argc*/, char ** /*args*/) {
     mini3d::Display *root =
         new mini3d::Display("../asset/avg_captainamerica_0.obj");
     // mini3d::Display *root = new mini3d::Display("../asset/cube.obj");
-    mini3d::Vector pos {0, -200, 700, 1};
-    mini3d::Vector scale {2, 2, 2, 0};
+    mini3d::Vector pos {0, 0, 700, 1};
+    mini3d::Vector scale {1, 1, 1, 0};
     mini3d::Vector rotate {0, 1, 0, 0};
     mini3d::F32 delta = 0;
     mini3d::Camera &camera = r->camera();
@@ -24,11 +24,11 @@ int main(int /*argc*/, char ** /*args*/) {
         // camera lookat test
         // camera.set_lookat(pos);
         // rotate test
-        delta += 0.03;
-        root->set_rotate_v(rotate);
-        root->set_rotate_d(delta);
+        // delta += 0.03;
+        // root->set_rotate_v(rotate);
+        // root->set_rotate_d(delta);
         // scale test
-        root->set_scale(scale);
+        // root->set_scale(scale);
         r->Render();
         root->Draw(r);
         r->Buffer2Screen();

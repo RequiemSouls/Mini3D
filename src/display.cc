@@ -5,10 +5,16 @@ namespace mini3d {
 Display::Display() :
     mesh_(Mesh::GenTriangle()),
     rotate_v_(Vector()),
-    rotate_d_(0.0f)
+    rotate_d_(0.0f),
+    scale_ {1, 1, 1, 0}
 {}
 
-Display::Display(const char* mesh_file) : mesh_(Mesh::GenByFile(mesh_file)) {}
+Display::Display(const char* mesh_file) :
+    mesh_(Mesh::GenByFile(mesh_file)),
+    rotate_v_ {1, 1, 1, 0},
+    rotate_d_(0.0f),
+    scale_ {1, 1, 1, 0}
+{}
 
 void Display::Draw(Renderer* render) { Draw(render, Matrix::IDENTITY()); }
 
