@@ -2,9 +2,18 @@
 #include "renderer.h"
 
 #include <stdlib.h>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 int main(int /*argc*/, char ** /*args*/) {
+#ifndef _WIN32
     srand(time(0));
+#else
+	SYSTEMTIME st;
+	GetSystemTime(&st);
+	srand(st.wMilliseconds);
+#endif
 
     mini3d::Device &device = mini3d::Device::GetInstance();
     mini3d::Renderer *r = new mini3d::Renderer(device);
@@ -12,7 +21,7 @@ int main(int /*argc*/, char ** /*args*/) {
     //     new mini3d::Display("../asset/avg_captainamerica_0.obj");
     mini3d::Display *root = new mini3d::Display("../asset/cube.obj");
     mini3d::Vector pos {0, 0, 700, 1};
-    mini3d::Vector scale {1, 1, 1, 0};
+    mini3d::Vector scale {2, 2, 2, 0};
     mini3d::Vector rotate {0, 1, 0, 0};
     mini3d::F32 delta = 0;
     mini3d::Camera &camera = r->camera();

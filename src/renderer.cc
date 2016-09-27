@@ -48,12 +48,18 @@ void Renderer::Rasterize(Vector& p1, Vector& p2, Vector& p3) {
     p2.get_x() > -1 && p2.get_x() < 1 && p2.get_y() > -1 && p2.get_y() < 1 &&
         p3.get_x() > -1 && p3.get_x() < 1 && p3.get_y() > -1 && p3.get_y() < 1 )
     {
-        // DrawLineDDA(p1, p2);
-        // DrawLineDDA(p2, p3);
-        // DrawLineDDA(p3, p1);
-        DrawLineMidPoint(p1, p2);
-        DrawLineMidPoint(p2, p3);
-        DrawLineMidPoint(p1, p3);
+        //DrawLineDDA(p1, p2);
+        //DrawLineDDA(p2, p3);
+        //DrawLineDDA(p3, p1);
+		p1.set_x(-0.2);
+		p1.set_y(0.2);
+		p1.set_z(0.1);
+		p2.set_x(0.5);
+		p2.set_y(0.5);
+		p2.set_z(0.1);
+		DrawLineMidPoint(p1, p2);
+		//DrawLineMidPoint(p2, p3);
+		//DrawLineMidPoint(p1, p3);
     }
 }
 
@@ -117,17 +123,18 @@ void Renderer::DrawLineMidPoint(Vector& p1, Vector& p2) {
     x = x1 + 0.5;
     y = y1 + 0.5;
     I32 total = 0;
-    I32 kx = dx < 0.00001 ? 0 : dx/absdx;
-    I32 ky = dy < 0.00001 ? 0 : dy/absdy;
+    I32 kx = absdx < 0.00001 ? 0 : dx/absdx;
+    I32 ky = absdy < 0.00001 ? 0 : dy/absdy;
     F32 a, b, c;
     a = y2 - y1;
     b = x1 - x2;
     c = x2 * y1 - x1 * y2;
-    if (absdx >= absdy) {
+    if (absdx > absdy) {
         total = absdx;
         for (I32 i = 0; i < total; ++i) {
             x -= kx;
-            if ((a * x + b * (y - ky * 0.5) + c) > 0) {
+			F32 temp = a * x + b * (y - ky * 0.5) + c;
+            if (temp < 0) {
                 y -= ky;
             }
             DrawPixel(x, height_ - y, Color::WHITE);

@@ -40,7 +40,7 @@ Mesh Mesh::GenByFile(const char *fileName) {
             v.c = Color::WHITE;
             F32 x, y, z;
             int ret = fscanf(file, "%f %f %f\n", &x, &y, &z);
-            v.p = {x, y, z};
+            v.p = {x, y, z, 1};
             if (ret == EOF || ret != 3) {
                 break;
             }

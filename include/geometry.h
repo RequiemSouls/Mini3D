@@ -7,7 +7,7 @@
 #include "types.h"
 
 namespace mini3d {
-#define PI 3.14159
+#define PI 3.14159f
 
 typedef VectorImpl<F32, 2> Vec2;
 typedef VectorImpl<F32, 4> Vector;

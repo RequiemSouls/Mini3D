@@ -12,14 +12,6 @@ class Device {
 public:
     typedef std::function<void()> LoopEvent;
 
-    // No copy.
-    Device(const Device &) = delete;
-    Device &operator=(const Device &) = delete;
-
-    // Moveable.
-    Device(Device &&) = default;
-    Device &operator=(Device &&) = default;
-
     static Device &GetInstance();
     ~Device();
 
@@ -45,14 +37,14 @@ private:
     void Init256ColorTable();
 
     LoopEvent loop_event_ = nullptr;
-    UI8 color_hash_[256] = {0};
+    UI8 color_hash_[256];
     I16 width_ = 0;
     I16 height_ = 0;
     I32 mesh_count_ = 0;
     F32 fps_ = 0.0;
     F32 render_time_ = 0.0;
     I32 frame_count_ = 0;
-    I8 log_[128] = {0};
+    I8 log_[128];
     Color **screen_buffer_ = nullptr;
 };
 

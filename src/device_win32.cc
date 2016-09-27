@@ -18,12 +18,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 struct Windows {
     const I8 FRAME_TIME = 16;
-
     UI32 bgColor = 0x0;
-
     I16 width = 960;
     I16 height = 640;
-
     bool isQuit = false;
 
     HWND hwnd = nullptr;
@@ -32,7 +29,6 @@ struct Windows {
     HBITMAP backBM;
     UI32 **frameBuff;
     MSG curMSG;
-
     Device::LoopEvent loopEvent;
 
     static Windows *getInstance() {
@@ -88,7 +84,7 @@ struct Windows {
         SetForegroundWindow(hwnd);
         ShowWindow(hwnd, SW_NORMAL);
 
-        memset(screenBuff, 0, width * height * 4);
+        memset(screenBuff, 0xff, width * height * 4);
 
         frameBuff = new UI32 *[height];
         for (I16 h = 0; h < height; h++) {
@@ -187,8 +183,8 @@ struct Windows {
                 mpfDT = clock() - curDT;
 
                 if (mpfDT < FRAME_TIME) {
-                    this_thread::sleep_for(
-                        chrono::milliseconds(FRAME_TIME - mpfDT));
+                    std::this_thread::sleep_for(
+                        std::chrono::milliseconds(FRAME_TIME - mpfDT));
                 }
             }
 
@@ -219,31 +215,59 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 }  // namespace DeviceWin32
 
-Device::Device() { DeviceWin32::Windows::getInstance(); }
-
-void Device::drawPixel(I16 x, I16 y, Color color) {
-    DeviceWin32::g_windowInstance->drawPixel(x, y, color);
+Device::Device() {
+	DeviceWin32::Windows::getInstance();
+	I8 succ = Init();
 }
 
-void Device::drawLine(Vec2 from, Vec2 to, Color color) {
-    Vec2 v = to - from;
-    F32 len = v.Length();
-    v.Normalized();
-    while (len > 0) {
-        DeviceWin32::g_windowInstance->drawPixel(from.x, from.y, color);
-        from += v;
-        len -= 1;
-    }
+Device::~Device() {};
+
+I8 Device::Init() {
+	width_ = DeviceWin32::g_windowInstance->width;
+	height_ = DeviceWin32::g_windowInstance->height;
+
+	screen_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
+	for (int i = 0; i < width_; ++i) {
+		screen_buffer_[i] = (Color *)malloc(height_ * sizeof(Color));
+		memset(screen_buffer_[i], 0x00, height_ * sizeof(Color));
+	}
+	return 0;
 }
 
-void Device::setLoopEvent(LoopEvent le) {
-    loopEvent = le;
-    DeviceWin32::g_windowInstance->loopEvent = le;
+Device &Device::GetInstance() {
+    static Device instance;
+    return instance;
 }
 
-I8 Device::loop() {
+void Device::SetLoopEvent(LoopEvent &&le) {
+	loop_event_ = std::move(le);
+	DeviceWin32::g_windowInstance->loopEvent = loop_event_;
+}
+
+I8 Device::Loop() {
     I8 ret = DeviceWin32::g_windowInstance->loop();
     return ret;
+}
+
+void Device::Buffer2Screen(Color **buffer) {
+	DeviceWin32::g_windowInstance->clearScreen();
+	int count = 0;
+	for (I16 x = 0; x < width_; ++x) {
+		for (I16 y = 0; y < height_; ++y) {
+			Color &rgb = buffer[x][y];
+			if (rgb.r != 0) {
+				count++;
+			}
+			//if (screen_buffer_[x][y] != rgb) {
+			//	screen_buffer_[x][y] = rgb;
+				DeviceWin32::g_windowInstance->drawPixel(x, y, rgb);
+			//}
+		}
+	}
+}
+
+void Device::ExitDraw() {
+	DeviceWin32::g_windowInstance->endDraw();
 }
 
 }  // namespace mini3d

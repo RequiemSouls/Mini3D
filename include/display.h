@@ -14,9 +14,9 @@ public:
     Display(const Display&) = delete;
     Display& operator=(const Display&) = delete;
 
-    // Moveable.
-    Display(Display&&) = default;
-    Display& operator=(Display&&) = default;
+    //// Moveable.
+    //Display(Display&&) = default;
+    //Display& operator=(Display&&) = default;
 
     Display();
     explicit Display(const char* mesh_file);
