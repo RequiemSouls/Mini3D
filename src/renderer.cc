@@ -48,19 +48,21 @@ void Renderer::Rasterize(Vector& p1, Vector& p2, Vector& p3) {
     p2.get_x() > -1 && p2.get_x() < 1 && p2.get_y() > -1 && p2.get_y() < 1 &&
         p3.get_x() > -1 && p3.get_x() < 1 && p3.get_y() > -1 && p3.get_y() < 1 )
     {
+		DrawTriangleScanLine(p1, p2, p3);
         //DrawLineDDA(p1, p2);
         //DrawLineDDA(p2, p3);
         //DrawLineDDA(p3, p1);
-		p1.set_x(-0.2);
-		p1.set_y(0.2);
-		p1.set_z(0.1);
-		p2.set_x(0.5);
-		p2.set_y(0.5);
-		p2.set_z(0.1);
-		DrawLineMidPoint(p1, p2);
+		//DrawLineMidPoint(p1, p2);
 		//DrawLineMidPoint(p2, p3);
 		//DrawLineMidPoint(p1, p3);
+		DrawLineBresenham(p1, p2);
+		DrawLineBresenham(p2, p3);
+		DrawLineBresenham(p1, p3);
     }
+}
+
+void Renderer::DrawTriangleScanLine(Vector& p1, Vector& p2, Vector& p3) {
+
 }
 
 void Renderer::DrawLineDDA(Vector& p1, Vector& p2) {
@@ -104,7 +106,7 @@ void Renderer::DrawLineDDA(Vector& p1, Vector& p2) {
 void Renderer::DrawLineMidPoint(Vector& p1, Vector& p2) {
     I32 w = width_ * 0.5;
     I32 h = height_ * 0.5;
-    F32 x1, y1, x2, y2;
+    I32 x1, y1, x2, y2;
     x1 = p1.get_x() * w + w;
     x2 = p2.get_x() * w + w;
     y1 = p1.get_y() * h + h;
@@ -126,29 +128,84 @@ void Renderer::DrawLineMidPoint(Vector& p1, Vector& p2) {
     I32 kx = absdx < 0.00001 ? 0 : dx/absdx;
     I32 ky = absdy < 0.00001 ? 0 : dy/absdy;
     F32 a, b, c;
-    a = y2 - y1;
-    b = x1 - x2;
-    c = x2 * y1 - x1 * y2;
+    a = y1 - y2;
+    b = x2 - x1;
+    c = x1 * y2 - x2 * y1;
     if (absdx > absdy) {
         total = absdx;
         for (I32 i = 0; i < total; ++i) {
             x -= kx;
 			F32 temp = a * x + b * (y - ky * 0.5) + c;
-            if (temp < 0) {
-                y -= ky;
-            }
+			temp *= kx;
+            if (temp < 0 && ky > 0) {
+                y--;
+			} else if (temp > 0 && ky < 0) {
+				y++;
+			}
             DrawPixel(x, height_ - y, Color::WHITE);
         }
     } else if (absdy > absdx) {
         total = absdy;
         for (I32 i = 0; i < total; ++i) {
             y -= ky;
-            if ((a * (x - kx * 0.5) + b * y + c) < 0) {
-                x -= kx;
-            }
+			F32 temp = a * (x - kx * 0.5) + b * y + c;
+			temp *= ky * -1;
+            if (temp < 0 && kx > 0) {
+                x--;
+			} else if (temp > 0 && kx < 0) {
+				x++;
+			}
             DrawPixel(x, height_ - y, Color::WHITE);
         }
     }
+}
+
+void Renderer::DrawLineBresenham(Vector& p1, Vector& p2) {
+    I32 w = width_ * 0.5;
+    I32 h = height_ * 0.5;
+    I32 x1, y1, x2, y2;
+    x1 = p1.get_x() * w + w;
+    x2 = p2.get_x() * w + w;
+    y1 = p1.get_y() * h + h;
+    y2 = p2.get_y() * h + h;
+
+	F32 dx, dy, absdx, absdy;
+	dx = x1 - x2;
+	dy = y1 - y2;
+	absdx = std::abs(dx);
+	absdy = std::abs(dy);
+	if (absdx < 0.00001 && absdy < 0.00001) {
+		return;
+	}
+	I32 x = x1, y = y1;
+	F32 d = 0;
+	I32 stepx = absdx == 0 ? 0 : dx / absdx;
+	I32 stepy = absdy == 0 ? 0 : dy / absdy;
+	if (absdx >= absdy) {
+		I32 total = absdx;
+		F32 k = std::abs(dy / dx);
+		for (I32 i = 0; i < total; ++i) {
+			x -= stepx;
+			d += k;
+			if (d > 1) {
+				y -= stepy;
+				d -= 1;
+			}
+			DrawPixel(x, y, Color::WHITE);
+		}
+	} else if (absdx < absdy) {
+		I32 total = absdy;
+		F32 k = std::abs(dx / dy);
+		for (I32 i = 0; i < total; ++i) {
+			y -= stepy;
+			d += k;
+			if (d > 1) {
+				x -= stepx;
+				d -= 1;
+			}
+			DrawPixel(x, y, Color::WHITE);
+		}
+	}
 }
 
 void Renderer::DrawPixel(I32 x, I32 y, Color c) {

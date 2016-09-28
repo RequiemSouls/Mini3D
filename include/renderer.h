@@ -30,6 +30,8 @@ private:
     void Rasterize(Vector& p1, Vector& p2, Vector& p3);
     void DrawLineDDA(Vector& p1, Vector& p2);
     void DrawLineMidPoint(Vector& p1, Vector& p2);
+	void DrawLineBresenham(Vector& p1, Vector& p2);
+	void DrawTriangleScanLine(Vector& p1, Vector& p2, Vector& p3);
     void DrawPixel(I32 x, I32 y, Color c);
 private:
     I32 first_draw_ = 0;
