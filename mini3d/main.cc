@@ -17,8 +17,8 @@ int main(int /*argc*/, char ** /*args*/) {
 
     mini3d::Device &device = mini3d::Device::GetInstance();
     mini3d::Renderer *r = new mini3d::Renderer(device);
-    // mini3d::Display *root =
-    //     new mini3d::Display("../asset/avg_captainamerica_0.obj");
+	//mini3d::Display *root =
+	//	new mini3d::Display("../asset/avg_captainamerica_0.obj");
     mini3d::Display *root = new mini3d::Display("../asset/cube.obj");
     mini3d::Vector pos {0, 0, 700, 1};
     mini3d::Vector scale {2, 2, 2, 0};
@@ -33,7 +33,7 @@ int main(int /*argc*/, char ** /*args*/) {
         // camera lookat test
         // camera.set_lookat(pos);
         // rotate test
-        delta += 0.03;
+        //delta += 0.03;
         root->set_rotate_v(rotate);
         root->set_rotate_d(delta);
         // scale test

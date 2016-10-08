@@ -19,7 +19,7 @@ public:
     explicit Renderer(Device &device);
     ~Renderer();
 
-    void DrawTriangle(const Vertex &vt1, const Vertex &vt2, const Vertex &vt3,
+    void DrawTriangle(Vertex &vt1, Vertex &vt2, Vertex &vt3,
                       const Matrix &m);
     void Render();
     void Buffer2Screen() const;
@@ -27,12 +27,14 @@ public:
     Camera& camera();
 
 private:
-    void Rasterize(Vector& p1, Vector& p2, Vector& p3);
+    void Rasterize(Vertex& vt1, Vertex& vt2, Vertex& vt3);
     void DrawLineDDA(Vector& p1, Vector& p2);
     void DrawLineMidPoint(Vector& p1, Vector& p2);
 	void DrawLineBresenham(Vector& p1, Vector& p2);
-	void DrawTriangleScanLine(Vector& p1, Vector& p2, Vector& p3);
+    void DrawTriangleScanLine(Vertex* vt1, Vertex* vt2, Vertex* vt3);
+    I32 GetInterp(I32 lv, I32 rv, I32 offset, I32 step);
     void DrawPixel(I32 x, I32 y, Color c);
+    void DrawHorizontalLine(I32 y, I32 lx, I32 rx, Color lc, Color rc);
 private:
     I32 first_draw_ = 0;
     I16 width_ = 0;

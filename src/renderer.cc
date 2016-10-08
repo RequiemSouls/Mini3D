@@ -31,38 +31,126 @@ void Renderer::Render() {
     }
 }
 
-void Renderer::DrawTriangle(const Vertex &vt1, const Vertex &vt2,
-                            const Vertex &vt3, const Matrix &m) {
+void Renderer::DrawTriangle(Vertex &vt1, Vertex &vt2,
+                            Vertex &vt3, const Matrix &m) {
     Matrix mp = camera_.GetMatrix();
-    Vector p1 = mp * m * vt1.p;
-    Vector p2 = mp * m * vt2.p;
-    Vector p3 = mp * m * vt3.p;
-    p1.Homogenize();
-    p2.Homogenize();
-    p3.Homogenize();
-    Rasterize(p1, p2, p3);
+    vt1.p = mp * m * vt1.p;
+    vt2.p = mp * m * vt2.p;
+    vt3.p = mp * m * vt3.p;
+    vt1.p.Homogenize();
+    vt2.p.Homogenize();
+    vt3.p.Homogenize();
+    Rasterize(vt1, vt2, vt3);
 }
 
-void Renderer::Rasterize(Vector& p1, Vector& p2, Vector& p3) {
-    if (p1.get_x() > -1 && p1.get_x() < 1 && p1.get_y() > -1 && p1.get_y() < 1 &&
-    p2.get_x() > -1 && p2.get_x() < 1 && p2.get_y() > -1 && p2.get_y() < 1 &&
-        p3.get_x() > -1 && p3.get_x() < 1 && p3.get_y() > -1 && p3.get_y() < 1 )
+void Renderer::Rasterize(Vertex& vt1, Vertex& vt2, Vertex& vt3) {
+    if (vt1.p.get_x() > -1 && vt1.p.get_x() < 1 && vt1.p.get_y() > -1 && vt1.p.get_y() < 1 &&
+    vt2.p.get_x() > -1 && vt2.p.get_x() < 1 && vt2.p.get_y() > -1 && vt2.p.get_y() < 1 &&
+        vt3.p.get_x() > -1 && vt3.p.get_x() < 1 && vt3.p.get_y() > -1 && vt3.p.get_y() < 1 )
     {
-		DrawTriangleScanLine(p1, p2, p3);
-        //DrawLineDDA(p1, p2);
-        //DrawLineDDA(p2, p3);
-        //DrawLineDDA(p3, p1);
-		//DrawLineMidPoint(p1, p2);
-		//DrawLineMidPoint(p2, p3);
-		//DrawLineMidPoint(p1, p3);
-		DrawLineBresenham(p1, p2);
-		DrawLineBresenham(p2, p3);
-		DrawLineBresenham(p1, p3);
+		DrawTriangleScanLine(&vt1, &vt2, &vt3);
+        //DrawLineDDA(vt1, vt2);
+        //DrawLineDDA(vt2, vt3);
+        //DrawLineDDA(vt3, vt1);
+		//DrawLineMidVToint(vt1, vt2);
+		//DrawLineMidVToint(vt2, vt3);
+		//DrawLineMidVToint(vt1, vt3);
+		DrawLineBresenham(vt1.p, vt2.p);
+		DrawLineBresenham(vt2.p, vt3.p);
+		DrawLineBresenham(vt1.p, vt3.p);
     }
 }
 
-void Renderer::DrawTriangleScanLine(Vector& p1, Vector& p2, Vector& p3) {
+void Renderer::DrawTriangleScanLine(Vertex* vt1, Vertex* vt2, Vertex* vt3) {
+    Vertex* temp = nullptr;
+    // sort
+    if (vt1->p.get_y() > vt2->p.get_y()) { temp = vt1; vt1 = vt2; vt2 = temp; };
+    if (vt2->p.get_y() > vt3->p.get_y()) { temp = vt2; vt2 = vt3; vt3 = temp; };
+    if (vt1->p.get_y() > vt2->p.get_y()) { temp = vt1; vt1 = vt2; vt2 = temp; };
+	if (vt1->p.get_y() == vt2->p.get_y() && vt1->p.get_y() == vt3->p.get_y()) return;
+	if (vt1->p.get_x() == vt2->p.get_x() && vt1->p.get_x() == vt3->p.get_x()) return;
 
+    I32 w = width_ * 0.5;
+    I32 h = height_ * 0.5;
+    I32 tx, ty, mx, my, bx, by;
+    tx = vt3->p.get_x() * w + w;
+    ty = vt3->p.get_y() * h + h;
+    mx = vt2->p.get_x() * w + w;
+    my = vt2->p.get_y() * h + h;
+    bx = vt1->p.get_x() * w + w;
+    by = vt1->p.get_y() * h + h;
+    UI8 tr = vt3->c.r, tg = vt3->c.g, tb = vt3->c.b;
+    UI8 mr = vt2->c.r, mg = vt2->c.g, mb = vt2->c.b;
+    UI8 br = vt1->c.r, bg = vt1->c.g, bb = vt1->c.b;
+    I32 obty = ty - by;
+    I32 obmy = my - by;
+    I32 omty = ty - my;
+    F32 btk = obty == 0 ? 2147483647 : (tx - bx) * 1.0f / obty;
+    F32 bmk = obmy == 0 ? 2147483647 : (mx - bx) * 1.0f / obmy;
+    F32 mtk = omty == 0 ? 2147483647 : (tx - mx) * 1.0f / omty;
+    bool leftT = true;
+    if (bmk > btk) leftT = false;
+    I32 lx = 0, rx = 0;
+    Color lc, rc;
+    for (I32 step = 0, y = by; step <= obmy; y++, step++) {
+        if (leftT) {
+            lx = I32(bx + bmk * step);
+            rx = I32(bx + btk * step);
+            lc.r = GetInterp(br, mr, obmy, step);
+            lc.g = GetInterp(bg, mg, obmy, step);
+            lc.b = GetInterp(bb, mb, obmy, step);
+            rc.r = GetInterp(br, tr, obty, step);
+            rc.g = GetInterp(bg, tg, obty, step);
+            rc.b = GetInterp(bb, tb, obty, step);
+        } else {
+            lx = I32(bx + btk * step);
+            rx = I32(bx + bmk * step);
+            lc.r = GetInterp(br, tr, obty, step);
+            lc.g = GetInterp(bg, tg, obty, step);
+            lc.b = GetInterp(bb, tb, obty, step);
+            rc.r = GetInterp(br, mr, obmy, step);
+            rc.g = GetInterp(bg, mg, obmy, step);
+            rc.b = GetInterp(bb, mb, obmy, step);
+        }
+        DrawHorizontalLine(y, lx, rx, lc, rc);
+    }
+    for (I32 step = 0, y = ty; step <= omty; y--, step++) {
+        if (leftT) {
+            lx = I32(tx - mtk * step);
+            rx = I32(tx - btk * step);
+            lc.r = GetInterp(mr, tr, omty, step);
+            lc.g = GetInterp(mg, tg, omty, step);
+            lc.b = GetInterp(mb, tb, omty, step);
+            rc.r = GetInterp(br, tr, obty, step);
+            rc.g = GetInterp(bg, tg, obty, step);
+            rc.b = GetInterp(bb, tb, obty, step);
+        } else {
+            lx = I32(tx - btk * step);
+            rx = I32(tx - mtk * step);
+            rx = I32(tx - btk * step);
+            lc.r = GetInterp(br, tr, obty, step);
+            lc.g = GetInterp(bg, tg, obty, step);
+            lc.b = GetInterp(bb, tb, obty, step);
+            rc.r = GetInterp(mr, tr, omty, step);
+            rc.g = GetInterp(mg, tg, omty, step);
+            rc.b = GetInterp(mb, tb, omty, step);
+        }
+        DrawHorizontalLine(y, lx, rx, lc, rc);
+    }
+}
+
+I32 Renderer::GetInterp(I32 lv, I32 rv, I32 offset, I32 step) {
+    return offset == 0 ? 2147483647 : lv + (rv - lv) * 0.1f / offset * step;
+}
+
+void Renderer::DrawHorizontalLine(I32 y, I32 lx, I32 rx, Color lc, Color rc) {
+    I32 offx = rx - lx;
+    F32 rstep = offx == 0 ? 0 : (rc.r - lc.r) * 1.0f / offx;
+    F32 gstep = offx == 0 ? 0 : (rc.g - lc.g) * 1.0f / offx;
+    F32 bstep = offx == 0 ? 0 : (rc.b - lc.b) * 1.0f / offx;
+    for (I32 x = lx, step = 0; x <= rx; step++, x++) {
+        DrawPixel(x, y, Color(lc.r + rstep * step, lc.g + gstep * step, lc.b + bstep * step));
+    }
 }
 
 void Renderer::DrawLineDDA(Vector& p1, Vector& p2) {

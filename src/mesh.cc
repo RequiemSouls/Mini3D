@@ -37,7 +37,7 @@ Mesh Mesh::GenByFile(const char *fileName) {
 
         if (strcmp(line_buffer, "v") == 0) {  // vertex
             Vertex v;
-            v.c = Color::WHITE;
+            v.c = Color(rand()%255, rand()%255, rand()%255);
             F32 x, y, z;
             int ret = fscanf(file, "%f %f %f\n", &x, &y, &z);
             v.p = {x, y, z, 1};
