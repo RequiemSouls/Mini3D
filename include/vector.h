@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <array>
 #include <initializer_list>
+#include <cmath>
 namespace mini3d {
 
 template <typename T, std::size_t NUM_OF_DIM>

@@ -18,7 +18,6 @@ public:
     I8 Loop();
     void SetLoopEvent(LoopEvent &&le);
     void Buffer2Screen(Color **buffer);
-    void ExitDraw();
     void GetMaxSize(I16 *w, I16 *h) {
         *w = width_;
         *h = height_;
@@ -34,7 +33,6 @@ private:
     Device();
 
     I8 Init();
-    void Init256ColorTable();
 
     LoopEvent loop_event_ = nullptr;
     UI8 color_hash_[256];
