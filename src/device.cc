@@ -5,6 +5,7 @@
 #include <chrono>
 
 #define FRAME_TIME 33
+#define HEAD_SIZE 54
 namespace mini3d {
     SDL_Renderer* render;
     Device &Device::GetInstance() {
@@ -13,7 +14,7 @@ namespace mini3d {
     }
 
     Device::Device() {
-        I8 succ = Init();
+        Init();
     }
 
     Device::~Device() {};
@@ -40,13 +41,53 @@ namespace mini3d {
         const char* title = "mini3d~~";
         SDL_SetWindowTitle(win, title);
 
-        SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
+        I32 size = height_ * width_ * 3 + HEAD_SIZE;
+        screen_buffer_ = (I8 *)malloc(size);
+        memset(screen_buffer_, 0, size);
 
-        screen_buffer_ = (Color **)malloc(sizeof(Color *) * width_);
-        for (int i = 0; i < width_; ++i) {
-            screen_buffer_[i] = (Color *)malloc(height_ * sizeof(Color));
-            memset(screen_buffer_[i], 0xff, height_ * sizeof(Color));
-        }
+        I8* p = screen_buffer_;
+        // 2 bytes bfType
+        I16 type = 0x4d42;
+        memcpy(p, &type, sizeof(I16));
+        p += 2;
+        // 4 bytes size
+        memcpy(p, &size, sizeof(I32));
+        p += 4;
+        // 2 bytes 0
+        p += 2;
+        // 2 bytes 0
+        p += 2;
+        // 4 bytes data offset, default is 54
+        I32 offset = 54;
+        memcpy(p, &offset, sizeof(I32));
+        p += 4;
+        // head size default 40
+        I32 headSize = 40;
+        memcpy(p, &headSize, sizeof(I32));
+        p += 4;
+        // width height
+        memcpy(p, &width_, sizeof(I16));
+        memset(p + 2, 0, 2);
+        p += 4;
+        memcpy(p, &height_, sizeof(I16));
+        memset(p + 2, 0, 2);
+        p += 4;
+        // planes default 1
+        I16 plane = 1;
+        memcpy(p, &plane, sizeof(I16));
+        p += 2;
+        // bitCount default 24
+        I16 bitCount = 24;
+        memcpy(p, &bitCount, sizeof(I16));
+        p += 2;
+        // compression default 0
+        // size default 0
+        memset(p, 0, sizeof(I32) * 6);
+
+        SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
+        // SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+        // SDL_RenderClear(render);
+
         return 0;
     }
 
@@ -89,23 +130,30 @@ namespace mini3d {
         SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
         SDL_RenderClear(render);
         int count = 0;
-        for (I16 x = 0; x < width_; ++x) {
-            for (I16 y = 0; y < height_; ++y) {
+        I8* p = screen_buffer_ + 54;
+        for (I16 y = 0; y < height_; ++y) {
+            for (I16 x = 0; x < width_; ++x) {
                 Color &rgb = buffer[x][y];
                 if (rgb.r != 0) {
                     count++;
                 }
 
-                if (screen_buffer_[x][y] != rgb) {
-                    screen_buffer_[x][y] = rgb;
-                }
-                SDL_SetRenderDrawColor(render, rgb.r, rgb.g, rgb.b, 255);
-                SDL_RenderDrawPoint(render, x, y);
+                memset(p, rgb.r, 1);
+                memset(p + 1, rgb.g, 1);
+                memset(p + 2, rgb.b, 1);
+                p += 3;
             }
         }
         SDL_LogDebug(SDL_LOG_CATEGORY_RENDER,
                  "Mesh Count: %d FPS: %.1f/%.1fms point : %d %s\n",
                  mesh_count_, fps_, render_time_, count, log_);
+
+        I32 size = height_ * width_ * 3 + HEAD_SIZE;
+        SDL_RWops* ops = SDL_RWFromMem(screen_buffer_, size);
+        SDL_Surface* su = SDL_LoadBMP_RW(ops, 1);
+        SDL_Texture* tex = SDL_CreateTextureFromSurface(render, su);
+        SDL_FreeSurface(su);
+        SDL_RenderCopy(render, tex, NULL, NULL);
         SDL_RenderPresent(render);
     }
 }

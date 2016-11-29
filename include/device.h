@@ -41,9 +41,8 @@ private:
     I32 mesh_count_ = 0;
     F32 fps_ = 0.0;
     F32 render_time_ = 0.0;
-    I32 frame_count_ = 0;
     I8 log_[128];
-    Color **screen_buffer_ = nullptr;
+    I8 *screen_buffer_ = nullptr;
 };
 
 }  // namespace mini3d
