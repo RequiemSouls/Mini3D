@@ -1,6 +1,6 @@
 #include "display.h"
 
-namespace mini3d {
+MINI_NS_BEGIN
 
 Display::Display() :
 pos_(Vector{ 0, 0, 0, 0 }),
@@ -53,4 +53,5 @@ const F32& Display::rotate_d() const { return rotate_d_; }
 void Display::set_scale(const Vector& scale) { scale_ = Vector(scale); }
 
 const Vector& Display::scale() const { return scale_; }
-}  // namespace mini3d
+
+MINI_NS_END

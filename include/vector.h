@@ -5,7 +5,9 @@
 #include <array>
 #include <initializer_list>
 #include <cmath>
-namespace mini3d {
+#include "config.h"
+
+MINI_NS_BEGIN
 
 template <typename T, std::size_t NUM_OF_DIM>
     class BaseVector {
@@ -125,6 +127,10 @@ VectorImpl() : VectorImpl({0.0f, 0.0f, 0.0f, 1.0f}) {}
         set_z(get_z() / get_w());
         set_w(1.0f);
     }
+
+    void print() const {
+        printf("{x: %2f, y: %2f, z: %2f}\n", get_x(), get_y(), get_z());
+    }
 };
 
 template <typename T>
@@ -176,5 +182,5 @@ template <typename T, std::size_t NUM_OF_DIM>
     return !lhs.IsEqualTo(rhs);
 }
 
-};
+MINI_NS_END
 #endif

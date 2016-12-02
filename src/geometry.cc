@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-namespace mini3d {
+MINI_NS_BEGIN
 
 // const F32 identity[] = {1.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f,
 //                         0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 1.f};
@@ -27,4 +27,4 @@ const Color Color::WHITE = Color(255, 255, 255);
 //         m.m[3][0] * v.get_x() + m.m[3][1] * v.get_y() + m.m[3][2] * v.get_z() + m.m[3][3] * v.get_w());
 // }
 
-}  // namespace mini3d
+MINI_NS_END

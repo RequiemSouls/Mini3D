@@ -5,8 +5,9 @@
 
 #include "geometry.h"
 #include "renderer.h"
+#include "config.h"
 
-namespace mini3d {
+MINI_NS_BEGIN
 
 class Mesh {
 public:
@@ -20,6 +21,6 @@ private:
     std::vector<Vertex> vertices_;
 };
 
-}  // namespace mini3d
+MINI_NS_END
 
 #endif  // MINI3D_MESH_H_

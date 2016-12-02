@@ -2,16 +2,16 @@
 #define MINI3D_COLOR_H_
 
 #include "types.h"
+#include "config.h"
 
-namespace mini3d {
-
+MINI_NS_BEGIN
 struct Color {
-    UI8 r = 0;
-    UI8 g = 0;
-    UI8 b = 0;
+    F32 r = 0;
+    F32 g = 0;
+    F32 b = 0;
 
     Color() = default;
-    Color(UI8 cr, UI8 cg, UI8 cb) {
+    Color(F32 cr, F32 cg, F32 cb) {
         r = cr;
         g = cg;
         b = cb;
@@ -25,9 +25,13 @@ struct Color {
         return (r != other.r) || (g != other.g) || (b != other.b);
     }
 
+    void print() const {
+        printf("c = {r: %f, g: %f, b: %f}\n", r, g, b);
+    }
+
     static const Color ZERO;
     static const Color WHITE;
 };
 
-} // namespace mini3d
+MINI_NS_END
 #endif // MINI3D_COLOR_H_

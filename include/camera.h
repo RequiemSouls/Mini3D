@@ -3,8 +3,9 @@
 
 #include "geometry.h"
 #include "types.h"
+#include "config.h"
 
-namespace mini3d {
+MINI_NS_BEGIN
 //面向z轴的摄像机
 class Camera {
 public:
@@ -33,6 +34,5 @@ private:
     F32 ratio_ = 1.0f;
 };
 
-}  // namespace mini3d
-
+MINI_NS_END
 #endif

@@ -3,6 +3,7 @@
 *.swp
 .#*
 build/
+xcode_build/
 Makefile
 proj.win32
 bin

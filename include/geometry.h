@@ -5,8 +5,9 @@
 #include "matrix.h"
 #include "color.h"
 #include "types.h"
+#include "config.h"
 
-namespace mini3d {
+MINI_NS_BEGIN
 #define PI 3.14159f
 
 typedef VectorImpl<F32, 2> Vec2;
@@ -17,9 +18,13 @@ typedef MatrixImpl<F32, 4, 4> Matrix;
 struct Vertex {
     Vector p;
     Color c;
+
+    void print() const {
+        p.print();
+        c.print();
+    }
 };
 
-
-}  // namespace mini3d
+MINI_NS_END
 
 #endif  // MINI3D_GEOMETRY_H_

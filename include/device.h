@@ -5,18 +5,20 @@
 
 #include <string.h>
 #include "geometry.h"
+#include "config.h"
 
-namespace mini3d {
-
+MINI_NS_BEGIN
 class Device {
 public:
     typedef std::function<void()> LoopEvent;
+    typedef std::function<void(I32)> KeyDownEvent;
 
     static Device &GetInstance();
     ~Device();
 
     I8 Loop();
     void SetLoopEvent(LoopEvent &&le);
+    void SetKeyDownEvent(KeyDownEvent &&le);
     void Buffer2Screen(Color **buffer);
     void GetMaxSize(I16 *w, I16 *h) {
         *w = width_;
@@ -35,6 +37,7 @@ private:
     I8 Init();
 
     LoopEvent loop_event_ = nullptr;
+    KeyDownEvent keydown_event_ = nullptr;
     UI8 color_hash_[256];
     I16 width_ = 0;
     I16 height_ = 0;
@@ -45,6 +48,5 @@ private:
     I8 *screen_buffer_ = nullptr;
 };
 
-}  // namespace mini3d
-
+MINI_NS_END
 #endif  // MINI3D_DEVICE_H_

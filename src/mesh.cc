@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-namespace mini3d {
+MINI_NS_BEGIN
 
 Mesh Mesh::GenTriangle() {
     Mesh mesh;
@@ -37,6 +37,7 @@ Mesh Mesh::GenByFile(const char *fileName) {
 
         if (strcmp(line_buffer, "v") == 0) {  // vertex
             Vertex v;
+            // F32 r = mesh.vertices_.size() * 70 + 70;
             v.c = Color(rand()%255, rand()%255, rand()%255);
             F32 x, y, z;
             int ret = fscanf(file, "%f %f %f\n", &x, &y, &z);
@@ -53,15 +54,15 @@ Mesh Mesh::GenByFile(const char *fileName) {
             int vi1, vi2, vi3;
             int uvi1, uvi2, uvi3;
             int vni1, vni2, vni3;
-            // int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vi1, &uvi1,
-            //                  &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
-            // if (ret == EOF || ret != 9) {
-            //     break;
-            // }
-            int ret = fscanf(file, "%d//%d %d//%d %d//%d\n", &vi1, &vni1, &vi2, &vni2, &vi3, &vni3);
-            if (ret == EOF || ret != 6) {
+            int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vi1, &uvi1,
+                             &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
+            if (ret == EOF || ret != 9) {
                 break;
             }
+            // int ret = fscanf(file, "%d//%d %d//%d %d//%d\n", &vi1, &vni1, &vi2, &vni2, &vi3, &vni3);
+            // if (ret == EOF || ret != 6) {
+            //     break;
+            // }
             mesh.indices_.push_back(vi1);
             mesh.indices_.push_back(vi2);
             mesh.indices_.push_back(vi3);
@@ -72,7 +73,7 @@ Mesh Mesh::GenByFile(const char *fileName) {
 
 void Mesh::Draw(Renderer *r, const Matrix &m) {
     for (UI32 i = 0; i < indices_.size(); i += 3) {
-        // printf("%d %d %d %d\n", vertices_.size(), indices_.at(i),
+        // printf("%d %d %d\n", indices_.at(i),
         // indices_.at(i + 1), indices_.at(i + 2));
         Vertex vt1 = vertices_.at(indices_.at(i) - 1);
         Vertex vt2 = vertices_.at(indices_.at(i + 1) - 1);
@@ -81,4 +82,4 @@ void Mesh::Draw(Renderer *r, const Matrix &m) {
     }
 }
 
-}  // namespace mini3d
+MINI_NS_END

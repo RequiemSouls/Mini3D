@@ -3,7 +3,7 @@
 #include "vector.h"
 #include "camera.h"
 
-namespace mini3d {
+MINI_NS_BEGIN
 
 Matrix Camera::GetMatrix() const {
     return GetPerspective() * GetView();
@@ -60,4 +60,4 @@ void Camera::set_ratio(const F32& ratio) { ratio_ = ratio; }
 
 const F32& Camera::ratio() const { return ratio_; }
 
-}  // namespace mini3d
+MINI_NS_END

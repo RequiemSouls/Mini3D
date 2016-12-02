@@ -4,8 +4,10 @@
 #include "vector.h"
 #include <string.h>
 #include <math.h>
+#include "config.h"
+#include "SDL.h"
 
-namespace mini3d {
+MINI_NS_BEGIN
 
 template <typename T, std::size_t NUM_OF_ROWS, std::size_t NUM_OF_COLS>
     class BaseMatrix {
@@ -154,5 +156,5 @@ template <typename T, std::size_t ROW, std::size_t COL>
     return !lhs.IsEqualTo(rhs);
 }
 
-}  // namespace mini3d
+MINI_NS_END
 #endif  // MINI3D_MATRIX_H_

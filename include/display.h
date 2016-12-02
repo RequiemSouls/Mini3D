@@ -5,9 +5,9 @@
 #include "geometry.h"
 #include "mesh.h"
 #include "renderer.h"
+#include "config.h"
 
-namespace mini3d {
-
+MINI_NS_BEGIN
 class Display {
 public:
     // No copy.
@@ -48,6 +48,6 @@ private:
     Vector scale_;
 };
 
-}  // namespace mini3d
+MINI_NS_END
 
 #endif
