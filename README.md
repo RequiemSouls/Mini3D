@@ -20,6 +20,7 @@ install SDL2 & CMake.
 
 # Documents
 ## Geomtry
+use google-test to ensure correntness 
 * `vector(x, y, z, w)`
 * `color(r, g, b)`
 * `matrix(F32[4][4])`
@@ -55,5 +56,14 @@ install SDL2 & CMake.
 
 ## drawTrangle()
 * `cull` discard the triangle outside the view frustum
-* TODO `cut`
 * `rasterization` computer fragment depend on screen position `interpolation`
+
+# TODO
+## Render
+* `cut`
+* `texture`
+* `material`
+* `light`
+
+## Tool
+* Introducing `imgui` to improve usability
