@@ -18,11 +18,11 @@ int main(int /*argc*/, char ** /*args*/) {
 
     mini3d::Device &device = mini3d::Device::GetInstance();
     mini3d::Renderer *r = new mini3d::Renderer(device);
-    mini3d::Display *root =
-     new mini3d::Display("../../asset/avg_captainamerica_0.obj");
-    // mini3d::Display *root = new mini3d::Display("../../asset/line.obj");
+    // mini3d::Display *root =
+    //  new mini3d::Display("../asset/avg_captainamerica_0.obj");
+    mini3d::Display *root = new mini3d::Display("../asset/cube.obj");
     mini3d::Vector pos {0, -400, 800, 1};
-    mini3d::Vector scale {4, 4, 4, 0};
+    mini3d::Vector scale {1, 1, 1, 0};
     mini3d::Vector rotate {0, 1, 0, 0};
     mini3d::F32 delta = 0;
     mini3d::F32 deltaOffset = 0;
@@ -42,11 +42,11 @@ int main(int /*argc*/, char ** /*args*/) {
             deltaOffset = -0.03;
             break;
         case SDLK_a:
-            stop = false;
             rotate.set_x(0);
             rotate.set_y(1);
             rotate.set_z(0);
             deltaOffset = 0.03;
+            stop = false;
             break;
         case SDLK_s:
             rotate.set_x(1);
@@ -60,7 +60,6 @@ int main(int /*argc*/, char ** /*args*/) {
             rotate.set_y(0);
             rotate.set_z(0);
             deltaOffset = 0.03;
-
             stop = false;
             break;
         }
@@ -73,7 +72,7 @@ int main(int /*argc*/, char ** /*args*/) {
         // pos.set_z(((int)pos.get_z() + 1) % 500 + 500);
         root->set_pos(pos);
         // camera lookat test
-        // camera.set_lookat(pos);
+        camera.set_lookat(pos);
         // rotate test
         delta += deltaOffset;
         root->set_rotate_v(rotate);

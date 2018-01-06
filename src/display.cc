@@ -30,7 +30,9 @@ void Display::Draw(Renderer* render, const Matrix& m) {
     Matrix scale = Matrix::IDENTITY();
     scale.Scale(scale_);
 
-    mesh_.Draw(render, transfer * rotate * scale * m);
+    Matrix finalM = transfer * rotate * scale * m;
+
+    mesh_.Draw(render, finalM);
     for (Display* display : children_) {
         display->Draw(render, transfer * rotate * scale * m);
     }

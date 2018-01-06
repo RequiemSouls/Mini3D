@@ -94,7 +94,7 @@ I8 Device::Init() {
 }
 
 void Device::SetLoopEvent(LoopEvent &&le) { loop_event_ = std::move(le); }
-void Device::SetKeyDownEvent(KeyDownEvent &&le) { keydown_event_ = std::move(le); }
+void Device::SetKeyDownEvent(KeyDownEvent &&kde) { keydown_event_ = std::move(kde); }
 
 I8 Device::Loop() {
     I16 clocks_per_ms = CLOCKS_PER_SEC / 1000.0;

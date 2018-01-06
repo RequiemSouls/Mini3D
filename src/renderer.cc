@@ -72,6 +72,7 @@ void Renderer::DrawTriangle(Vertex &vt1, Vertex &vt2,
 }
 
 void Renderer::Rasterize(Vertex& vt1, Vertex& vt2, Vertex& vt3) {
+    // cull
     if (vt1.p.get_x() > 1 or vt1.p.get_x() < -1
         or vt1.p.get_y() > 1 or vt1.p.get_y() < -1
         or vt1.p.get_z() > 1 or vt1.p.get_z() < -1) {

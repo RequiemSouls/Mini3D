@@ -18,7 +18,7 @@ public:
 
     I8 Loop();
     void SetLoopEvent(LoopEvent &&le);
-    void SetKeyDownEvent(KeyDownEvent &&le);
+    void SetKeyDownEvent(KeyDownEvent &&kde);
     void Buffer2Screen(Color **buffer);
     void GetMaxSize(I16 *w, I16 *h) {
         *w = width_;

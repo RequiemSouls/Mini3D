@@ -9,9 +9,9 @@ Mesh Mesh::GenTriangle() {
     for (I16 i = 0; i < 3; i++) {
         mesh.indices_.push_back(i);
         Vertex vt;
-        vt.p.set_x(900.0f);   // rand() % 500 * 1.0f;
-        vt.p.set_y(900.0f);   // rand() % 500 * 1.0f;
-        vt.p.set_z(1000.0f);  // rand() % 400 * 1.0f + 550.0f;
+        vt.p.set_x(rand() % 500 * 1.0f);
+        vt.p.set_y(rand() % 500 * 1.0f);
+        vt.p.set_z(rand() % 400 * 1.0f + 550.0f);
         vt.c.r = (I32)rand() * 1.0 / RAND_MAX * 255;
         vt.c.g = (I32)rand() * 1.0 / RAND_MAX * 255;
         vt.c.b = (I32)rand() * 1.0 / RAND_MAX * 255;
@@ -54,15 +54,15 @@ Mesh Mesh::GenByFile(const char *fileName) {
             int vi1, vi2, vi3;
             int uvi1, uvi2, uvi3;
             int vni1, vni2, vni3;
-            int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vi1, &uvi1,
-                             &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
-            if (ret == EOF || ret != 9) {
-                break;
-            }
-            // int ret = fscanf(file, "%d//%d %d//%d %d//%d\n", &vi1, &vni1, &vi2, &vni2, &vi3, &vni3);
-            // if (ret == EOF || ret != 6) {
+            // int ret = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vi1, &uvi1,
+            //                  &vni1, &vi2, &uvi2, &vni2, &vi3, &uvi3, &vni3);
+            // if (ret == EOF || ret != 9) {
             //     break;
             // }
+            int ret = fscanf(file, "%d//%d %d//%d %d//%d\n", &vi1, &vni1, &vi2, &vni2, &vi3, &vni3);
+            if (ret == EOF || ret != 6) {
+                break;
+            }
             mesh.indices_.push_back(vi1);
             mesh.indices_.push_back(vi2);
             mesh.indices_.push_back(vi3);
@@ -72,6 +72,7 @@ Mesh Mesh::GenByFile(const char *fileName) {
 }
 
 void Mesh::Draw(Renderer *r, const Matrix &m) {
+  printf("Mesh::Draw indices count %lu \n", indices_.size());
     for (UI32 i = 0; i < indices_.size(); i += 3) {
         // printf("%d %d %d\n", indices_.at(i),
         // indices_.at(i + 1), indices_.at(i + 2));
