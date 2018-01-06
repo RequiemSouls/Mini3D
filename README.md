@@ -26,7 +26,7 @@ use google-test to ensure correntness
 * `matrix(F32[4][4])`
 
 ## Device
-* device&platform initalize (use sdl2)
+device&platform initalize (use sdl2)
 * `void Buffer2Screen(Color **buffer)` show `RenderBuffer` on screen
 * `void SetLoopEvent(LoopEvent &&le)` program main loop
 * `void SetKeyDownEvent(KeyDownEvent &&kde)` program keyboward handle event
@@ -35,7 +35,7 @@ use google-test to ensure correntness
 * Now a vertex includes the `color` & `position(vector)` and will include `UV(vector2)` later on.
 
 ## Mesh
-* Mesh is used for read model file and save model data(indexArray & vertexArray)
+Mesh is used for read model file and save model data(indexArray & vertexArray)
 * `static Mesh genTriangle()` generate a random triangle
 * `static Mesh genByFile(fileName)` load data from model file(currently only supported *.obj file)
 * `void draw(render, matrix)` draw the mesh on screen
