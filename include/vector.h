@@ -171,6 +171,16 @@ template <typename T, std::size_t NUM_OF_DIM>
 }
 
 template <typename T, std::size_t NUM_OF_DIM>
+    VectorImpl<T, NUM_OF_DIM> operator*(const VectorImpl<T, NUM_OF_DIM> &lhs,
+                                        const float scale) {
+    VectorImpl<T, NUM_OF_DIM> result;
+    for (std::size_t i = 0; i < NUM_OF_DIM; ++i) {
+        result.set_value(i, lhs.get_value(i) * scale);
+    }
+    return result;
+}
+
+template <typename T, std::size_t NUM_OF_DIM>
     bool operator==(const VectorImpl<T, NUM_OF_DIM> &lhs,
                     const VectorImpl<T, NUM_OF_DIM> &rhs) {
     return lhs.IsEqualTo(rhs);

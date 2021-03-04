@@ -28,13 +28,16 @@ public:
     Camera& camera();
 
 private:
-    void Rasterize(Vertex& vt1, Vertex& vt2, Vertex& vt3);
+    void Cut(Vertex& vt1, Vertex& vt2, Vertex& vt3);
+    char CheckPoint(Vector &p);
+    Vertex FindIntersectionVertex(char section, Vertex &vt1, Vertex &vt2);
+    void Rasterize(Vertex vt1, Vertex vt2, Vertex vt3);
     void DrawLineDDA(Vector& p1, Vector& p2);
     void DrawLineMidPoint(Vector& p1, Vector& p2);
     void DrawLineBresenham(Vector& p1, Vector& p2);
     void DrawTriangleScanLine(Vertex* vt1, Vertex* vt2, Vertex* vt3);
     void DrawPixel(I32 x, I32 y, F32 z, const Color &c);
-    void DrawHorizontalLine(const Vertex &lv, const Vertex &rv);
+    void DrawHorizontalLine(Vertex &lv, Vertex &rv);
     Vertex GetInterp(const Vertex &v1, const Vertex &v2, I32 total);
     Vertex OnStep(const Vertex &start, const Vertex &k, I32 step);
     Matrix GetScreenMatrix();

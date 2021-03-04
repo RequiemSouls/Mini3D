@@ -11,6 +11,7 @@ class Camera {
 public:
     Matrix GetMatrix() const;
 
+void set_near(F32 near) {near_ = near;}
     void set_ratio(const F32& ratio);
     const F32& ratio() const;
 
@@ -22,7 +23,7 @@ private:
     Matrix GetView() const;
 
 private:
-    F32 near_ = 500.0f;
+    F32 near_ = 200.0f;
     F32 far_ = 1000.0f;
     Vector lookat_ = Vector{0.0f, 0.0f, 1.0f, 1.0f};
     Vector pos_ = Vector{0.0f, 0.0f, 0.0f, 1.0f};

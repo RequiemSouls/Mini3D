@@ -25,6 +25,30 @@ struct Color {
         return (r != other.r) || (g != other.g) || (b != other.b);
     }
 
+    Color operator-(const Color &rc) {
+        Color c;
+        c.r = r - rc.r;
+        c.g = g - rc.g;
+        c.b = b - rc.b;
+        return c;
+    }
+
+    Color operator+(const Color &rc) {
+        Color c;
+        c.r = r + rc.r;
+        c.g = g + rc.g;
+        c.b = b + rc.b;
+        return c;
+    }
+
+    Color operator*(const F32 rhs) {
+        Color c;
+        c.r = r * rhs;
+        c.g = g * rhs;
+        c.b = b * rhs;
+        return c;
+    }
+
     void print() const {
         printf("c = {r: %f, g: %f, b: %f}\n", r, g, b);
     }

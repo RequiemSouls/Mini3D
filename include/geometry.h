@@ -23,7 +23,25 @@ struct Vertex {
         p.print();
         c.print();
     }
-};
+    Vertex operator-(const Vertex &rvt) {
+    	Vertex vt;
+    	vt.c = c - rvt.c;
+    	vt.p = p - rvt.p;
+    	return vt;
+    }
+    Vertex operator+(const Vertex &rvt) {
+    	Vertex vt;
+    	vt.c = c + rvt.c;
+    	vt.p = p + rvt.p;
+    	return vt;
+    }
+    Vertex operator*(const F32 lhs) {
+    	Vertex vt;
+    	vt.c = c * lhs;
+    	vt.p = p * lhs;
+    	return vt;
+    }
+  };
 
 MINI_NS_END
 
