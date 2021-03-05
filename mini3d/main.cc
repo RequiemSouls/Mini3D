@@ -29,7 +29,6 @@ int main(int /*argc*/, char ** /*args*/) {
   bool stop = false;
   mini3d::Camera &camera = r->camera();
 
-  mini3d::F32 near = 300.0f;
   device.SetKeyDownEvent([&stop, &deltaOffset, &rotate](mini3d::I32 type) {
     switch (type) {
     case SDLK_q:
@@ -66,7 +65,7 @@ int main(int /*argc*/, char ** /*args*/) {
     }
   });
   device.SetLoopEvent([&stop, &deltaOffset, &rotate, &delta, &scale, &camera,
-                       &pos, &r, &root, &near]() {
+                       &pos, &r, &root]() {
     if (stop) {
       return;
     }
@@ -84,11 +83,6 @@ int main(int /*argc*/, char ** /*args*/) {
     r->Clean();
     root->Draw(r);
     r->Buffer2Screen();
-    near += 1;
-    if (near > 500) {
-        near = 300;
-    }
-    camera.set_near(near);
   });
 
   mini3d::I32 ret = device.Loop();

@@ -21,8 +21,8 @@ public:
     void SetKeyDownEvent(KeyDownEvent &&kde);
     void Buffer2Screen(Color **buffer);
     void GetMaxSize(I16 *w, I16 *h) {
-        *w = width_;
-        *h = height_;
+        *w = width_/sampleRate_;
+        *h = height_/sampleRate_;
     }
 
     void set_mesh_count(I32 count) { mesh_count_ = count; }
@@ -46,6 +46,7 @@ private:
     F32 render_time_ = 0.0;
     I8 log_[128];
     I8 *screen_buffer_ = nullptr;
+    F32 sampleRate_ = 1;
 };
 
 MINI_NS_END

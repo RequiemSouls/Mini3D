@@ -37,8 +37,8 @@ Mesh Mesh::GenByFile(const char *fileName) {
 
     if (strcmp(line_buffer, "v") == 0) { // vertex
       Vertex v;
-      F32 r = mesh.vertices_.size() * 70 + 70;
-      v.c = Color(rand() % 255, rand() % 255, rand() % 255);
+      // F32 r = mesh.vertices_.size() * 70 + 70;
+      // v.c = Color(rand() % 255, rand() % 255, rand() % 255);
       F32 x, y, z;
       int ret = fscanf(file, "%f %f %f\n", &x, &y, &z);
       v.p = {x, y, z, 1};
@@ -67,6 +67,14 @@ Mesh Mesh::GenByFile(const char *fileName) {
       mesh.indices_.push_back(vi1);
       mesh.indices_.push_back(vi2);
       mesh.indices_.push_back(vi3);
+    } else if (strcmp(line_buffer, "c") == 0) {  // color 
+      int vi, r, g, b;
+      int ret = fscanf(file, "%d %d %d %d\n", &vi, &r, &g, &b);
+      if (ret == EOF || ret != 4) {
+        break;
+      }
+      Vertex &vt = mesh.vertices_.at(vi- 1);
+      vt.c = Color(r, g, b);
     }
   }
   return mesh;

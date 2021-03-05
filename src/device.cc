@@ -43,7 +43,7 @@ I8 Device::Init() {
     const char* title = "mini3d~~";
     SDL_SetWindowTitle(win, title);
 
-    I32 size = height_ * width_ * 3 + HEAD_SIZE;
+    I32 size = height_ / sampleRate_ * width_ / sampleRate_ * 3 + HEAD_SIZE;
     screen_buffer_ = (I8 *)malloc(size);
     memset(screen_buffer_, 0, size);
 
@@ -68,10 +68,12 @@ I8 Device::Init() {
     memcpy(p, &headSize, sizeof(I32));
     p += 4;
     // width height
-    memcpy(p, &width_, sizeof(I16));
+    I16 sampleWidth = width_/sampleRate_;
+    I16 sampleHeight = height_/sampleRate_;
+    memcpy(p, &sampleWidth, sizeof(I16));
     memset(p + 2, 0, 2);
     p += 4;
-    memcpy(p, &height_, sizeof(I16));
+    memcpy(p, &sampleHeight, sizeof(I16));
     memset(p + 2, 0, 2);
     p += 4;
     // planes default 1
@@ -137,8 +139,8 @@ void Device::Buffer2Screen(Color **buffer) {
     SDL_RenderClear(render);
     int count = 0;
     I8* p = screen_buffer_ + 54;
-    for (I16 y = 0; y < height_; ++y) {
-        for (I16 x = 0; x < width_; ++x) {
+    for (I16 y = 0; y < height_/sampleRate_; ++y) {
+        for (I16 x = 0; x < width_/sampleRate_; ++x) {
             Color &rgb = buffer[x][y];
             if (rgb.r != 0) {
                 count++;
@@ -154,7 +156,7 @@ void Device::Buffer2Screen(Color **buffer) {
                  "Mesh Count: %d FPS: %.1f/%.1fms point : %d %s\n",
                  mesh_count_, fps_, render_time_, count, log_);
 
-    I32 size = height_ * width_ * 3 + HEAD_SIZE;
+    I32 size = height_/sampleRate_ * width_/sampleRate_ * 3 + HEAD_SIZE;
     SDL_RWops* ops = SDL_RWFromMem(screen_buffer_, size);
     SDL_Surface* su = SDL_LoadBMP_RW(ops, 1);
     SDL_Texture* tex = SDL_CreateTextureFromSurface(render, su);
