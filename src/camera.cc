@@ -6,7 +6,15 @@
 MINI_NS_BEGIN
 
 Matrix Camera::GetMatrix() const {
-    return GetPerspective() * GetView();
+    if (isOrthogonal) {
+        return GetOrthogonal() * GetView();
+    } else {
+        return GetPerspective() * GetView();
+    }
+}
+
+void Camera::SetCameraMode(bool isOrthogonal) {
+    this->isOrthogonal = isOrthogonal;
 }
 
 Matrix Camera::GetPerspective() const {
@@ -17,6 +25,12 @@ Matrix Camera::GetPerspective() const {
     m.set_value(2, 2, (near_ + far_) / (far_ - near_));
     m.set_value(2, 3, (2 * far_ * near_) / (near_ - far_));
     m.set_value(3, 2, 1.0f);
+    return m;
+}
+Matrix Camera::GetOrthogonal() const {
+    Matrix m = Matrix::IDENTITY();
+    m.set_value(0, 0, 2/960.0f);
+    m.set_value(1, 1, -2/640.0f);
     return m;
 }
 

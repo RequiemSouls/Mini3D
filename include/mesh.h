@@ -6,6 +6,7 @@
 #include "geometry.h"
 #include "renderer.h"
 #include "config.h"
+#include "ui/imgui.h"
 
 MINI_NS_BEGIN
 
@@ -13,6 +14,7 @@ class Mesh {
 public:
     static Mesh GenTriangle();
     static Mesh GenByFile(const char *fileName);
+    static Mesh GenByImDrawData(ImDrawData* draw_data);
 
     void Draw(Renderer *r, const Matrix &m);
 

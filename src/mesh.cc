@@ -73,15 +73,37 @@ Mesh Mesh::GenByFile(const char *fileName) {
       if (ret == EOF || ret != 4) {
         break;
       }
-      Vertex &vt = mesh.vertices_.at(vi- 1);
+      Vertex &vt = mesh.vertices_.at(vi - 1);
       vt.c = Color(r, g, b);
     }
   }
   return mesh;
 }
 
+Mesh Mesh::GenByImDrawData(ImDrawData* draw_data) {
+  Mesh mesh;
+  for (int n = 0; n < draw_data->CmdListsCount; n++) {
+    const ImDrawList* cmd_list = draw_data->CmdLists[n];
+    const ImDrawVert* vtx_buffer = cmd_list->VtxBuffer.Data;
+    const ImDrawIdx* idx_buffer = cmd_list->IdxBuffer.Data;
+    int vtxSize = cmd_list->VtxBuffer.Size;
+    for (int n = 0; n < vtxSize; n ++) {
+      Vertex v;
+      v.p = {vtx_buffer->pos.x - 480, vtx_buffer->pos.y - 320, -1, 1};
+      v.c = Color(vtx_buffer->col & 0x000000ff, vtx_buffer->col & 0x0000ff00 >> 8, vtx_buffer->col & 0x00ff0000 >> 16);
+      mesh.vertices_.push_back(v);
+      vtx_buffer++;
+    }
+    for (int n = 0; n < cmd_list->IdxBuffer.Size; n ++) {
+      mesh.indices_.push_back(idx_buffer[n] + 1);
+    }
+  }
+  // printf("=============gen ui mesh. vertex num %lu\n", mesh.indices_.size());
+  return mesh;
+}
+
 void Mesh::Draw(Renderer *r, const Matrix &m) {
-  printf("Mesh::Draw indices count %lu \n", indices_.size());
+  // printf("Mesh::Draw indices count %lu \n", indices_.size());
   for (UI32 i = 0; i < indices_.size(); i += 3) {
     // printf("%d %d %d\n", indices_.at(i),
     // indices_.at(i + 1), indices_.at(i + 2));

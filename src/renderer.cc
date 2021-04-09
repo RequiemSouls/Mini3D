@@ -75,7 +75,8 @@ void Renderer::DrawTriangle(Vertex &vt1, Vertex &vt2, Vertex &vt3,
   vt3.p.Homogenize();
 
   // 剔除、裁剪
-  Cut(vt1, vt2, vt3);
+  // Cut(vt1, vt2, vt3);
+  Rasterize(vt1, vt2, vt3);
 }
 
 void Renderer::Cut(Vertex &vt1, Vertex &vt2, Vertex &vt3) {

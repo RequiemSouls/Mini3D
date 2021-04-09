@@ -11,11 +11,14 @@ set(CMAKE_CXX_FLAGS "-g -O2")
 endif()
 
 include_directories("./include")
+include_directories("./thirdpart")
 
 file(GLOB MINI3D_DEPENDS "src/*.cc")
 file(GLOB MINI3D_MAIN_DEPENDS "mini3d/main.cc")
+# include thirdpart source
+file(GLOB MINI3D_THIRD_PART_DEPENDS "thirdpart/ui/*.*")
 
-add_executable(mini3d ${MINI3D_DEPENDS} ${MINI3D_MAIN_DEPENDS}) 
+add_executable(mini3d ${MINI3D_DEPENDS} ${MINI3D_MAIN_DEPENDS} ${MINI3D_THIRD_PART_DEPENDS}) 
 
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})

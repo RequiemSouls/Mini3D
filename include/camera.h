@@ -11,15 +11,17 @@ class Camera {
 public:
     Matrix GetMatrix() const;
 
-void set_near(F32 near) {near_ = near;}
+    void set_near(F32 near) {near_ = near;}
     void set_ratio(const F32& ratio);
     const F32& ratio() const;
 
     void set_lookat(const Vector& lookat);
     const Vector& lookat() const;
 
+    void SetCameraMode(bool isOrthogonal);
 private:
     Matrix GetPerspective() const;
+    Matrix GetOrthogonal() const;
     Matrix GetView() const;
 
 private:
@@ -33,6 +35,7 @@ private:
     F32 angle_ = PI * 0.5f;
     /*!< h/w */
     F32 ratio_ = 1.0f;
+    bool isOrthogonal = false;
 };
 
 MINI_NS_END

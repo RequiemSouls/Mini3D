@@ -97,6 +97,7 @@ I8 Device::Init() {
 
 void Device::SetLoopEvent(LoopEvent &&le) { loop_event_ = std::move(le); }
 void Device::SetKeyDownEvent(KeyDownEvent &&kde) { keydown_event_ = std::move(kde); }
+void Device::SetInputEvent(InputEvent &&ie) { input_event_ = std::move(ie); }
 
 I8 Device::Loop() {
     I16 clocks_per_ms = CLOCKS_PER_SEC / 1000.0;
@@ -117,13 +118,67 @@ I8 Device::Loop() {
         if (fps_ > 60.0f) fps_ = 60.0f;
         render_time_ = mpfDT / (1.0 * clocks_per_ms);
 
+        mpfDT = clock() - curDT;
         if (loop_event_ != nullptr) {
-            loop_event_();
+            loop_event_(mpfDT);
         }
+        InputEventData inputEvent;
+        inputEvent.inputType = InputType::None;
+        switch (event.type) {
+            case SDL_MOUSEWHEEL: {
+                inputEvent.inputType = InputType::MouseWheel;
+                inputEvent.x = event.wheel.x;
+                inputEvent.y = event.wheel.y;
+                // printf("x = %d, y = %d \n", event.wheel.x, event.wheel.y);
+                break;
+            }
+            case SDL_MOUSEBUTTONUP: {
+                // printf("mouse button up\n");
+                break;
+            }
+            case SDL_MOUSEBUTTONDOWN: {
+                inputEvent.inputType = InputType::MouseDown;
+                SDL_Window* focused_window = SDL_GetKeyboardFocus();
+                int wx, wy, mx, my;
+                SDL_GetWindowPosition(focused_window, &wx, &wy);
+                SDL_GetGlobalMouseState(&mx, &my);
+                mx -= wx;
+                my -= wy;
+                inputEvent.x = mx;
+                inputEvent.y = my;
+                if (event.button.button == SDL_BUTTON_LEFT)  {
+                    inputEvent.keyType = KeyType::MouseLeft;
+                    // printf("key down mouse left\n");
+                } else if (event.button.button == SDL_BUTTON_RIGHT) {
+                    inputEvent.keyType = KeyType::MouseRight;
+                    // printf("key down mouse right\n");
+                } else if (event.button.button == SDL_BUTTON_MIDDLE) {
+                    inputEvent.keyType = KeyType::MouseMid;
+                    // printf("key down mouse middle\n");
+                }
+                break;
+            }
+            case SDL_TEXTINPUT: {
+                // printf("text input. text : %s \n", event.text.text);
+                break;
+            }
+            case SDL_KEYDOWN: {
+                inputEvent.inputType = InputType::KeyDown;
+                inputEvent.value = static_cast<I32>(event.key.keysym.scancode);
+                // printf("key down. key %d\n", event.key.keysym.scancode);
+                break;
+            }
+            case SDL_KEYUP: {
+                inputEvent.inputType = InputType::KeyRelease;
+                inputEvent.value = static_cast<I32>(event.key.keysym.scancode);
+                // printf("key release. key %d\n", event.key.keysym.scancode);
+                break;
+            }
+        }
+        input_event_(inputEvent);
         if (event.type == SDL_KEYDOWN) {
             keydown_event_(event.key.keysym.sym);
         }
-        mpfDT = clock() - curDT;
 
         if (mpfDT < frameTime) {
             std::this_thread::sleep_for(
@@ -152,9 +207,9 @@ void Device::Buffer2Screen(Color **buffer) {
             p += 3;
         }
     }
-    SDL_LogDebug(SDL_LOG_CATEGORY_RENDER,
-                 "Mesh Count: %d FPS: %.1f/%.1fms point : %d %s\n",
-                 mesh_count_, fps_, render_time_, count, log_);
+    // SDL_LogDebug(SDL_LOG_CATEGORY_RENDER,
+    //              "Mesh Count: %d FPS: %.1f/%.1fms point : %d %s\n",
+    //              mesh_count_, fps_, render_time_, count, log_);
 
     I32 size = height_/sampleRate_ * width_/sampleRate_ * 3 + HEAD_SIZE;
     SDL_RWops* ops = SDL_RWFromMem(screen_buffer_, size);
