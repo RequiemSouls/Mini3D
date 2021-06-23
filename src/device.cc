@@ -113,12 +113,12 @@ I8 Device::Loop() {
             break;
         }
 
-        curDT = clock();
+        mpfDT = clock() - curDT;
         fps_ = CLOCKS_PER_SEC / (1.0 * mpfDT);
         if (fps_ > 60.0f) fps_ = 60.0f;
         render_time_ = mpfDT / (1.0 * clocks_per_ms);
+        curDT = clock();
 
-        mpfDT = clock() - curDT;
         if (loop_event_ != nullptr) {
             loop_event_(mpfDT);
         }
@@ -207,9 +207,9 @@ void Device::Buffer2Screen(Color **buffer) {
             p += 3;
         }
     }
-    // SDL_LogDebug(SDL_LOG_CATEGORY_RENDER,
-    //              "Mesh Count: %d FPS: %.1f/%.1fms point : %d %s\n",
-    //              mesh_count_, fps_, render_time_, count, log_);
+     SDL_LogDebug(SDL_LOG_CATEGORY_RENDER,
+                  "Mesh Count: %d FPS: %.1f/%.1fms point : %d %s\n",
+                  mesh_count_, fps_, render_time_, count, log_);
 
     I32 size = height_/sampleRate_ * width_/sampleRate_ * 3 + HEAD_SIZE;
     SDL_RWops* ops = SDL_RWFromMem(screen_buffer_, size);
